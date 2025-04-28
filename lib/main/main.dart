@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mid_hill_cash_flow/config/midhill_config.dart';
+import 'package:mid_hill_cash_flow/features/onboarding/domain/onboarding_provider.dart';
 import 'package:mid_hill_cash_flow/main/midhill_app.dart';
 import 'package:mid_hill_cash_flow/utils/api_url_provider.dart';
 
@@ -37,6 +38,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (_) => ApiUrlProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OnboardingProvider(),
         ),
       ],
       child: MidhillApp(config: config),

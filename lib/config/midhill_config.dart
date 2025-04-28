@@ -10,7 +10,7 @@ class MidhillConfig {
   /// Configuration for Development
   factory MidhillConfig.development() {
     return MidhillConfig(
-      appTitle: "Kayak Loop - Dev",
+      appTitle: "Mid'hill CashFlow - Dev",
       apiBaseUrl: "http://51.120.13.91:6001/",
     );
   }
@@ -18,7 +18,7 @@ class MidhillConfig {
   /// Configuration for Staging
   factory MidhillConfig.staging() {
     return MidhillConfig(
-      appTitle: "Kayak Loop - Staging",
+      appTitle: "Mid'hill CashFlow - Staging",
       apiBaseUrl: "",
     );
   }
@@ -26,7 +26,7 @@ class MidhillConfig {
   /// Configuration for Production
   factory MidhillConfig.production() {
     return MidhillConfig(
-      appTitle: "Kayak Loop",
+      appTitle: "Mid'hill CashFlow",
       apiBaseUrl: "",
     );
   }

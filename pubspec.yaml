@@ -66,4 +66,4 @@ flutter:
 flutter_icons:
   android: "launcher_icon"  # this sets the icon for Android
   ios: true                 # this enables icon generation for iOS
-  image_path: "assets/logos/app_icon.png"
+  image_path: "assets/logos/launcher_icon.png"

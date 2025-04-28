@@ -7,7 +7,7 @@ class MidhillTexts {
 
   static text400({
     required String text,
-    required TextAlign textAlign,
+    TextAlign textAlign = TextAlign.start,
     Color color = MidhillColors.black,
     double fontSize = 14,
   }) {
@@ -15,9 +15,26 @@ class MidhillTexts {
       text,
       textAlign: textAlign,
       style: MidhillStyles.textStyle(
-        color: const Color(0xffB3B3B3),
+        color: color,
         fontSize: fontSize,
         fontWeight: FontWeight.w400,
+      ),
+    );
+  }
+
+  static text600({
+    required String text,
+    TextAlign textAlign = TextAlign.start,
+    Color color = MidhillColors.black,
+    double fontSize = 24,
+  }) {
+    return Text(
+      text,
+      textAlign: textAlign,
+      style: MidhillStyles.textStyle(
+        color: color,
+        fontSize: fontSize,
+        fontWeight: FontWeight.w600,
       ),
     );
   }
