@@ -19,3 +19,7 @@ class MidhillStyles {
     );
   }
 }
+
+Size mediaQuery(BuildContext context) {
+  return MediaQuery.of(context).size;
+}

@@ -14,7 +14,7 @@ class MidhillColors {
 
   static const Color black = Color(0xff121212); // black
 
-  static const Color borderGrey = Color(0x18121212); // text field border grey
+  static const Color borderGrey = Color(0x1A121212); // text field border grey
 
   // text colors
 

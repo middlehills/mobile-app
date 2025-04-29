@@ -44,45 +44,48 @@ List<GoRoute> authRoutes = [
         ),
       );
     },
-  ),
-
-  // register page
-  GoRoute(
-    path: "/${MidhillRoutesList.registerPage}",
-    name: MidhillRoutesList.registerPage,
-    pageBuilder: (context, state) {
-      return CustomTransitionPage(
-        child: const RegisterPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
+    routes: [
+      // register page
+      GoRoute(
+        path: MidhillRoutesList.registerPage,
+        name: MidhillRoutesList.registerPage,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            child: const RegisterPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            transitionDuration: const Duration(
+              milliseconds: 300,
+            ),
           );
         },
-        transitionDuration: const Duration(
-          milliseconds: 300,
-        ),
-      );
-    },
-  ),
+      ),
 
-  // login page
-  GoRoute(
-    path: "/${MidhillRoutesList.loginPage}",
-    name: MidhillRoutesList.loginPage,
-    pageBuilder: (context, state) {
-      return CustomTransitionPage(
-        child: const LoginPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
+      // login page
+      GoRoute(
+        path: MidhillRoutesList.loginPage,
+        name: MidhillRoutesList.loginPage,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            child: const LoginPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            transitionDuration: const Duration(
+              milliseconds: 300,
+            ),
           );
         },
-        transitionDuration: const Duration(
-          milliseconds: 300,
-        ),
-      );
-    },
-  )
+      )
+    ],
+  ),
 ];

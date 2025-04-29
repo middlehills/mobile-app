@@ -6,8 +6,8 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_styles.dart';
 
-class KayakTextField extends StatefulWidget {
-  const KayakTextField({
+class MidhillTextField extends StatefulWidget {
+  const MidhillTextField({
     super.key,
     required this.label,
     required this.isObscure,
@@ -24,12 +24,14 @@ class KayakTextField extends StatefulWidget {
     this.isEnabled = true,
     this.inputFormatters,
     this.textInputType,
+    this.prefixString,
   });
 
   final String label;
   final bool isObscure;
   final String? suffixAsset;
   final String? prefixAsset;
+  final String? prefixString;
   final void Function()? onTapSuffixIcon;
   final FocusNode focusNode;
   final TextEditingController controller;
@@ -43,10 +45,10 @@ class KayakTextField extends StatefulWidget {
   final TextInputType? textInputType;
 
   @override
-  State<KayakTextField> createState() => _KayakTextFieldState();
+  State<MidhillTextField> createState() => _MidhillTextFieldState();
 }
 
-class _KayakTextFieldState extends State<KayakTextField> {
+class _MidhillTextFieldState extends State<MidhillTextField> {
   bool hasFocus = false;
   @override
   Widget build(BuildContext context) {
@@ -54,38 +56,14 @@ class _KayakTextFieldState extends State<KayakTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        widget.isSignUpLabel == true
-            ? RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: widget.label,
-                      style: MidhillStyles.textStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: widget.focusNode.hasFocus == true
-                            ? MidhillColors.primaryColor
-                            : MidhillColors.black,
-                      ),
-                    ),
-                    TextSpan(
-                      text: "*",
-                      style: MidhillStyles.textStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : MidhillTexts.text400(
-                text: widget.label,
-                color: widget.focusNode.hasFocus == true
-                    ? MidhillColors.primaryColor
-                    : MidhillColors.black,
-              ),
-        // heightSpacing(5),
+        MidhillTexts.text400(
+          text: widget.label,
+          color: widget.focusNode.hasFocus == true
+              ? MidhillColors.primaryColor
+              : MidhillColors.black,
+          fontSize: 14,
+        ),
+        heightSpacing(5),
         TextFormField(
           textAlignVertical: TextAlignVertical.top,
           enabled: widget.isEnabled,
@@ -115,28 +93,28 @@ class _KayakTextFieldState extends State<KayakTextField> {
             ),
             hintText: widget.hintText,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
                 color: MidhillColors.borderGrey,
                 width: 1,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
                 color: Colors.red,
                 width: 1,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
                 color: MidhillColors.primaryColor,
                 width: 1,
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
                 color: MidhillColors.primaryColor,
                 width: 1,
@@ -159,10 +137,22 @@ class _KayakTextFieldState extends State<KayakTextField> {
                       ),
                     ),
                   ),
-            prefix: widget.prefixAsset == null
+            // prefix: widget.prefixAsset == null
+            //     ? null
+            //     : SvgPicture.asset(
+            //         widget.prefixAsset!,
+            //       ),
+            prefixIcon: widget.prefixString == null
                 ? null
-                : SvgPicture.asset(
-                    widget.prefixAsset!,
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 8,
+                    ),
+                    child: MidhillTexts.text400(
+                      text: widget.prefixString!,
+                      fontSize: 16,
+                    ),
                   ),
           ),
         )
@@ -177,8 +167,8 @@ class _KayakTextFieldState extends State<KayakTextField> {
   }
 }
 
-class KayakTextField2 extends StatefulWidget {
-  const KayakTextField2({
+class MidhillTextField2 extends StatefulWidget {
+  const MidhillTextField2({
     super.key,
     required this.label,
     required this.isObscure,
@@ -210,10 +200,10 @@ class KayakTextField2 extends StatefulWidget {
   final FormFieldValidator<String>? validator;
 
   @override
-  State<KayakTextField2> createState() => _KayakTextField2State();
+  State<MidhillTextField2> createState() => _MidhillTextField2State();
 }
 
-class _KayakTextField2State extends State<KayakTextField2> {
+class _MidhillTextField2State extends State<MidhillTextField2> {
   bool hasFocus = false;
   @override
   Widget build(BuildContext context) {

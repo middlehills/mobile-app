@@ -1,41 +1,39 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:kayak_loop/core/theme/assets.dart';
-// import 'package:kayak_loop/core/theme/kayak_colors.dart';
-// import 'package:kayak_loop/core/widgets/kayak_texts.dart';
+import 'package:flutter/material.dart';
+import 'package:mid_hill_cash_flow/theme/assets.dart';
+import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
+import 'package:mid_hill_cash_flow/theme/midhill_styles.dart';
 
-// AppBar kayakAppBar(BuildContext context,
-//     {Color? bgColor,
-//     required String title,
-//     required Color fgColor,
-//     // required Color titleColor,
-//     bool showLeading = true}) {
-//   return AppBar(
-//     backgroundColor: bgColor ?? KayakColors.white,
-//     leadingWidth: 35,
-//     // forceMaterialTransparency: true,
-//     leading: Padding(
-//       padding: const EdgeInsets.only(left: 15),
-//       child: !showLeading
-//           ? const SizedBox()
-//           : GestureDetector(
-//               onTap: () {
-//                 context.pop();
-//               },
-//               child: SvgPicture.asset(
-//                 KayakAssets.customIcon(iconName: "arrow-backward"),
-//                 height: 10,
-//                 colorFilter: ColorFilter.mode(
-//                   fgColor,
-//                   BlendMode.srcIn,
-//                 ),
-//               ),
-//             ),
-//     ),
-//     title: KayakTexts.buttonText(
-//       text: title,
-//       color: fgColor,
-//     ),
-//   );
-// }
+PreferredSize midhillAppBar(BuildContext context) {
+  return PreferredSize(
+    preferredSize: Size(
+      mediaQuery(context).width,
+      75,
+    ),
+    child: Container(
+      height: 75,
+      width: mediaQuery(context).width,
+      decoration: const BoxDecoration(
+        color: MidhillColors.primaryColor,
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            child: Image.asset(
+              MidhillAssets.customImage(iconName: "watermark_small"),
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          Center(
+            child: Image.asset(
+              "assets/logos/app_icon.png",
+              width: 53,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
