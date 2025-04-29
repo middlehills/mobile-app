@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/login_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register_page.dart';
 import 'package:mid_hill_cash_flow/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/splash_page.dart';
@@ -19,12 +21,12 @@ List<GoRoute> authRoutes = [
           );
         },
         transitionDuration: const Duration(
-          milliseconds: 950,
+          milliseconds: 400,
         ),
       );
     },
   ),
-  // splash page
+  // onboarding page
   GoRoute(
     path: "/${MidhillRoutesList.onboardingPage}",
     name: MidhillRoutesList.onboardingPage,
@@ -43,4 +45,44 @@ List<GoRoute> authRoutes = [
       );
     },
   ),
+
+  // register page
+  GoRoute(
+    path: "/${MidhillRoutesList.registerPage}",
+    name: MidhillRoutesList.registerPage,
+    pageBuilder: (context, state) {
+      return CustomTransitionPage(
+        child: const RegisterPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(
+          milliseconds: 300,
+        ),
+      );
+    },
+  ),
+
+  // login page
+  GoRoute(
+    path: "/${MidhillRoutesList.loginPage}",
+    name: MidhillRoutesList.loginPage,
+    pageBuilder: (context, state) {
+      return CustomTransitionPage(
+        child: const LoginPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(
+          milliseconds: 300,
+        ),
+      );
+    },
+  )
 ];
