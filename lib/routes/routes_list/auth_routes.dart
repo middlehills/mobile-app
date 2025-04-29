@@ -1,9 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/forgot_password/forgot_password_otp_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/forgot_password/forgot_password_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/login_page.dart';
-import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/otp_page.dart';
-import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/password_page.dart';
-import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register/otp_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register/password_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register/register_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:mid_hill_cash_flow/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/splash_page.dart';
@@ -47,6 +50,86 @@ List<GoRoute> authRoutes = [
       );
     },
     routes: [
+      // sign in page
+      GoRoute(
+        path: MidhillRoutesList.signInPage,
+        name: MidhillRoutesList.signInPage,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            child: const SignInPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            transitionDuration: const Duration(
+              milliseconds: 300,
+            ),
+          );
+        },
+        routes: [
+          GoRoute(
+            path: MidhillRoutesList.signInOtpPage,
+            name: MidhillRoutesList.signInOtpPage,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: const OtpPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(
+                  milliseconds: 300,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+              path: MidhillRoutesList.forgotPasswordPage,
+              name: MidhillRoutesList.forgotPasswordPage,
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                  child: const ForgotPasswordPage(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(
+                    milliseconds: 300,
+                  ),
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: MidhillRoutesList.forgotPasswordOtpPage,
+                  name: MidhillRoutesList.forgotPasswordOtpPage,
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage(
+                      child: const ForgotPasswordOtpPage(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(
+                        milliseconds: 300,
+                      ),
+                    );
+                  },
+                ),
+              ]),
+        ],
+      ),
       // register page
       GoRoute(
         path: MidhillRoutesList.registerPage,
@@ -107,27 +190,25 @@ List<GoRoute> authRoutes = [
           )
         ],
       ),
-
-      // login page
-      GoRoute(
-        path: MidhillRoutesList.loginPage,
-        name: MidhillRoutesList.loginPage,
-        pageBuilder: (context, state) {
-          return CustomTransitionPage(
-            child: const LoginPage(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-            transitionDuration: const Duration(
-              milliseconds: 300,
-            ),
-          );
-        },
-      )
     ],
   ),
+  // login page
+  GoRoute(
+    path: "/${MidhillRoutesList.loginPage}",
+    name: MidhillRoutesList.loginPage,
+    pageBuilder: (context, state) {
+      return CustomTransitionPage(
+        child: const LoginPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(
+          milliseconds: 300,
+        ),
+      );
+    },
+  )
 ];

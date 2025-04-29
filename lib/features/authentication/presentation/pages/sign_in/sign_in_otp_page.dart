@@ -7,14 +7,14 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignInOtpPage extends StatefulWidget {
+  const SignInOtpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignInOtpPage> createState() => _SignInOtpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInOtpPageState extends State<SignInOtpPage> {
   List<TextEditingController> controllers = [];
   List<FocusNode> focusNodes = [];
 
@@ -48,12 +48,13 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     MidhillTexts.text700(
-                      text: "Welcome back!",
+                      text: "Enter OTP code",
                       fontSize: 20,
                     ),
                     heightSpacing(8),
                     MidhillTexts.text400(
-                      text: "Enter 4-digit PIN to access your account",
+                      text:
+                          "We sent a one-time verification code to your phone number *****65",
                       fontSize: 14,
                       color: const Color(0xff6C7A93),
                     ),
@@ -74,15 +75,26 @@ class _LoginPageState extends State<LoginPage> {
                         : widthSpacing(10),
                   ),
                 ),
-                heightSpacing(40),
+                heightSpacing(10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MidhillTexts.text400(
+                        text: "You didn’t receive any code? ",
+                        color: const Color(0xff6C7A93)),
+                    MidhillTexts.text400(
+                      text: "Resend Code.",
+                      color: MidhillColors.black,
+                    ),
+                  ],
+                ),
+                heightSpacing(30),
                 InkWell(
                   child: SizedBox(
                     height: 50,
                     child: midhillButton(
                       context,
-                      onPressed: () {
-                        // context.goNamed();
-                      },
+                      onPressed: () {},
                       isEnabled: controllers.every(
                           (controller) => controller.value.text.isNotEmpty),
                     ),

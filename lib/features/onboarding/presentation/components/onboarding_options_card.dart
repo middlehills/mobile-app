@@ -56,7 +56,7 @@ class OnboardingOptionsCard extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: MidhillTexts.text600(
-                    text: "Sign Up with Phone Number",
+                    text: "Create New Account",
                     fontSize: 14,
                   ),
                 ),
@@ -64,7 +64,7 @@ class OnboardingOptionsCard extends StatelessWidget {
               heightSpacing(8),
               InkWell(
                 onTap: () {
-                  context.goNamed(MidhillRoutesList.loginPage);
+                  context.goNamed(MidhillRoutesList.signInPage);
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width,
@@ -75,7 +75,7 @@ class OnboardingOptionsCard extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: MidhillTexts.text600(
-                    text: "Login",
+                    text: "Sign into existing account",
                     fontSize: 14,
                   ),
                 ),

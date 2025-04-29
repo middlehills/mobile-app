@@ -44,11 +44,13 @@ class MidhillTexts {
     TextAlign textAlign = TextAlign.start,
     Color color = MidhillColors.black,
     double fontSize = 24,
+    TextDecoration textDecoration = TextDecoration.none,
   }) {
     return Text(
       text,
       textAlign: textAlign,
       style: MidhillStyles.textStyle(
+        textDecoration: textDecoration,
         color: color,
         fontSize: fontSize,
         fontWeight: FontWeight.w600,
