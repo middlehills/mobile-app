@@ -167,184 +167,63 @@ class _MidhillTextFieldState extends State<MidhillTextField> {
   }
 }
 
-class MidhillTextField2 extends StatefulWidget {
-  const MidhillTextField2({
-    super.key,
-    required this.label,
-    required this.isObscure,
-    this.suffixAsset,
-    this.prefixAsset,
-    this.onTapSuffixIcon,
-    required this.focusNode,
-    required this.controller,
-    this.onFieldSubmitted,
-    this.textInputAction = TextInputAction.done,
-    this.isSignUpLabel,
-    this.hintText,
-    this.isEnabled = true,
-    this.validator,
-  });
-
-  final String label;
-  final bool isObscure;
-  final String? suffixAsset;
-  final String? prefixAsset;
-  final void Function()? onTapSuffixIcon;
-  final FocusNode focusNode;
-  final TextEditingController controller;
-  final void Function(String)? onFieldSubmitted;
-  final TextInputAction? textInputAction;
-  final bool? isSignUpLabel;
-  final String? hintText;
-  final bool isEnabled;
-  final FormFieldValidator<String>? validator;
-
-  @override
-  State<MidhillTextField2> createState() => _MidhillTextField2State();
-}
-
-class _MidhillTextField2State extends State<MidhillTextField2> {
-  bool hasFocus = false;
-  @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.focusNode.addListener(_focusNodeListener);
-    });
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        widget.isSignUpLabel == true
-            ? RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: widget.label,
-                      style: MidhillStyles.textStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: widget.focusNode.hasFocus == true
-                            ? MidhillColors.primaryColor
-                            : MidhillColors.black,
-                      ),
-                    ),
-                    TextSpan(
-                      text: "*",
-                      style: MidhillStyles.textStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : Text(
-                widget.label,
-                style: MidhillStyles.textStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: widget.focusNode.hasFocus == true
-                      ? MidhillColors.primaryColor
-                      : MidhillColors.black,
-                ),
-              ),
-        heightSpacing(8),
-        TextFormField(
-          textAlignVertical: TextAlignVertical.bottom,
-          cursorHeight: 24,
-          enabled: widget.isEnabled,
-          validator: widget.validator,
-          focusNode: widget.focusNode,
-          controller: widget.controller,
-          cursorColor: MidhillColors.primaryColor,
-          obscureText: widget.isObscure,
-          onFieldSubmitted: widget.onFieldSubmitted,
-          textInputAction: widget.textInputAction,
-          textAlign: TextAlign.start,
-          style: MidhillStyles.textStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: MidhillColors.black,
-          ),
-          autovalidateMode: AutovalidateMode.disabled,
-          decoration: InputDecoration(
-            constraints: BoxConstraints.tight(
-              Size(
-                MediaQuery.sizeOf(context).width,
-                60,
-              ),
-            ),
-            hintText: widget.hintText,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(
-                color: MidhillColors.borderGrey,
-                width: 1,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(3),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(3),
-              borderSide: const BorderSide(
-                color: MidhillColors.primaryColor,
-                width: 1,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(3),
-              borderSide: const BorderSide(
-                color: MidhillColors.primaryColor,
-                width: 1,
-              ),
-            ),
-            helperText: "",
-            suffixIcon: widget.suffixAsset == null
-                ? null
-                : Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    child: GestureDetector(
-                      onTap: widget.onTapSuffixIcon,
-                      child: SvgPicture.asset(
-                        widget.suffixAsset!,
-                        height: 15.71,
-                        fit: BoxFit.fitHeight,
-                        colorFilter: widget.focusNode.hasFocus == true
-                            ? const ColorFilter.mode(
-                                MidhillColors.primaryColor, BlendMode.srcIn)
-                            : null,
-                      ),
-                    ),
-                  ),
-            prefixIcon: widget.prefixAsset == null
-                ? null
-                : Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: SvgPicture.asset(
-                      widget.prefixAsset!,
-                      height: 20,
-                      fit: BoxFit.fitHeight,
-                      colorFilter: widget.focusNode.hasFocus == true
-                          ? const ColorFilter.mode(
-                              MidhillColors.primaryColor, BlendMode.srcIn)
-                          : null,
-                    ),
-                  ),
-          ),
-        )
+Widget buildOtpField(
+  BuildContext context, {
+  required int index,
+  required List<TextEditingController> controllers,
+  required List<FocusNode> focusNodes,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      color: const Color(0xFFFAFCFE),
+      borderRadius: const BorderRadius.all(
+        Radius.circular(12),
+      ),
+      border: Border.all(
+        color: focusNodes[index].hasFocus
+            ? MidhillColors.primaryColor
+            : const Color(0xffF6F7F9),
+        width: 1,
+      ),
+    ),
+    width: 50,
+    height: 50,
+    child: TextField(
+      controller: controllers[index],
+      focusNode: focusNodes[index],
+      keyboardType: TextInputType.number,
+      textAlign: TextAlign.center,
+      maxLength: 1,
+      obscuringCharacter: "●",
+      obscureText: true,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(1),
       ],
-    );
-  }
+      onChanged: (value) {
+        // This condition ensures that the current TextField is not the last one in the sequence.
+        // The check index < 5 prevents trying to move focus to a non-existent next field.
+        if (value.isNotEmpty && index < 3) {
+          FocusScope.of(context).requestFocus(focusNodes[index + 1]);
+        }
+        //managing focus in an OTP input field where the user may need to move backward when correcting an entry
+        else if (value.isEmpty && index > 0) {
+          FocusScope.of(context).requestFocus(focusNodes[index - 1]);
+        }
 
-  _focusNodeListener() {
-    if (mounted) {
-      setState(() {});
-    }
-  }
+        // unfocus the last field when it is filled
+        else if (value.isNotEmpty && index == 3) {
+          FocusScope.of(context).unfocus();
+        }
+      },
+      decoration: const InputDecoration(
+        counterText: "",
+        border: InputBorder.none,
+        hintText: "*",
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+      ),
+    ),
+  );
 }

@@ -22,6 +22,23 @@ class MidhillTexts {
     );
   }
 
+  static text700({
+    required String text,
+    TextAlign textAlign = TextAlign.start,
+    Color color = MidhillColors.black,
+    double fontSize = 20,
+  }) {
+    return Text(
+      text,
+      textAlign: textAlign,
+      style: MidhillStyles.textStyle(
+        color: color,
+        fontSize: fontSize,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+
   static text600({
     required String text,
     TextAlign textAlign = TextAlign.start,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/back_button.dart';
+import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
@@ -118,28 +119,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   heightSpacing(32),
 
-                  InkWell(
-                    onTap: () {
+                  midhillButton(
+                    context,
+                    onPressed: () {
                       bool? result = _formKey.currentState?.validate();
 
                       if (result == true) {
                         context.goNamed(MidhillRoutesList.passwordPage);
                       }
                     },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: MidhillColors.primaryColor,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      alignment: Alignment.center,
-                      child: MidhillTexts.text600(
-                        text: "Continue",
-                        fontSize: 14,
-                        color: MidhillColors.white,
-                      ),
-                    ),
                   )
                 ],
               ),
