@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/login_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/otp_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/password_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register_page.dart';
 import 'package:mid_hill_cash_flow/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
@@ -64,6 +66,46 @@ List<GoRoute> authRoutes = [
             ),
           );
         },
+        routes: [
+          GoRoute(
+            path: MidhillRoutesList.passwordPage,
+            name: MidhillRoutesList.passwordPage,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: const PasswordPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(
+                  milliseconds: 300,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: MidhillRoutesList.otpPage,
+            name: MidhillRoutesList.otpPage,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: const OtpPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(
+                  milliseconds: 300,
+                ),
+              );
+            },
+          )
+        ],
       ),
 
       // login page
