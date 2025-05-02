@@ -1,5 +1,5 @@
 class ValidationFunctions {
-  static String? validateName(String? name) {
+  static String? validateItemName(String? name) {
     if (name == null) {
       return "Please enter your name";
     } else if (name.isEmpty) {
@@ -8,8 +8,8 @@ class ValidationFunctions {
       return "Name must be at least 2 characters long";
     } else if (name.length > 20) {
       return "Name must be at most 20 characters long";
-    } else if (!RegExp(r'^[a-zA-Z]+$').hasMatch(name)) {
-      return "Name must only contain letters";
+    } else if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(name)) {
+      return "Name must only contain letters and spaces";
     } else {
       return null;
     }

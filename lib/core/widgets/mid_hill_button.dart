@@ -7,6 +7,7 @@ InkWell midhillButton(
   required void Function()? onPressed,
   bool isLoading = false,
   bool isEnabled = true,
+  String text = "Continue",
 }) {
   return InkWell(
     onTap: isEnabled ? onPressed : null,
@@ -23,7 +24,7 @@ InkWell midhillButton(
               color: MidhillColors.white,
             )
           : MidhillTexts.text600(
-              text: "Continue",
+              text: text,
               fontSize: 16,
               color: isEnabled ? MidhillColors.white : MidhillColors.borderGrey,
             ),

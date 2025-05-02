@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/validation_functions.dart';
 import 'package:mid_hill_cash_flow/features/home/presentation/components/record_review_modal_sheet.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
+import 'package:provider/provider.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({
@@ -50,103 +53,142 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: midhillAppBar(context),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                heightSpacing(10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MidhillTexts.text600(
-                          text: "John Doe,",
+    return Consumer<UploadProvider>(
+      builder: (BuildContext context, UploadProvider value, Widget? child) =>
+          Scaffold(
+        appBar: midhillAppBar(context),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  heightSpacing(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MidhillTexts.text600(
+                            text: "Iyabo Adeola,",
+                          ),
+                          heightSpacing(5),
+                          MidhillTexts.text400(
+                            text: "Enter a new record",
+                            fontSize: 13,
+                            color: const Color(0xff6C7A93),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      SvgPicture.asset(
+                        MidhillAssets.customIcon(
+                          iconName: "support",
                         ),
-                        heightSpacing(5),
-                        MidhillTexts.text400(
-                          text: "Enter a new record",
-                          fontSize: 13,
-                          color: const Color(0xff6C7A93),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    SvgPicture.asset(
-                      MidhillAssets.customIcon(
-                        iconName: "support",
                       ),
-                    ),
-                    widthSpacing(16),
-                    SvgPicture.asset(
-                      MidhillAssets.customIcon(
-                        iconName: "bell",
+                      widthSpacing(16),
+                      SvgPicture.asset(
+                        MidhillAssets.customIcon(
+                          iconName: "bell",
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                heightSpacing(20),
+                    ],
+                  ),
+                  heightSpacing(20),
 
-                // name field
-                MidhillTextField(
-                  label: "Item Name",
-                  isObscure: false,
-                  focusNode: focusNodes[0],
-                  controller: controllers[0],
-                  hintText: "e.g Golden Morn",
-                  validator: ValidationFunctions.validateName,
-                  onFieldSubmitted: (p0) {
-                    FocusScope.of(context).requestFocus(focusNodes[1]);
-                  },
-                  textInputAction: TextInputAction.next,
-                ),
+                  // name field
+                  MidhillTextField(
+                    label: "Item Name",
+                    isObscure: false,
+                    focusNode: focusNodes[0],
+                    controller: controllers[0],
+                    hintText: "e.g Golden Morn",
+                    validator: ValidationFunctions.validateItemName,
+                    onFieldSubmitted: (p0) {
+                      FocusScope.of(context).requestFocus(focusNodes[1]);
+                    },
+                    textInputAction: TextInputAction.next,
+                  ),
 
-                // quantity field
-                MidhillTextField(
-                  label: "Quantity",
-                  isObscure: false,
-                  focusNode: focusNodes[1],
-                  controller: controllers[1],
-                  hintText: "e.g 12",
-                  validator: ValidationFunctions.validateQuantity,
-                  onFieldSubmitted: (p0) {
-                    FocusScope.of(context).requestFocus(focusNodes[2]);
-                  },
-                  textInputAction: TextInputAction.next,
-                ),
+                  // quantity field
+                  MidhillTextField(
+                    label: "Quantity",
+                    isObscure: false,
+                    focusNode: focusNodes[1],
+                    controller: controllers[1],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    textInputType: TextInputType.number,
+                    hintText: "e.g 12",
+                    validator: ValidationFunctions.validateQuantity,
+                    onFieldSubmitted: (p0) {
+                      FocusScope.of(context).requestFocus(focusNodes[2]);
+                    },
+                    textInputAction: TextInputAction.next,
+                  ),
 
-                // amount field
-                MidhillTextField(
-                  label: "Amount",
-                  isObscure: false,
-                  focusNode: focusNodes[2],
-                  controller: controllers[2],
-                  hintText: "e.g 2000",
-                  validator: ValidationFunctions.validateAmount,
-                  onFieldSubmitted: (p0) {},
-                ),
+                  // amount field
+                  MidhillTextField(
+                    label: "Amount",
+                    isObscure: false,
+                    focusNode: focusNodes[2],
+                    controller: controllers[2],
+                    hintText: "e.g 2000",
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    textInputType: TextInputType.number,
+                    validator: ValidationFunctions.validateAmount,
+                  ),
 
-                heightSpacing(24),
+                  heightSpacing(24),
 
-                midhillButton(
-                  context,
-                  onPressed: () {
-                    showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) {
-                        return const RecordReviewModalSheet();
-                      },
-                    );
-                  },
-                )
-              ],
+                  midhillButton(
+                    context,
+                    text: value.uploads.isEmpty
+                        ? "Upload"
+                        : "Upload ${value.uploads.length + 1} records",
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        value.setAddingNewRecordState(false);
+
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          barrierLabel: "Tap here to go back",
+                          builder: (context) {
+                            return PopScope(
+                              canPop: true,
+                              onPopInvokedWithResult: (didPop, result) {
+                                if (!value.isAddingNewRecord) {
+                                  value
+                                      .clearRecords(); // clear records if user pops screen.
+                                } else {
+                                  for (var controller in controllers) {
+                                    controller.clear();
+                                  }
+
+                                  focusNodes[0].requestFocus();
+                                }
+                              },
+                              child: RecordReviewModalSheet(
+                                itemName: controllers[0].text.trim(),
+                                quantity: controllers[1].text.trim(),
+                                amount: int.parse(controllers[2].text.trim()),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+
+                  heightSpacing(20),
+                ],
+              ),
             ),
           ),
         ),
