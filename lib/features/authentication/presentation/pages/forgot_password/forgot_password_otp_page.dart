@@ -97,8 +97,7 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
                     child: midhillButton(
                       context,
                       onPressed: () {
-                        context
-                            .goNamed(MidhillRoutesList.forgotPasswordOtpPage);
+                        context.goNamed(MidhillRoutesList.resetPasswordPage);
                       },
                       isEnabled: controllers.every(
                           (controller) => controller.value.text.isNotEmpty),

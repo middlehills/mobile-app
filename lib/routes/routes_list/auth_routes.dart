@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/forgot_password/forgot_password_otp_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/forgot_password/forgot_password_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/forgot_password/reset_password_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/login_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register/otp_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register/password_page.dart';
@@ -90,25 +91,25 @@ List<GoRoute> authRoutes = [
             },
           ),
           GoRoute(
-              path: MidhillRoutesList.forgotPasswordPage,
-              name: MidhillRoutesList.forgotPasswordPage,
-              pageBuilder: (context, state) {
-                return CustomTransitionPage(
-                  child: const ForgotPasswordPage(),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                  transitionDuration: const Duration(
-                    milliseconds: 300,
-                  ),
-                );
-              },
-              routes: [
-                GoRoute(
+            path: MidhillRoutesList.forgotPasswordPage,
+            name: MidhillRoutesList.forgotPasswordPage,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: const ForgotPasswordPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(
+                  milliseconds: 300,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
                   path: MidhillRoutesList.forgotPasswordOtpPage,
                   name: MidhillRoutesList.forgotPasswordOtpPage,
                   pageBuilder: (context, state) {
@@ -126,8 +127,29 @@ List<GoRoute> authRoutes = [
                       ),
                     );
                   },
-                ),
-              ]),
+                  routes: [
+                    GoRoute(
+                      path: MidhillRoutesList.resetPasswordPage,
+                      name: MidhillRoutesList.resetPasswordPage,
+                      pageBuilder: (context, state) {
+                        return CustomTransitionPage(
+                          child: const ResetPasswordPage(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(
+                            milliseconds: 300,
+                          ),
+                        );
+                      },
+                    ),
+                  ]),
+            ],
+          ),
         ],
       ),
       // register page

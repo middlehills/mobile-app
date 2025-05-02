@@ -16,6 +16,7 @@ class MidhillRoutesList {
 
   static const String forgotPasswordPage = "forgotPasswordPage";
   static const String forgotPasswordOtpPage = "forgotPasswordOtpPage";
+
   static const String resetPasswordPage = "resetPasswordPage";
 
   // nav bar
