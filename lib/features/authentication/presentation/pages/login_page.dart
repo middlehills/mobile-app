@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/back_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 
 class LoginPage extends StatefulWidget {
@@ -81,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: midhillButton(
                       context,
                       onPressed: () {
-                        // context.goNamed();
+                        context.goNamed(MidhillRoutesList.navBarPage);
                       },
                       isEnabled: controllers.every(
                           (controller) => controller.value.text.isNotEmpty),
