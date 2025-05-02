@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mid_hill_cash_flow/config/midhill_config.dart';
+import 'package:mid_hill_cash_flow/features/nav_bar/nav_bar_provider.dart';
 import 'package:mid_hill_cash_flow/features/onboarding/domain/onboarding_provider.dart';
 import 'package:mid_hill_cash_flow/main/midhill_app.dart';
 import 'package:mid_hill_cash_flow/utils/api_url_provider.dart';
@@ -41,6 +42,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => OnboardingProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NavBarProvider(),
         ),
       ],
       child: MidhillApp(config: config),

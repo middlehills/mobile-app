@@ -19,3 +19,8 @@ Widget heightSpacing(double height) => SizedBox(
 Widget widthSpacing(double width) => SizedBox(
       width: width,
     );
+
+double mediaQueryWidth(BuildContext context) =>
+    MediaQuery.sizeOf(context).width;
+double mediaQueryHeight(BuildContext context) =>
+    MediaQuery.sizeOf(context).height;
