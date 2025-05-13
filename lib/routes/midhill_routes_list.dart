@@ -23,7 +23,12 @@ class MidhillRoutesList {
   static const String navBarPage = "navBarPage";
 
   // profile pages
+
   static const String profileDetailsPage = "profileDetailsPage";
   static const String profileDetailsPasswordPage = "profileDetailsPasswordPage";
   static const String profileDetailsOtpPage = "profileDetailsOtpPage";
+
+  // security
+  static const String securityPage = "securityPage";
+  static const String securityChangePinPage = "securityChangePinPage";
 }
