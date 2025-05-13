@@ -22,5 +22,8 @@ class MidhillRoutesList {
   // nav bar
   static const String navBarPage = "navBarPage";
 
+  // profile pages
   static const String profileDetailsPage = "profileDetailsPage";
+  static const String profileDetailsPasswordPage = "profileDetailsPasswordPage";
+  static const String profileDetailsOtpPage = "profileDetailsOtpPage";
 }

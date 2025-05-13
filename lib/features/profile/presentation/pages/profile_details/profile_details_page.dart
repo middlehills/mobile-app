@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/back_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
@@ -7,6 +8,7 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_functions.dart';
+import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 
 class ProfileDetailsPage extends StatefulWidget {
@@ -77,7 +79,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     controller: controllers[0],
                     onFieldSubmitted: (p0) => focusNodes[1].requestFocus(),
                     textInputAction: TextInputAction.next,
-                    validator: (value) => AuthFunctions.validateName(value),
+                    validator: AuthFunctions.validateName,
                   ),
 
                   // last name textfield
@@ -88,7 +90,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     controller: controllers[1],
                     onFieldSubmitted: (p0) => focusNodes[2].requestFocus(),
                     textInputAction: TextInputAction.next,
-                    validator: (value) => AuthFunctions.validateName(value),
+                    validator: AuthFunctions.validateName,
                   ),
 
                   // phone number textfield
@@ -112,7 +114,11 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     onPressed: () {
                       bool? result = _formKey.currentState?.validate();
 
-                      if (result == true) {}
+                      if (result == true) {
+                        context.goNamed(
+                          MidhillRoutesList.profileDetailsPasswordPage,
+                        );
+                      }
                     },
                   )
                 ],
