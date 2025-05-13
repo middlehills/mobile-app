@@ -72,10 +72,12 @@ class _UploadPageState extends State<UploadPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           MidhillTexts.text600(
+                            context,
                             text: "Iyabo Adeola,",
                           ),
                           heightSpacing(5),
                           MidhillTexts.text400(
+                            context,
                             text: "Enter a new record",
                             fontSize: 13,
                             color: const Color(0xff6C7A93),

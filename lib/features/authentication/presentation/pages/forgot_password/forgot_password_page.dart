@@ -66,11 +66,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       MidhillTexts.text600(
+                        context,
                         text: "Forgot PIN",
                         fontSize: 20,
                       ),
                       heightSpacing(8),
                       MidhillTexts.text400(
+                        context,
                         text:
                             "Please enter your phone number, we’ll send a code to reset your PIN",
                         fontSize: 14,

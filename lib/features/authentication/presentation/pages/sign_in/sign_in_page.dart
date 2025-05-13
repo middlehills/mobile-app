@@ -66,11 +66,13 @@ class _SignInPageState extends State<SignInPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       MidhillTexts.text600(
+                        context,
                         text: "Welcome back!",
                         fontSize: 20,
                       ),
                       heightSpacing(8),
                       MidhillTexts.text400(
+                        context,
                         text: "Enter 4-digit PIN to use application",
                         fontSize: 14,
                         color: const Color(0xff6C7A93),
@@ -124,6 +126,7 @@ class _SignInPageState extends State<SignInPage> {
                         child: SizedBox(
                           height: 20,
                           child: MidhillTexts.text600(
+                            context,
                             text: "Forgot PIN",
                             textDecoration: TextDecoration.underline,
                             color: MidhillColors.primaryColor,

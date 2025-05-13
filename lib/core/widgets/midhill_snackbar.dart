@@ -25,7 +25,7 @@ void showMidHillSnackbar(BuildContext context, String message,
           const SizedBox(width: 5),
           Expanded(
             child: MidhillTexts.text400(
-              text: message, // error or success message
+              context, text: message, // error or success message
               color: MidhillColors.white,
               textAlign: TextAlign.start,
             ),

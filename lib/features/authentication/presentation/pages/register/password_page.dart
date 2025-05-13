@@ -50,11 +50,13 @@ class _PasswordPageState extends State<PasswordPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     MidhillTexts.text700(
+                      context,
                       text: "Create your 4-digit pin",
                       fontSize: 20,
                     ),
                     heightSpacing(8),
                     MidhillTexts.text400(
+                      context,
                       text: "You will use this pin to enter this app",
                       fontSize: 14,
                       color: const Color(0xff6C7A93),

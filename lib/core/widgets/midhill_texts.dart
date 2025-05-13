@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+
+import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_styles.dart';
+
+class ScaleSize {
+  static double textScaleFactor(BuildContext context,
+      {double maxTextScaleFactor = 2}) {
+    final width = mediaQueryWidth(context);
+    double val = (width / 1400) * maxTextScaleFactor;
+    return max(0.69, min(val, maxTextScaleFactor));
+  }
+}
 
 class MidhillTexts {
   MidhillTexts._();
 
-  static text400({
+  static text400(
+    BuildContext context, {
     required String text,
     TextAlign textAlign = TextAlign.start,
     Color color = MidhillColors.black,
@@ -19,10 +32,12 @@ class MidhillTexts {
         fontSize: fontSize,
         fontWeight: FontWeight.w400,
       ),
+      textScaler: TextScaler.linear(ScaleSize.textScaleFactor(context)),
     );
   }
 
-  static text700({
+  static text700(
+    BuildContext context, {
     required String text,
     TextAlign textAlign = TextAlign.start,
     Color color = MidhillColors.black,
@@ -30,6 +45,7 @@ class MidhillTexts {
   }) {
     return Text(
       text,
+      textScaler: TextScaler.linear(ScaleSize.textScaleFactor(context)),
       textAlign: textAlign,
       style: MidhillStyles.textStyle(
         color: color,
@@ -39,7 +55,8 @@ class MidhillTexts {
     );
   }
 
-  static text600({
+  static text600(
+    BuildContext context, {
     required String text,
     TextAlign textAlign = TextAlign.start,
     Color color = MidhillColors.black,
@@ -49,6 +66,7 @@ class MidhillTexts {
     return Text(
       text,
       textAlign: textAlign,
+      textScaler: TextScaler.linear(ScaleSize.textScaleFactor(context)),
       style: MidhillStyles.textStyle(
         textDecoration: textDecoration,
         color: color,

@@ -24,6 +24,7 @@ InkWell midhillButton(
               color: MidhillColors.white,
             )
           : MidhillTexts.text600(
+              context,
               text: text,
               fontSize: 16,
               color: isEnabled ? MidhillColors.white : MidhillColors.borderGrey,

@@ -4,6 +4,8 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/home/presentation/pages/upload_page.dart';
 import 'package:mid_hill_cash_flow/features/nav_bar/nav_bar_provider.dart';
+import 'package:mid_hill_cash_flow/features/profile/presentation/pages/profile_page.dart';
+import 'package:mid_hill_cash_flow/features/records/presentation/records_page.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 import 'package:provider/provider.dart';
@@ -18,8 +20,8 @@ class NavBarPage extends StatefulWidget {
 class _NavBarPageState extends State<NavBarPage> {
   List<Widget> screens = const [
     UploadPage(),
-    SizedBox(),
-    SizedBox(),
+    RecordsPage(),
+    ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -91,6 +93,7 @@ class _NavBarPageState extends State<NavBarPage> {
                                       widthSpacing(5),
                                     if (value.selectedIndex == index)
                                       MidhillTexts.text600(
+                                        context,
                                         text: index == 0
                                             ? "Upload"
                                             : index == 1

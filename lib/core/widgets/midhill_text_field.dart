@@ -25,6 +25,7 @@ class MidhillTextField extends StatefulWidget {
     this.inputFormatters,
     this.textInputType,
     this.prefixString,
+    this.textAlignVertical,
   });
 
   final String label;
@@ -43,6 +44,7 @@ class MidhillTextField extends StatefulWidget {
   final bool isEnabled;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? textInputType;
+  final TextAlignVertical? textAlignVertical;
 
   @override
   State<MidhillTextField> createState() => _MidhillTextFieldState();
@@ -57,6 +59,7 @@ class _MidhillTextFieldState extends State<MidhillTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MidhillTexts.text400(
+          context,
           text: widget.label,
           color: widget.focusNode.hasFocus == true
               ? MidhillColors.primaryColor
@@ -65,7 +68,7 @@ class _MidhillTextFieldState extends State<MidhillTextField> {
         ),
         heightSpacing(5),
         TextFormField(
-          textAlignVertical: TextAlignVertical.top,
+          textAlignVertical: widget.textAlignVertical ?? TextAlignVertical.top,
           enabled: widget.isEnabled,
           keyboardType: widget.textInputType,
           cursorHeight: 24,
@@ -150,6 +153,7 @@ class _MidhillTextFieldState extends State<MidhillTextField> {
                       horizontal: 8,
                     ),
                     child: MidhillTexts.text400(
+                      context,
                       text: widget.prefixString!,
                       fontSize: 16,
                     ),

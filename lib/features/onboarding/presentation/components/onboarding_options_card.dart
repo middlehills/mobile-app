@@ -29,10 +29,12 @@ class OnboardingOptionsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               MidhillTexts.text600(
+                context,
                 text: "Quick & Easy Loans for Your Business",
               ),
               heightSpacing(8),
               MidhillTexts.text400(
+                context,
                 text: "Grow your business with quick, hassle-free financing.",
                 fontSize: 16,
                 color: const Color(0xff6C7A93),
@@ -56,6 +58,7 @@ class OnboardingOptionsCard extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: MidhillTexts.text600(
+                    context,
                     text: "Create New Account",
                     fontSize: 14,
                   ),
@@ -75,6 +78,7 @@ class OnboardingOptionsCard extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: MidhillTexts.text600(
+                    context,
                     text: "Sign into existing account",
                     fontSize: 14,
                   ),

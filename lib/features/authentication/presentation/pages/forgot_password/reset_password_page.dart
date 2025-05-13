@@ -64,11 +64,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MidhillTexts.text700(
+                          context,
                           text: index == 0 ? "Reset PIN" : "Confirm PIN",
                           fontSize: 20,
                         ),
                         heightSpacing(8),
                         MidhillTexts.text400(
+                          context,
                           text: index == 0
                               ? "Please enter your new PIN"
                               : "Please re-enter your new PIN to confirm",

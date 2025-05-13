@@ -50,11 +50,13 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     MidhillTexts.text700(
+                      context,
                       text: "Enter OTP code",
                       fontSize: 20,
                     ),
                     heightSpacing(8),
                     MidhillTexts.text400(
+                      context,
                       text:
                           "We sent a one-time verification code to your phone number *****65",
                       fontSize: 14,
@@ -81,10 +83,11 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    MidhillTexts.text400(
+                    MidhillTexts.text400(context,
                         text: "You didn’t receive any code? ",
                         color: const Color(0xff6C7A93)),
                     MidhillTexts.text400(
+                      context,
                       text: "Resend Code.",
                       color: MidhillColors.black,
                     ),

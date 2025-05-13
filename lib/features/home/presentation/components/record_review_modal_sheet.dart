@@ -89,13 +89,14 @@ class _RecordReviewModalSheetState extends State<RecordReviewModalSheet> {
                   fit: BoxFit.fitHeight,
                 ),
                 widthSpacing(4),
-                MidhillTexts.text600(text: "Items"),
+                MidhillTexts.text600(context, text: "Items"),
                 widthSpacing(4),
                 CircleAvatar(
                   radius: 12,
                   backgroundColor: MidhillColors.primaryColor,
                   child: Center(
                     child: MidhillTexts.text600(
+                      context,
                       text: value.uploads.length.toString(),
                       fontSize: 12,
                       color: MidhillColors.white,
@@ -124,6 +125,7 @@ class _RecordReviewModalSheetState extends State<RecordReviewModalSheet> {
                           size: 24,
                         ),
                         MidhillTexts.text600(
+                          context,
                           text: "Add Record",
                           fontSize: 14,
                         ),
@@ -156,12 +158,14 @@ class _RecordReviewModalSheetState extends State<RecordReviewModalSheet> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               MidhillTexts.text400(
+                                context,
                                 text: value.uploads[index].itemName,
                                 color: const Color(0xCC101928),
                                 fontSize: 14,
                               ),
                               heightSpacing(10),
                               MidhillTexts.text400(
+                                context,
                                 text: value.uploads[index].quantity,
                                 color: const Color(0xCC101928),
                                 fontSize: 14,
@@ -175,6 +179,7 @@ class _RecordReviewModalSheetState extends State<RecordReviewModalSheet> {
                             Row(
                               children: [
                                 MidhillTexts.text400(
+                                  context,
                                   text: value.uploads[index].amount.toString(),
                                   color: MidhillColors.black,
                                   fontSize: 18,

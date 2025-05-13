@@ -50,11 +50,13 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     MidhillTexts.text700(
+                      context,
                       text: "Welcome back!",
                       fontSize: 20,
                     ),
                     heightSpacing(8),
                     MidhillTexts.text400(
+                      context,
                       text: "Enter 4-digit PIN to access your account",
                       fontSize: 14,
                       color: const Color(0xff6C7A93),

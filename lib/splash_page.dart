@@ -107,6 +107,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   width: MediaQuery.of(context).size.width,
                   height: 50,
                   child: MidhillTexts.text400(
+                    context,
                     text:
                         "MidhillCredits is a mobile app designed to help you track your daily sales effortlessly while also providing access to loans based on your monthly revenue.",
                     textAlign: TextAlign.center,
