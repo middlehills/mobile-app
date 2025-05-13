@@ -31,4 +31,6 @@ class MidhillRoutesList {
   // security
   static const String securityPage = "securityPage";
   static const String securityChangePinPage = "securityChangePinPage";
+
+  static const String accountPage = "accountPage";
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mid_hill_cash_flow/features/profile/presentation/pages/account_page.dart';
 import 'package:mid_hill_cash_flow/features/profile/presentation/pages/profile_details/profile_details_page.dart';
 import 'package:mid_hill_cash_flow/features/profile/presentation/pages/profile_details/profile_otp_page.dart';
 import 'package:mid_hill_cash_flow/features/profile/presentation/pages/profile_details/profile_password_page.dart';
@@ -105,5 +106,23 @@ List<GoRoute> profileRoutes = [
         },
       ),
     ],
-  )
+  ),
+  GoRoute(
+    path: MidhillRoutesList.accountPage,
+    name: MidhillRoutesList.accountPage,
+    pageBuilder: (context, state) {
+      return CustomTransitionPage(
+        child: const AccountPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(
+          milliseconds: 250,
+        ),
+      );
+    },
+  ),
 ];

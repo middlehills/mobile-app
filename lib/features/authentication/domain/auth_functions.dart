@@ -17,6 +17,22 @@ class AuthFunctions {
     }
   }
 
+  static String? validateFullName(String? fullName) {
+    if (fullName == null) {
+      return "Please enter your full name";
+    } else if (fullName.isEmpty) {
+      return "Please enter your full name";
+    } else if (fullName.length < 5) {
+      return "Full name must be at least 5 characters long";
+    } else if (fullName.length > 50) {
+      return "Full name must be at most 50 characters long";
+    } else if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(fullName)) {
+      return "Full name must only contain letters and spaces";
+    } else {
+      return null;
+    }
+  }
+
   static String? validatePhoneumber(String? phone) {
     if (phone == null) {
       return "Please enter your phone number";

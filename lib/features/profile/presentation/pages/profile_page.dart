@@ -68,6 +68,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           context.goNamed(MidhillRoutesList.profileDetailsPage);
                         case 1:
                           context.goNamed(MidhillRoutesList.securityPage);
+                        case 2:
+                          context.goNamed(MidhillRoutesList.accountPage);
                           break;
                         default:
                       }
