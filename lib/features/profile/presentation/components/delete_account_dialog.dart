@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
-import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
@@ -34,9 +33,7 @@ class DeleteAccountDialog extends StatelessWidget {
             mediaQueryHeight(context) * 0.02,
           ),
           InkWell(
-            onTap: () {
-              context.goNamed(MidhillRoutesList.signInPage);
-            },
+            onTap: () {},
             child: Container(
               width: MediaQuery.sizeOf(context).width,
               height: 50,
@@ -50,6 +47,28 @@ class DeleteAccountDialog extends StatelessWidget {
                 text: "Delete Account",
                 fontSize: 16,
                 color: MidhillColors.white,
+              ),
+            ),
+          ),
+          heightSpacing(
+            mediaQueryHeight(context) * 0.01,
+          ),
+          InkWell(
+            onTap: () {
+              context.pop();
+            },
+            child: Container(
+              width: MediaQuery.sizeOf(context).width,
+              height: 50,
+              decoration: BoxDecoration(
+                // color: const Color(0xffEDF0F3),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              alignment: Alignment.center,
+              child: MidhillTexts.text600(
+                context,
+                text: "Cancel",
+                fontSize: 14,
               ),
             ),
           )
