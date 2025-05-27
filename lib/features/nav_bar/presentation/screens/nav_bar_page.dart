@@ -33,7 +33,8 @@ class _NavBarPageState extends State<NavBarPage> {
             value.updateIndex(0);
           }
         },
-        child: SafeArea(
+        child: 
+        SafeArea(
           child: Scaffold(
             body: Stack(
               children: [

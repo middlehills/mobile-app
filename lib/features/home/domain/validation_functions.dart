@@ -1,9 +1,9 @@
 class ValidationFunctions {
   static String? validateItemName(String? name) {
     if (name == null) {
-      return "Please enter your name";
+      return "Please enter item's name";
     } else if (name.isEmpty) {
-      return "Please enter your name";
+      return "Please enter item's name";
     } else if (name.length < 2) {
       return "Name must be at least 2 characters long";
     } else if (name.length > 20) {

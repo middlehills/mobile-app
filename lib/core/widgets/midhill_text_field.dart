@@ -95,6 +95,11 @@ class _MidhillTextFieldState extends State<MidhillTextField> {
               ),
             ),
             hintText: widget.hintText,
+            helperStyle: MidhillStyles.textStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: const Color.fromARGB(26, 89, 89, 89),
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
