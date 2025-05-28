@@ -103,21 +103,22 @@ class _PasswordPageState extends State<PasswordPage> {
                           context.goNamed(MidhillRoutesList.otpPage);
                         } else {
                           showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  backgroundColor: MidhillColors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  content: DialogContent(
-                                    errorHeader: "Sign Up Error",
-                                    errror: value2.createAccountApiResponse!
-                                            .message ??
-                                        "An error occurred while creating your account. Please try again.",
-                                  ),
-                                );
-                              });
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                backgroundColor: MidhillColors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                content: DialogContent(
+                                  errorHeader: "Sign Up Error",
+                                  errror: value2
+                                          .createAccountApiResponse!.message ??
+                                      "An error occurred while creating your account. Please try again.",
+                                ),
+                              );
+                            },
+                          );
                         }
                       }
                     },

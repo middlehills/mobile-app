@@ -33,7 +33,7 @@ class AuthProvider extends ChangeNotifier {
 
   MidhillUser? midhillUser;
 
-  String? otp;
+  String? userOtp;
 
   Future<bool> createAccount({
     required String baseUrl,
@@ -48,12 +48,52 @@ class AuthProvider extends ChangeNotifier {
       midhillUser =
           MidhillUser.fromJson(createAccountApiResponse!.data!['data']);
 
-      otp = createAccountApiResponse!.data!['otp'];
+      userOtp = createAccountApiResponse!.data!['otp'];
+      notifyListeners();
       setCreatingAccountState(false);
       return true; // Return true if the account creation was successful
     } else {
       setCreatingAccountState(false);
       return false; // Return false if the account creation failed
+    }
+  }
+
+  // VERIFY SIGN UP OTP
+  ApiResponse? verifyOtpResponse;
+
+  bool isVerifying = false;
+
+  setVerifyingState(bool value) {
+    isVerifying = value;
+  }
+
+  String? accessToken;
+  String? refreshToken;
+
+  Future<bool> verifyUser({
+    required String baseUrl,
+    required String otp,
+  }) async {
+    setVerifyingState(true);
+
+    verifyOtpResponse = await AuthApiFunctions.verifySignUp(
+      baseUrl: baseUrl,
+      id: midhillUser!.id,
+      otp: userOtp!,
+    );
+
+    if (verifyOtpResponse!.statusCode == 200) {
+      accessToken = verifyOtpResponse!.data!["accessToken"];
+      // AuthService.storeAccessStoken(accessToken!);
+      refreshToken = verifyOtpResponse!.data!["refreshToken"];
+      // AuthService.storeRefreshToken(refreshToken!);
+      notifyListeners();
+
+      setVerifyingState(false);
+      return true;
+    } else {
+      setVerifyingState(false);
+      return false;
     }
   }
 }
