@@ -124,7 +124,8 @@ class _PasswordPageState extends State<PasswordPage> {
                     },
                     isLoading: value2.isCreatingAccount,
                     isEnabled: controllers.every(
-                        (controller) => controller.value.text.isNotEmpty),
+                      (controller) => controller.value.text.isNotEmpty,
+                    ),
                   )
                 ],
               ),

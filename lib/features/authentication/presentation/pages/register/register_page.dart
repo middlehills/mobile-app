@@ -94,6 +94,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: controllers[0],
                       onFieldSubmitted: (p0) => focusNodes[1].requestFocus(),
                       textInputAction: TextInputAction.next,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(r' '),
+                      ],
                       validator: (value) => AuthFunctions.validateName(value),
                     ),
 
@@ -105,6 +108,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: controllers[1],
                       onFieldSubmitted: (p0) => focusNodes[2].requestFocus(),
                       textInputAction: TextInputAction.next,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(r' '),
+                      ],
                       validator: (value) => AuthFunctions.validateName(value),
                     ),
 

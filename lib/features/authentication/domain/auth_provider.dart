@@ -3,6 +3,7 @@ import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'package:mid_hill_cash_flow/features/authentication/data/user_model.dart';
 import 'package:mid_hill_cash_flow/features/authentication/data/user_reg_data.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_api_functions.dart';
+import 'package:mid_hill_cash_flow/features/authentication/domain/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   // This class is used to manage the user registration data
@@ -84,15 +85,50 @@ class AuthProvider extends ChangeNotifier {
 
     if (verifyOtpResponse!.statusCode == 200) {
       accessToken = verifyOtpResponse!.data!["accessToken"];
-      // AuthService.storeAccessStoken(accessToken!);
+      AuthService.storeAccessStoken(accessToken!);
       refreshToken = verifyOtpResponse!.data!["refreshToken"];
-      // AuthService.storeRefreshToken(refreshToken!);
+      AuthService.storeRefreshToken(refreshToken!);
       notifyListeners();
 
       setVerifyingState(false);
       return true;
     } else {
       setVerifyingState(false);
+      return false;
+    }
+  }
+
+  // SIGN IN
+  bool isSigningIn = false;
+  ApiResponse? signInApiResponse;
+
+  void setSigningInState(bool value) {
+    isSigningIn = value;
+    notifyListeners();
+  }
+
+  Future<bool> signIn({
+    required String baseUrl,
+    required String phoneNumber,
+    required String pin,
+  }) async {
+    setSigningInState(true);
+
+    signInApiResponse = await AuthApiFunctions.signIn(
+      baseUrl: baseUrl,
+      phoneNumber: phoneNumber,
+      pin: pin,
+    );
+
+    if (signInApiResponse!.statusCode == 200) {
+      midhillUser = MidhillUser.fromJson(
+        signInApiResponse!.data!['user'],
+      );
+      userOtp = signInApiResponse!.data!['otp'];
+      setSigningInState(false);
+      return true;
+    } else {
+      setSigningInState(false);
       return false;
     }
   }
