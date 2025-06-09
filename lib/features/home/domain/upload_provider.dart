@@ -73,7 +73,12 @@ class UploadProvider extends ChangeNotifier {
         );
       }
       setRecordsToServerSavingState(false);
-      return true;
+
+      if (recordsToServerApiResponse!.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       recordsToServerApiResponse = ApiResponse(
         message: e.runtimeType.toString(),

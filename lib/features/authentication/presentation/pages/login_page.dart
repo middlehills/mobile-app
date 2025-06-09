@@ -100,10 +100,12 @@ class _LoginPageState extends State<LoginPage> {
                               showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return DialogContent(
-                                    errorHeader: "Login error",
-                                    errror: value.loginApiResponse?.message ??
-                                        "Failed to login",
+                                  return AlertDialog(
+                                    content: DialogContent(
+                                      errorHeader: "Login error",
+                                      errror: value.loginApiResponse?.message ??
+                                          "Failed to login",
+                                    ),
                                   );
                                 },
                               );

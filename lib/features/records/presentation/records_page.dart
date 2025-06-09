@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mid_hill_cash_flow/core/widgets/dialog_content_widget.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
-import 'package:mid_hill_cash_flow/features/records/data/records_model.dart';
+import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
+import 'package:mid_hill_cash_flow/features/records/data/transaction_model.dart';
+import 'package:mid_hill_cash_flow/features/records/domain/records_functions.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_provider.dart';
-import 'package:mid_hill_cash_flow/features/records/presentation/blurred_text.dart';
 import 'package:mid_hill_cash_flow/features/records/presentation/transaction_filter_row.dart';
+import 'package:mid_hill_cash_flow/theme/assets.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
-import 'package:mid_hill_cash_flow/theme/midhill_styles.dart';
+import 'package:mid_hill_cash_flow/utils/api_url_provider.dart';
 import 'package:provider/provider.dart';
 
 class RecordsPage extends StatefulWidget {
@@ -20,6 +23,36 @@ class RecordsPage extends StatefulWidget {
 
 class _RecordsPageState extends State<RecordsPage> {
   @override
+  void initState() {
+    super.initState();
+    final recordsProvider =
+        Provider.of<RecordsProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        bool result = await recordsProvider.fetchRecordsFromServer(
+          baseUrl: Provider.of<ApiUrlProvider>(context, listen: false).apiUrl!,
+          businessID:
+              Provider.of<AuthProvider>(context, listen: false).midhillUser!.id,
+        );
+        if (!result && mounted) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: DialogContent(
+                  errorHeader: "Records Fetching Error",
+                  errror: recordsProvider.recordsApiResponse!.message ??
+                      "An error occured",
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return midhillAnnotatedRegion(
       barColor: MidhillColors.primaryColor,
@@ -27,10 +60,10 @@ class _RecordsPageState extends State<RecordsPage> {
         appBar: midhillAppBar(context),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Consumer<RecordsProvider>(
-            builder:
-                (BuildContext context, RecordsProvider value, Widget? child) =>
-                    Column(
+          child: Consumer2<RecordsProvider, ApiUrlProvider>(
+            builder: (BuildContext context, RecordsProvider value,
+                    apiUrlProvider, Widget? child) =>
+                Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 heightSpacing(15),
@@ -63,7 +96,7 @@ class _RecordsPageState extends State<RecordsPage> {
                               value.setShowIncomeState(!value.showIncome);
                             },
                             child: Icon(
-                              value.showIncome
+                              value.showIncome && value.transactions.isNotEmpty
                                   ? Icons.visibility_off_outlined
                                   : Icons.visibility_outlined,
                               size: 16,
@@ -71,19 +104,24 @@ class _RecordsPageState extends State<RecordsPage> {
                           )
                         ],
                       ),
-
                       heightSpacing(10),
-
-                      // amount
-                      BlurredText(
-                        'N 40, 391.00',
-                        blurRadius: value.showIncome ? 0 : 5,
-                        style: MidhillStyles.textStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: MidhillColors.black,
-                        ),
-                      ),
+                      value.showIncome
+                          ? MidhillTexts.text700(
+                              context,
+                              text:
+                                  'N ${RecordsFunctions.formatMoney(value.totalIncome)}',
+                              fontSize: 28,
+                              color: MidhillColors.black,
+                            )
+                          : SizedBox(
+                              height: 20,
+                              child: Image.asset(
+                                MidhillAssets.customImage(
+                                  iconName: 'hidden-code',
+                                ),
+                              ),
+                            ),
+                      if (!value.showIncome) heightSpacing(8),
                     ],
                   ),
                 ),
@@ -97,71 +135,129 @@ class _RecordsPageState extends State<RecordsPage> {
 
                 // transaction List
                 Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      final thisRecord = dummyRecords[index];
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: MidhillColors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            width: 1,
-                            color: const Color(0x09121212),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  MidhillTexts.text400(
-                                    context,
-                                    text: thisRecord.itemName,
-                                    color: const Color(0xff101928),
-                                    fontSize: 14,
-                                  ),
-                                  heightSpacing(10),
-                                  MidhillTexts.text400(
-                                    context,
-                                    text:
-                                        "${thisRecord.quantity} unit(s) | ${DateFormat("hh:mm a").format(thisRecord.updatedAt)}",
-                                    color: const Color(0xCC101928),
-                                    fontSize: 14,
-                                  ),
-                                ],
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ListView.separated(
+                        itemBuilder: (context, index) {
+                          final Transaction thisRecord =
+                              value.transactions[index];
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: MidhillColors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                width: 1,
+                                color: const Color(0x09121212),
                               ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      MidhillTexts.text400(
+                                        context,
+                                        text: thisRecord.itemName,
+                                        color: const Color(0xff101928),
+                                        fontSize: 14,
+                                      ),
+                                      heightSpacing(10),
+                                      MidhillTexts.text400(
+                                        context,
+                                        text:
+                                            "${thisRecord.quantity} unit(s) | ${DateFormat("hh:mm a").format(thisRecord.updatedAt)}",
+                                        color: const Color(0xCC101928),
+                                        fontSize: 14,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    MidhillTexts.text600(
-                                      context,
-                                      text: "N ${thisRecord.amount}",
-                                      color: const Color(0xB1121212),
-                                      fontSize: 18,
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.more_vert_rounded),
-                                    ),
+                                    Row(
+                                      children: [
+                                        MidhillTexts.text600(
+                                          context,
+                                          text: "N ${thisRecord.amount}",
+                                          color: const Color(0xB1121212),
+                                          fontSize: 18,
+                                        ),
+                                        PopupMenuButton(
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              value: 'delete',
+                                              child: MidhillTexts.text700(
+                                                context,
+                                                text: "Delete",
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          ],
+                                          onSelected: (_) async {
+                                            if (!value.isDeletingRecord) {
+                                              bool result =
+                                                  await value.deleteRecord(
+                                                baseUrl: apiUrlProvider.apiUrl!,
+                                                transaction: thisRecord,
+                                                index: index,
+                                              );
+                                              if (!result && context.mounted) {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      content: DialogContent(
+                                                        errorHeader:
+                                                            "Delete record error",
+                                                        errror: value
+                                                                .deleteRecordFromServerApiResponse!
+                                                                .message ??
+                                                            "An error ocurred",
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            }
+                                          },
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                              vertical: 5,
+                                            ),
+                                            child: const Icon(
+                                              Icons.more_vert_rounded,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
-                                )
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return heightSpacing(10);
-                    },
-                    itemCount: dummyRecords.length,
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return heightSpacing(10);
+                        },
+                        itemCount: value.transactions.length,
+                      ),
+
+                      // progress
+                      if (value.isRecordFetching || value.isDeletingRecord)
+                        const CircularProgressIndicator(),
+                    ],
                   ),
                 )
               ],

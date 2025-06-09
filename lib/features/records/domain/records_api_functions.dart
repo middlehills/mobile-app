@@ -3,31 +3,30 @@ import 'dart:io';
 import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_service.dart';
-import 'package:mid_hill_cash_flow/features/home/data/upload_model.dart';
 
-class UploadApiFunctions {
-  UploadApiFunctions._();
+class RecordsApiFunctions {
+  RecordsApiFunctions._();
 
-  static Future<ApiResponse> addSingleRecord({
+  static Future<ApiResponse> fetchTransactions({
     required String baseUrl,
-    required UploadModel uploadData,
+    required String businessID,
   }) async {
-    final url = Uri.parse('${baseUrl}api/transaction/add/');
+    final url = Uri.parse('${baseUrl}api/transaction/get/');
     try {
       final accessToken = await AuthService.getAccessToken();
-      final response = await http.post(
+
+      final response = await http.get(
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
+          'Authorization': 'Bearer $accessToken'
         },
-        body: jsonEncode(uploadData),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         return ApiResponse(
-          message: data['success'] ?? 'Saved transaction successfully',
+          message: data['success'] ?? 'Fetched transactions successfully',
           data: data,
           statusCode: response.statusCode,
           responsePhrase: response.reasonPhrase ?? '',
@@ -35,7 +34,7 @@ class UploadApiFunctions {
       } else {
         final data = jsonDecode(response.body);
         return ApiResponse(
-          message: data['error'] ?? 'Failed to save transaction',
+          message: data['error'] ?? 'Failed to fetch transaction',
           data: jsonDecode(response.body),
           statusCode: response.statusCode,
           responsePhrase: response.reasonPhrase ?? '',
@@ -72,30 +71,26 @@ class UploadApiFunctions {
     }
   }
 
-  static Future<ApiResponse> addMultipleRecords({
+  static Future<ApiResponse> deleteTransaction({
     required String baseUrl,
-    required List<UploadModel> uploadDataList,
+    required String transactionId,
   }) async {
-    final url = Uri.parse('${baseUrl}api/transaction/add/');
-
+    final url = Uri.parse('${baseUrl}api/transaction/delete/$transactionId');
     try {
       final accessToken = await AuthService.getAccessToken();
-      final body = jsonEncode(
-        uploadDataList.map((e) => e.toJson()).toList(),
-      );
-      final response = await http.post(
+
+      final response = await http.delete(
         url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken'
         },
-        body: body,
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         return ApiResponse(
-          message: data['success'] ?? 'Saved transactions successfully',
+          message: data['success'] ?? 'Deleted successfully',
           data: data,
           statusCode: response.statusCode,
           responsePhrase: response.reasonPhrase ?? '',
@@ -103,8 +98,8 @@ class UploadApiFunctions {
       } else {
         final data = jsonDecode(response.body);
         return ApiResponse(
-          message: data['error'] ?? 'Failed to save transactions',
-          data: data,
+          message: data['error'] ?? 'Failed to delete transaction',
+          data: jsonDecode(response.body),
           statusCode: response.statusCode,
           responsePhrase: response.reasonPhrase ?? '',
         );

@@ -163,6 +163,10 @@ class _UploadPageState extends State<UploadPage> {
                         : "Upload ${value.uploads.length + 1} record${(value.uploads.length + 1) == 1 ? "" : "s"}",
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        focusNodes.every((e) {
+                          e.unfocus();
+                          return true;
+                        });
                         value.setAddingNewRecordState(false);
 
                         showModalBottomSheet(
