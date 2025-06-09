@@ -137,6 +137,70 @@ class AuthApiFunctions {
     }
   }
 
+  static Future<ApiResponse> login({
+    required String baseUrl,
+    required String phoneNumber,
+    required String pin,
+  }) async {
+    final url = Uri.parse('${baseUrl}api/user/login');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "phone_number": phoneNumber,
+          "pin": pin,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['success'] ?? 'Login successful',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      } else {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['error'] ?? 'Failed to login',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      }
+    } on SocketException {
+      return ApiResponse(
+        message: 'No Internet connection.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on FormatException {
+      return ApiResponse(
+        message: 'Unable to parse response.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on HttpException {
+      return ApiResponse(
+        message: 'Could not find the server.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } catch (e) {
+      return ApiResponse(
+        message: 'Error occurred: $e',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    }
+  }
+
   static Future<ApiResponse> verifySignUp({
     required String baseUrl,
     required String id,

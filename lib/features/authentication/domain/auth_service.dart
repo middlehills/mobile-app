@@ -5,7 +5,38 @@ class AuthService {
   // static const String loginCheckKey = 'loginCheckKey';
   static const String accessTokenKey = 'accessTokenKey';
   static const String refreshTokenKey = 'refreshTokenKey';
+  static const String phoneNumberKey = 'phoneNumberKey';
+
   static const authStorage = FlutterSecureStorage();
+
+  // store  phone number
+  static Future<bool> storePhoneNumber(String phoneNumber) async {
+    try {
+      await authStorage.write(key: phoneNumberKey, value: phoneNumber);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // get phone number
+  static Future<String?> getPhoneNumber() async {
+    try {
+      String? thisPhone = await authStorage.read(key: phoneNumberKey);
+      return thisPhone;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<bool> clearPhoneNumber() async {
+    try {
+      await authStorage.delete(key: phoneNumberKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   // store  access token
   static Future<bool> storeAccessStoken(String accessToken) async {

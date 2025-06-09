@@ -88,6 +88,8 @@ class AuthProvider extends ChangeNotifier {
       AuthService.storeAccessStoken(accessToken!);
       refreshToken = verifyOtpResponse!.data!["refreshToken"];
       AuthService.storeRefreshToken(refreshToken!);
+      final phoneNumber = midhillUser!.phoneNumber;
+      AuthService.storePhoneNumber(phoneNumber);
       notifyListeners();
 
       setVerifyingState(false);
@@ -129,6 +131,58 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } else {
       setSigningInState(false);
+      return false;
+    }
+  }
+
+  // LOGIN
+  bool isLoggingIn = false;
+  ApiResponse? loginApiResponse;
+
+  void setLoggingInState(bool value) {
+    isLoggingIn = value;
+    notifyListeners();
+  }
+
+  Future<bool> login({
+    required String baseUrl,
+    required String pin,
+  }) async {
+    setLoggingInState(true);
+
+    final phoneNumber = await AuthService.getPhoneNumber();
+
+    if (phoneNumber == null) {
+      loginApiResponse = ApiResponse(
+        message: "Sign In again",
+        data: {"error": "No phone number attached"},
+        statusCode: 0,
+        responsePhrase: "No phone number attached",
+      );
+      notifyListeners();
+      setLoggingInState(false);
+      return false;
+    }
+
+    loginApiResponse = await AuthApiFunctions.login(
+      baseUrl: baseUrl,
+      phoneNumber: phoneNumber,
+      pin: pin,
+    );
+
+    if (loginApiResponse!.statusCode == 200) {
+      midhillUser = MidhillUser.fromJson(
+        loginApiResponse!.data!['user'],
+      );
+      accessToken = loginApiResponse!.data!["accessToken"];
+      AuthService.storeAccessStoken(accessToken!);
+      refreshToken = loginApiResponse!.data!["refreshToken"];
+      AuthService.storeRefreshToken(refreshToken!);
+      notifyListeners();
+      setLoggingInState(false);
+      return true;
+    } else {
+      setLoggingInState(false);
       return false;
     }
   }
