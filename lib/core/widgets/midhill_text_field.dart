@@ -95,6 +95,11 @@ class _MidhillTextFieldState extends State<MidhillTextField> {
               ),
             ),
             hintText: widget.hintText,
+            hintStyle: MidhillStyles.textStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xff6C7A93),
+            ),
             helperStyle: MidhillStyles.textStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,

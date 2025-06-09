@@ -32,6 +32,6 @@ class UploadModel {
         "item_name": itemName,
         "quantity": quantity,
         "amount": amount,
-        "createdAt": createdAt,
+        // "createdAt": createdAt,
       };
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'package:mid_hill_cash_flow/features/home/data/upload_model.dart';
+import 'package:mid_hill_cash_flow/features/home/domain/upload_api_functions.dart';
 
 class UploadProvider extends ChangeNotifier {
   List<UploadModel> uploads = [];
@@ -44,5 +46,43 @@ class UploadProvider extends ChangeNotifier {
   setAddingNewRecordState(bool value) {
     isAddingNewRecord = value;
     notifyListeners();
+  }
+
+  bool isSavingRecordsToServer = false;
+
+  setRecordsToServerSavingState(bool value) {
+    isSavingRecordsToServer = value;
+    notifyListeners();
+  }
+
+  ApiResponse? recordsToServerApiResponse;
+
+  Future<bool> saveRecordsToServer({required String baseUrl}) async {
+    setRecordsToServerSavingState(true);
+    try {
+      if (uploads.length == 1) {
+        recordsToServerApiResponse = await UploadApiFunctions.addSingleRecord(
+          baseUrl: baseUrl,
+          uploadData: uploads.first,
+        );
+      } else {
+        recordsToServerApiResponse =
+            await UploadApiFunctions.addMultipleRecords(
+          baseUrl: baseUrl,
+          uploadDataList: uploads,
+        );
+      }
+      setRecordsToServerSavingState(false);
+      return true;
+    } catch (e) {
+      recordsToServerApiResponse = ApiResponse(
+        message: e.runtimeType.toString(),
+        data: {"error": e.toString()},
+        statusCode: 0,
+        responsePhrase: "An error occured",
+      );
+      setRecordsToServerSavingState(false);
+      return false;
+    }
   }
 }

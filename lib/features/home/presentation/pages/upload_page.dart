@@ -6,10 +6,12 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/validation_functions.dart';
 import 'package:mid_hill_cash_flow/features/home/presentation/components/record_review_modal_sheet.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
+import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 import 'package:provider/provider.dart';
 
 class UploadPage extends StatefulWidget {
@@ -53,8 +55,13 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UploadProvider>(
-      builder: (BuildContext context, UploadProvider value, Widget? child) =>
+    return Consumer2<AuthProvider, UploadProvider>(
+      builder: (
+        BuildContext context,
+        AuthProvider authProvider,
+        UploadProvider value,
+        Widget? child,
+      ) =>
           Scaffold(
         appBar: midhillAppBar(context),
         body: Padding(
@@ -73,7 +80,8 @@ class _UploadPageState extends State<UploadPage> {
                         children: [
                           MidhillTexts.text600(
                             context,
-                            text: "Iyabo Adeola,",
+                            text:
+                                "${authProvider.midhillUser?.firstName} ${authProvider.midhillUser?.lastName},",
                           ),
                           heightSpacing(5),
                           MidhillTexts.text400(
@@ -106,7 +114,7 @@ class _UploadPageState extends State<UploadPage> {
                     isObscure: false,
                     focusNode: focusNodes[0],
                     controller: controllers[0],
-                    hintText: "e.g Golden Morn",
+                    hintText: "e.g Bag of rice",
                     validator: ValidationFunctions.validateItemName,
                     onFieldSubmitted: (p0) {
                       FocusScope.of(context).requestFocus(focusNodes[1]);
@@ -152,7 +160,7 @@ class _UploadPageState extends State<UploadPage> {
                     context,
                     text: value.uploads.isEmpty
                         ? "Upload"
-                        : "Upload ${value.uploads.length + 1} records",
+                        : "Upload ${value.uploads.length + 1} record${(value.uploads.length + 1) == 1 ? "" : "s"}",
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         value.setAddingNewRecordState(false);
@@ -187,6 +195,59 @@ class _UploadPageState extends State<UploadPage> {
                       }
                     },
                   ),
+
+                  heightSpacing(10),
+
+                  if (value.uploads.isNotEmpty)
+                    InkWell(
+                      onTap: () {
+                        value.setAddingNewRecordState(false);
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          barrierLabel: "Tap here to go back",
+                          builder: (context) {
+                            return PopScope(
+                              canPop: true,
+                              onPopInvokedWithResult: (didPop, result) {
+                                if (!value.isAddingNewRecord) {
+                                  value
+                                      .clearRecords(); // clear records if user pops screen.
+                                } else {
+                                  for (var controller in controllers) {
+                                    controller.clear();
+                                  }
+
+                                  focusNodes[0].requestFocus();
+                                }
+                              },
+                              child: const RecordReviewModalSheet(
+                                itemName: null,
+                                quantity: null,
+                                amount: null,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: MidhillColors.primaryColor,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        alignment: Alignment.center,
+                        child: MidhillTexts.text600(
+                          context,
+                          text:
+                              "Upload ${value.uploads.length} existing record${value.uploads.length == 1 ? "" : "s"}",
+                          fontSize: 16,
+                          color: MidhillColors.primaryColor,
+                        ),
+                        height: 50,
+                      ),
+                    ),
 
                   heightSpacing(20),
                 ],
