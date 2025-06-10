@@ -5,6 +5,7 @@ import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.
 import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
 import 'package:mid_hill_cash_flow/features/nav_bar/nav_bar_provider.dart';
 import 'package:mid_hill_cash_flow/features/onboarding/domain/onboarding_provider.dart';
+import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_provider.dart';
 import 'package:mid_hill_cash_flow/main/midhill_app.dart';
 import 'package:mid_hill_cash_flow/utils/api_url_provider.dart';
@@ -57,6 +58,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => RecordsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ProfileProvider(),
         ),
       ],
       child: MidhillApp(config: config),

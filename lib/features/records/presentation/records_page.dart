@@ -141,7 +141,7 @@ class _RecordsPageState extends State<RecordsPage> {
                       ListView.separated(
                         itemBuilder: (context, index) {
                           final Transaction thisRecord =
-                              value.transactions[index];
+                              value.filteredTransaction[index];
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 8),
@@ -171,7 +171,7 @@ class _RecordsPageState extends State<RecordsPage> {
                                       MidhillTexts.text400(
                                         context,
                                         text:
-                                            "${thisRecord.quantity} unit(s) | ${DateFormat("hh:mm a").format(thisRecord.updatedAt)}",
+                                            "${thisRecord.quantity} unit(s) | ${DateFormat("hh:mm a").format(thisRecord.updatedAt)} • ${DateFormat("d MMMM").format(thisRecord.updatedAt)} ",
                                         color: const Color(0xCC101928),
                                         fontSize: 14,
                                       ),
@@ -251,7 +251,7 @@ class _RecordsPageState extends State<RecordsPage> {
                         separatorBuilder: (context, index) {
                           return heightSpacing(10);
                         },
-                        itemCount: value.transactions.length,
+                        itemCount: value.filteredTransaction.length,
                       ),
 
                       // progress

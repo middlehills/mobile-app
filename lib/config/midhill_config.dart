@@ -11,7 +11,7 @@ class MidhillConfig {
   factory MidhillConfig.development() {
     return MidhillConfig(
       appTitle: "Mid'hill CashFlow - Dev",
-      apiBaseUrl: "https://midhills-backend.onrender.com/",
+      apiBaseUrl: "https://middlehill-backend.onrender.com/",
     );
   }
 

@@ -18,8 +18,40 @@ class RecordsProvider extends ChangeNotifier {
 
   setFilterRange(FilterRange value) {
     filterRange = value;
+    switch (filterRange) {
+      case FilterRange.all:
+        filteredTransaction = transactions;
+        break;
+      case FilterRange.today:
+        filteredTransaction = transactions.where((transaction) {
+          final now = DateTime.now();
+          return transaction.createdAt.year == now.year &&
+              transaction.createdAt.month == now.month &&
+              transaction.createdAt.day == now.day;
+        }).toList();
+      case FilterRange.thisMonth:
+        filteredTransaction = transactions.where((transaction) {
+          final now = DateTime.now();
+          return transaction.createdAt.year == now.year &&
+              transaction.createdAt.month == now.month;
+        }).toList();
+      case FilterRange.thisWeek:
+        filteredTransaction = transactions.where((transaction) {
+          final now = DateTime.now();
+          final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+          final endOfWeek = startOfWeek.add(const Duration(days: 6));
+          return transaction.createdAt
+                  .isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
+              transaction.createdAt
+                  .isBefore(endOfWeek.add(const Duration(days: 1)));
+        }).toList();
+      default:
+        filteredTransaction = transactions;
+    }
     notifyListeners();
   }
+
+  List<Transaction> filteredTransaction = [];
 
   bool isRecordFetching = false;
 
@@ -52,6 +84,8 @@ class RecordsProvider extends ChangeNotifier {
           transactions.add(Transaction.fromJson(element));
           totalIncome += element['amount'] as int;
         }
+        setFilterRange(filterRange);
+        transactions.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         notifyListeners();
         return true;
       } else {
@@ -88,7 +122,8 @@ class RecordsProvider extends ChangeNotifier {
   }) async {
     setDeletingRecordState(true);
     try {
-      transactions.removeAt(index);
+      filteredTransaction.removeAt(index);
+      transactions.removeWhere((trans) => trans.id == transaction.id);
       temporaryTransaction = transaction;
       notifyListeners();
 
