@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'package:mid_hill_cash_flow/features/authentication/data/user_model.dart';
@@ -187,6 +190,61 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  Timer? otpExpiryTimer;
+  int remainingSeconds = 300;
+
+  void setTimer() {
+    remainingSeconds = 300;
+    notifyListeners();
+    const oneSecond = Duration(seconds: 1);
+
+    otpExpiryTimer = Timer.periodic(
+      oneSecond,
+      (Timer timer) {
+        if (remainingSeconds == 0) {
+          cancelTimer();
+        } else {
+          remainingSeconds--;
+          notifyListeners();
+        }
+      },
+    );
+    notifyListeners();
+  }
+
+  void cancelTimer() {
+    otpExpiryTimer?.cancel();
+    // otpExpiryTimer = null;
+    notifyListeners();
+    log('cancelled');
+  }
+
+  bool isResendingOtp = false;
+
+  setResendOtpState(bool value) {
+    isResendingOtp = value;
+    notifyListeners();
+  }
+
+  ApiResponse? resendOtpApiResponse;
+
+  Future<bool> resendOtp({required String baseUrl}) async {
+    setResendOtpState(true);
+
+    resendOtpApiResponse =
+        await AuthApiFunctions.resendOtp(baseUrl: baseUrl, id: midhillUser!.id);
+    log(resendOtpApiResponse!.data.toString());
+
+    setResendOtpState(false);
+    if (resendOtpApiResponse!.statusCode == 200) {
+      userOtp = resendOtpApiResponse!.data!['otp'];
+      notifyListeners();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void reset() {
     userRegData = null;
     createAccountApiResponse = null;
@@ -201,6 +259,8 @@ class AuthProvider extends ChangeNotifier {
     signInApiResponse = null;
     isLoggingIn = false;
     loginApiResponse = null;
+    otpExpiryTimer = null;
+    remainingSeconds = 300;
     notifyListeners();
   }
 }

@@ -189,6 +189,7 @@ Widget buildOtpField(
   required int index,
   required List<TextEditingController> controllers,
   required List<FocusNode> focusNodes,
+  bool enabled = true,
 }) {
   return Container(
     decoration: BoxDecoration(
@@ -210,6 +211,7 @@ Widget buildOtpField(
       focusNode: focusNodes[index],
       keyboardType: TextInputType.number,
       textAlign: TextAlign.center,
+      enabled: enabled,
       maxLength: 1,
       obscuringCharacter: "●",
       obscureText: true,

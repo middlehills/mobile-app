@@ -48,4 +48,15 @@ class AuthFunctions {
       return null;
     }
   }
+
+  static String secondsToDigitalTime(int seconds) {
+    // Calculate minutes and remaining seconds
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
+
+    // Format the result as "m:ss"
+    String formattedSeconds = remainingSeconds.toString().padLeft(2, '0');
+
+    return "$minutes:$formattedSeconds";
+  }
 }

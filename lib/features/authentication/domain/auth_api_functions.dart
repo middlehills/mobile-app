@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -229,6 +231,66 @@ class AuthApiFunctions {
         final data = jsonDecode(response.body);
         return ApiResponse(
           message: data['error'] ?? 'Failed to verify sign up',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      }
+    } on SocketException {
+      return ApiResponse(
+        message: 'No Internet connection.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on FormatException {
+      return ApiResponse(
+        message: 'Unable to parse response.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on HttpException {
+      return ApiResponse(
+        message: 'Could not find the server.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } catch (e) {
+      return ApiResponse(
+        message: 'Error occurred: $e',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    }
+  }
+
+  static Future<ApiResponse> resendOtp({
+    required String baseUrl,
+    required String id,
+  }) async {
+    final url = Uri.parse('${baseUrl}api/otp/resend/$id');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+      log(response.body);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['success'] ?? 'OTP resent successfully',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      } else {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['error'] ?? 'Failed to resend OTP',
           data: data,
           statusCode: response.statusCode,
           responsePhrase: response.reasonPhrase ?? '',

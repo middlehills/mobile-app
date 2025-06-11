@@ -117,6 +117,26 @@ class _LoginPageState extends State<LoginPage> {
                         isLoading: value.isLoggingIn,
                       ),
                     ),
+                  ),
+                  heightSpacing(15),
+                  InkWell(
+                    onTap: () {
+                      context.goNamed(MidhillRoutesList.onboardingPage);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 8,
+                        bottom: 8,
+                        right: 8,
+                      ),
+                      child: MidhillTexts.text400(
+                        context,
+                        text: "Sign into another account",
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                        color: MidhillColors.primaryColor,
+                      ),
+                    ),
                   )
                 ],
               ),

@@ -7,6 +7,7 @@ import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/lo
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register/otp_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register/password_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/register/register_page.dart';
+import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/sign_in/sign_in_otp_page.dart';
 import 'package:mid_hill_cash_flow/features/authentication/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:mid_hill_cash_flow/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
@@ -76,7 +77,7 @@ List<GoRoute> authRoutes = [
             name: MidhillRoutesList.signInOtpPage,
             pageBuilder: (context, state) {
               return CustomTransitionPage(
-                child: const OtpPage(),
+                child: const SignInOtpPage(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(

@@ -23,6 +23,7 @@ class MidhillTexts {
     TextAlign textAlign = TextAlign.start,
     Color color = MidhillColors.black,
     double fontSize = 14,
+    TextDecoration? decoration,
   }) {
     return Text(
       text,
@@ -31,6 +32,7 @@ class MidhillTexts {
         color: color,
         fontSize: fontSize,
         fontWeight: FontWeight.w400,
+        textDecoration: decoration,
       ),
       textScaler: TextScaler.linear(ScaleSize.textScaleFactor(context)),
     );

@@ -170,10 +170,6 @@ class _SignInPageState extends State<SignInPage> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    backgroundColor: MidhillColors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
                                     content: DialogContent(
                                       errorHeader: "Sign In Error",
                                       errror: value2
