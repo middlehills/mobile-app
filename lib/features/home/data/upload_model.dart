@@ -1,18 +1,19 @@
-// To parse this JSON data, do
-//
-//     final uploadModel = uploadModelFromJson(jsonString);
+import 'package:hive/hive.dart';
 
-import 'dart:convert';
+part 'upload_model.g.dart';
 
-UploadModel uploadModelFromJson(String str) =>
-    UploadModel.fromJson(json.decode(str));
-
-String uploadModelToJson(UploadModel data) => json.encode(data.toJson());
-
-class UploadModel {
+@HiveType(typeId: 1)
+class UploadModel extends HiveObject {
+  @HiveField(0)
   String itemName;
+
+  @HiveField(1)
   String quantity;
+
+  @HiveField(2)
   int amount;
+
+  @HiveField(3)
   DateTime createdAt;
 
   UploadModel({
@@ -23,15 +24,17 @@ class UploadModel {
   });
 
   factory UploadModel.fromJson(Map<String, dynamic> json) => UploadModel(
-      itemName: json["item_name"],
-      quantity: json["quantity"],
-      amount: json["amount"],
-      createdAt: json["createdAt"]);
+        itemName: json["item_name"],
+        quantity: json["quantity"],
+        amount: json["amount"],
+        // parse ISO8601 string:
+        createdAt: DateTime.parse(json["createdAt"]),
+      );
 
   Map<String, dynamic> toJson() => {
         "item_name": itemName,
         "quantity": quantity,
         "amount": amount,
-        // "createdAt": createdAt,
+        // "createdAt": createdAt.toIso8601String(),
       };
 }

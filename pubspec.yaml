@@ -2,7 +2,7 @@ name: mid_hill_cash_flow
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -31,7 +31,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -43,8 +42,13 @@ dependencies:
   intl: ^0.20.2
   http: ^1.4.0
   flutter_secure_storage: ^9.2.4
+  hive: ^2.0.0
+  hive_flutter: ^1.1.0
+  connectivity_plus: ^3.0.3
 
 dev_dependencies:
+  hive_generator: ^1.1.0
+  build_runner: ^2.1.0
   flutter_test:
     sdk: flutter
 
@@ -68,6 +72,6 @@ flutter:
   uses-material-design: true
 
 flutter_icons:
-  android: "launcher_icon"  # this sets the icon for Android
-  ios: true                 # this enables icon generation for iOS
+  android: "launcher_icon" # this sets the icon for Android
+  ios: true # this enables icon generation for iOS
   image_path: "assets/logos/launcher_icon.png"

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:mid_hill_cash_flow/config/midhill_config.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
+import 'package:mid_hill_cash_flow/features/home/data/upload_model.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
 import 'package:mid_hill_cash_flow/features/nav_bar/nav_bar_provider.dart';
 import 'package:mid_hill_cash_flow/features/onboarding/domain/onboarding_provider.dart';
@@ -18,6 +21,10 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(UploadModelAdapter());
+  await Hive.openBox<UploadModel>('uploadsBox');
 
   // Read the environment variable passed via --dart-define.
   const String env = String.fromEnvironment('ENV', defaultValue: 'dev');
