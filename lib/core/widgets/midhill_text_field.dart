@@ -26,6 +26,7 @@ class MidhillTextField extends StatefulWidget {
     this.textInputType,
     this.prefixString,
     this.textAlignVertical,
+    this.onchanged,
   });
 
   final String label;
@@ -45,6 +46,7 @@ class MidhillTextField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? textInputType;
   final TextAlignVertical? textAlignVertical;
+  final void Function(String)? onchanged;
 
   @override
   State<MidhillTextField> createState() => _MidhillTextFieldState();
@@ -68,6 +70,7 @@ class _MidhillTextFieldState extends State<MidhillTextField> {
         ),
         heightSpacing(5),
         TextFormField(
+          onChanged: widget.onchanged,
           textAlignVertical: widget.textAlignVertical ?? TextAlignVertical.top,
           enabled: widget.isEnabled,
           keyboardType: widget.textInputType,
