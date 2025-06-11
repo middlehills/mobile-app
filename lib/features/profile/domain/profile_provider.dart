@@ -143,4 +143,43 @@ class ProfileProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  bool isDeletingAccount = false;
+
+  setDeleteAccountLoadingState(bool value) {
+    isDeletingAccount = value;
+    notifyListeners();
+  }
+
+  ApiResponse? deleteAccountApiResponse;
+
+  Future<bool> deleteAccount({
+    required String baseUrl,
+  }) async {
+    setDeleteAccountLoadingState(true);
+    deleteAccountApiResponse =
+        await ProfileApiFunctions.deleteAccount(baseUrl: baseUrl);
+
+    setDeleteAccountLoadingState(false);
+    if (deleteAccountApiResponse!.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void reset() {
+    isProfileUpdating = false;
+    updateProfileApiResponse = null;
+    updateRequestBody = null;
+    isProfileUpdateVerifying = false;
+    verifyUpdateProfileApiResponse = null;
+    currentPin = null;
+    newPin = null;
+    changePinApiResponse = null;
+    isChangingPassword = false;
+    isDeletingAccount = false;
+    deleteAccountApiResponse = null;
+    notifyListeners();
+  }
 }

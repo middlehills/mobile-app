@@ -186,4 +186,21 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  void reset() {
+    userRegData = null;
+    createAccountApiResponse = null;
+    isCreatingAccount = false;
+    midhillUser = null;
+    userOtp = null;
+    verifyOtpResponse = null;
+    isVerifying = false;
+    accessToken = null;
+    refreshToken = null;
+    isSigningIn = false;
+    signInApiResponse = null;
+    isLoggingIn = false;
+    loginApiResponse = null;
+    notifyListeners();
+  }
 }

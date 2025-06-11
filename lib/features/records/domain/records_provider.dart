@@ -156,4 +156,18 @@ class RecordsProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  void reset() {
+    showIncome = false;
+    filterRange = FilterRange.all;
+    filteredTransaction = [];
+    isRecordFetching = false;
+    recordsApiResponse = null;
+    transactions = [];
+    totalIncome = 0;
+    isDeletingRecord = false;
+    temporaryTransaction = null;
+    deleteRecordFromServerApiResponse = null;
+    notifyListeners();
+  }
 }

@@ -3,6 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
+import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
+import 'package:mid_hill_cash_flow/features/nav_bar/nav_bar_provider.dart';
+import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
+import 'package:mid_hill_cash_flow/features/records/domain/records_provider.dart';
+import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
+import 'package:provider/provider.dart';
 
 class LogoutDialog extends StatelessWidget {
   const LogoutDialog({
@@ -33,7 +40,14 @@ class LogoutDialog extends StatelessWidget {
           ),
           midhillButton(
             context,
-            onPressed: () {},
+            onPressed: () {
+              Provider.of<AuthProvider>(context, listen: false).reset();
+              Provider.of<NavBarProvider>(context, listen: false).reset();
+              Provider.of<UploadProvider>(context, listen: false).reset();
+              Provider.of<RecordsProvider>(context, listen: false).reset();
+              Provider.of<ProfileProvider>(context, listen: false).reset();
+              context.goNamed(MidhillRoutesList.loginPage);
+            },
             text: "Logout",
           ),
           heightSpacing(

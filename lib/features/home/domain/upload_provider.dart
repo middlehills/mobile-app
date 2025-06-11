@@ -90,4 +90,12 @@ class UploadProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  void reset() {
+    uploads.clear();
+    isAddingNewRecord = false;
+    isSavingRecordsToServer = false;
+    recordsToServerApiResponse = null;
+    notifyListeners();
+  }
 }

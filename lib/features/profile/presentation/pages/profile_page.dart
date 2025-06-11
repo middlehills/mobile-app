@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
 import 'package:mid_hill_cash_flow/features/profile/presentation/components/delete_account_dialog.dart';
 import 'package:mid_hill_cash_flow/features/profile/presentation/components/logout_dialog.dart';
 import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -95,7 +97,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                content: const DeleteAccountDialog(),
+                                content: PopScope(
+                                  canPop: !Provider.of<ProfileProvider>(context,
+                                          listen: false)
+                                      .isDeletingAccount,
+                                  child: const DeleteAccountDialog(),
+                                ),
                               );
                             },
                           );
