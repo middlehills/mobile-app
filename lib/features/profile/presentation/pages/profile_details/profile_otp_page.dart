@@ -7,7 +7,6 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
-import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
 import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
 import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
@@ -36,9 +35,9 @@ class _ProfileOtpPageState extends State<ProfileOtpPage> {
   Widget build(BuildContext context) {
     return midhillAnnotatedRegion(
       barColor: MidhillColors.primaryColor,
-      child: Consumer3<ProfileProvider, AuthProvider, ApiUrlProvider>(
+      child: Consumer2<ProfileProvider, ApiUrlProvider>(
         builder: (BuildContext context, ProfileProvider value,
-                AuthProvider value2, ApiUrlProvider value3, Widget? child) =>
+                ApiUrlProvider value3, Widget? child) =>
             Scaffold(
           appBar: midhillAppBar(context),
           backgroundColor: MidhillColors.white,
@@ -114,7 +113,6 @@ class _ProfileOtpPageState extends State<ProfileOtpPage> {
                           bool result = await value.verifyUpdateProfileDetails(
                             baseUrl: value3.apiUrl!,
                             otpCode: pin,
-                            userId: value2.midhillUser!.id,
                           );
                           if (context.mounted) {
                             if (result) {

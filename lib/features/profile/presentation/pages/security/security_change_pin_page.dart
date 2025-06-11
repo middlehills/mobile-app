@@ -143,7 +143,6 @@ class _SecurityChangePinPageState extends State<SecurityChangePinPage> {
                                 case 2:
                                   bool result = await value.changeUserPin(
                                     baseUrl: value3.apiUrl!,
-                                    hashedPin: value2.midhillUser?.pin ?? "",
                                     confrimationPin: pin,
                                   );
                                   if (context.mounted) {

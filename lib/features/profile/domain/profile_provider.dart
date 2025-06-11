@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mid_hill_cash_flow/core/data/api_response.dart';
+import 'package:mid_hill_cash_flow/features/authentication/data/user_model.dart';
 import 'package:mid_hill_cash_flow/features/profile/domain/profile_api_functions.dart';
 
 class ProfileProvider extends ChangeNotifier {
@@ -30,14 +31,14 @@ class ProfileProvider extends ChangeNotifier {
   Future<bool> updateProfileDetails({
     required String baseUrl,
     required String pin,
-    required String hashedPin,
+    // required String hashedPin,
   }) async {
     setProfileUpdateState(true);
 
     updateProfileApiResponse = await ProfileApiFunctions.updateUserDetails(
       baseUrl: baseUrl,
       pin: pin,
-      hashedPin: hashedPin,
+      hashedPin: midhillUser!.pin,
     );
 
     setProfileUpdateState(false);
@@ -61,7 +62,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<bool> verifyUpdateProfileDetails({
     required String baseUrl,
     required String otpCode,
-    required String userId,
+    // required String userId,
   }) async {
     setProfileUpdateVerifyState(true);
 
@@ -70,7 +71,7 @@ class ProfileProvider extends ChangeNotifier {
       baseUrl: baseUrl,
       otpCode: otpCode,
       body: updateRequestBody!,
-      userId: userId,
+      userId: midhillUser!.id,
     );
 
     setProfileUpdateVerifyState(false);
@@ -120,7 +121,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<bool> changeUserPin({
     required String baseUrl,
-    required String hashedPin,
+    // required String hashedPin,
     required String confrimationPin,
   }) async {
     setChangePasswordLoadingState(true);
@@ -131,7 +132,7 @@ class ProfileProvider extends ChangeNotifier {
     changePinApiResponse = await ProfileApiFunctions.changePin(
       baseUrl: baseUrl,
       curPin: currentPin!,
-      hashedPin: hashedPin,
+      hashedPin: midhillUser!.pin,
       newPin: newPin!,
     );
 
@@ -168,6 +169,48 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  bool isFetchingUser = false;
+
+  setFetchingState(bool value) {
+    isFetchingUser = value;
+    notifyListeners();
+  }
+
+  ApiResponse? fetchingUserApiResponse;
+  MidhillUser? midhillUser;
+
+  Future<bool> fetchUser({
+    required baseUrl,
+  }) async {
+    setFetchingState(true);
+
+    fetchingUserApiResponse =
+        await ProfileApiFunctions.getUserDetails(baseUrl: baseUrl);
+
+    setFetchingState(false);
+
+    if (fetchingUserApiResponse!.statusCode == 200) {
+      try {
+        midhillUser = MidhillUser.fromJson(
+          fetchingUserApiResponse!.data!["user"],
+        );
+        notifyListeners();
+      } catch (e) {
+        fetchingUserApiResponse = ApiResponse(
+          message: e.toString(),
+          data: {},
+          statusCode: null,
+          responsePhrase: "",
+        );
+        notifyListeners();
+        return false;
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void reset() {
     isProfileUpdating = false;
     updateProfileApiResponse = null;
@@ -180,6 +223,8 @@ class ProfileProvider extends ChangeNotifier {
     isChangingPassword = false;
     isDeletingAccount = false;
     deleteAccountApiResponse = null;
+    isFetchingUser = false;
+    fetchingUserApiResponse = null;
     notifyListeners();
   }
 }

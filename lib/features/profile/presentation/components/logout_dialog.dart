@@ -46,6 +46,7 @@ class LogoutDialog extends StatelessWidget {
               Provider.of<UploadProvider>(context, listen: false).reset();
               Provider.of<RecordsProvider>(context, listen: false).reset();
               Provider.of<ProfileProvider>(context, listen: false).reset();
+              context.pop();
               context.goNamed(MidhillRoutesList.loginPage);
             },
             text: "Logout",
