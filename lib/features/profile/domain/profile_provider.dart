@@ -81,4 +81,66 @@ class ProfileProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  String? currentPin;
+  String? newPin;
+
+  setCurrentPin(String value) {
+    currentPin = value;
+    notifyListeners();
+  }
+
+  setNewPin(String value) {
+    newPin = value;
+    notifyListeners();
+  }
+
+  ApiResponse? changePinApiResponse;
+
+  bool confirmNewPin(String value) {
+    if (value == newPin) {
+      return true;
+    } else {
+      changePinApiResponse = ApiResponse(
+        message: "Confirmation PIN doesn't match",
+        data: {},
+        statusCode: null,
+        responsePhrase: "Confirmation PIN doesn't match",
+      );
+      notifyListeners();
+      return false;
+    }
+  }
+
+  bool isChangingPassword = false;
+  setChangePasswordLoadingState(bool value) {
+    isChangingPassword = value;
+    notifyListeners();
+  }
+
+  Future<bool> changeUserPin({
+    required String baseUrl,
+    required String hashedPin,
+    required String confrimationPin,
+  }) async {
+    setChangePasswordLoadingState(true);
+    if (!confirmNewPin(confrimationPin)) {
+      return false;
+    }
+
+    changePinApiResponse = await ProfileApiFunctions.changePin(
+      baseUrl: baseUrl,
+      curPin: currentPin!,
+      hashedPin: hashedPin,
+      newPin: newPin!,
+    );
+
+    setChangePasswordLoadingState(false);
+
+    if (changePinApiResponse!.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
