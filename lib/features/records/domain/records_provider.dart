@@ -67,13 +67,11 @@ class RecordsProvider extends ChangeNotifier {
 
   Future<bool> fetchRecordsFromServer({
     required String baseUrl,
-    required String businessID,
   }) async {
     setRecordFetchingState(true);
     try {
       recordsApiResponse = await RecordsApiFunctions.fetchTransactions(
         baseUrl: baseUrl,
-        businessID: businessID,
       );
       setRecordFetchingState(false);
       if (recordsApiResponse!.statusCode == 200) {

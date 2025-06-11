@@ -4,7 +4,6 @@ import 'package:mid_hill_cash_flow/core/widgets/dialog_content_widget.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
-import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
 import 'package:mid_hill_cash_flow/features/records/data/transaction_model.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_functions.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_provider.dart';
@@ -31,8 +30,6 @@ class _RecordsPageState extends State<RecordsPage> {
       (_) async {
         bool result = await recordsProvider.fetchRecordsFromServer(
           baseUrl: Provider.of<ApiUrlProvider>(context, listen: false).apiUrl!,
-          businessID:
-              Provider.of<AuthProvider>(context, listen: false).midhillUser!.id,
         );
         if (!result && mounted) {
           showDialog(
@@ -138,120 +135,131 @@ class _RecordsPageState extends State<RecordsPage> {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      ListView.separated(
-                        itemBuilder: (context, index) {
-                          final Transaction thisRecord =
-                              value.filteredTransaction[index];
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: MidhillColors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                width: 1,
-                                color: const Color(0x09121212),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      MidhillTexts.text400(
-                                        context,
-                                        text: thisRecord.itemName,
-                                        color: const Color(0xff101928),
-                                        fontSize: 14,
-                                      ),
-                                      heightSpacing(10),
-                                      MidhillTexts.text400(
-                                        context,
-                                        text:
-                                            "${thisRecord.quantity} unit(s) | ${DateFormat("hh:mm a").format(thisRecord.updatedAt)} • ${DateFormat("d MMMM").format(thisRecord.updatedAt)} ",
-                                        color: const Color(0xCC101928),
-                                        fontSize: 14,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        MidhillTexts.text600(
-                                          context,
-                                          text: "N ${thisRecord.amount}",
-                                          color: const Color(0xB1121212),
-                                          fontSize: 18,
-                                        ),
-                                        PopupMenuButton(
-                                          itemBuilder: (context) => [
-                                            PopupMenuItem(
-                                              value: 'delete',
-                                              child: MidhillTexts.text700(
-                                                context,
-                                                text: "Delete",
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ],
-                                          onSelected: (_) async {
-                                            if (!value.isDeletingRecord) {
-                                              bool result =
-                                                  await value.deleteRecord(
-                                                baseUrl: apiUrlProvider.apiUrl!,
-                                                transaction: thisRecord,
-                                                index: index,
-                                              );
-                                              if (!result && context.mounted) {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      content: DialogContent(
-                                                        errorHeader:
-                                                            "Delete record error",
-                                                        errror: value
-                                                                .deleteRecordFromServerApiResponse!
-                                                                .message ??
-                                                            "An error ocurred",
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            }
-                                          },
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                              vertical: 5,
-                                            ),
-                                            child: const Icon(
-                                              Icons.more_vert_rounded,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
+                      RefreshIndicator(
+                        onRefresh: () async {
+                          await value.fetchRecordsFromServer(
+                            baseUrl: apiUrlProvider.apiUrl!,
                           );
                         },
-                        separatorBuilder: (context, index) {
-                          return heightSpacing(10);
-                        },
-                        itemCount: value.filteredTransaction.length,
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            final Transaction thisRecord =
+                                value.filteredTransaction[index];
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: MidhillColors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  width: 1,
+                                  color: const Color(0x09121212),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        MidhillTexts.text400(
+                                          context,
+                                          text: thisRecord.itemName,
+                                          color: const Color(0xff101928),
+                                          fontSize: 14,
+                                        ),
+                                        heightSpacing(10),
+                                        MidhillTexts.text400(
+                                          context,
+                                          text:
+                                              "${thisRecord.quantity} unit(s) | ${DateFormat("hh:mm a").format(thisRecord.updatedAt)} • ${DateFormat("d MMMM").format(thisRecord.updatedAt)} ",
+                                          color: const Color(0xCC101928),
+                                          fontSize: 14,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          MidhillTexts.text600(
+                                            context,
+                                            text: "N ${thisRecord.amount}",
+                                            color: const Color(0xB1121212),
+                                            fontSize: 18,
+                                          ),
+                                          PopupMenuButton(
+                                            itemBuilder: (context) => [
+                                              PopupMenuItem(
+                                                value: 'delete',
+                                                child: MidhillTexts.text700(
+                                                  context,
+                                                  text: "Delete",
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ],
+                                            onSelected: (_) async {
+                                              if (!value.isDeletingRecord) {
+                                                bool result =
+                                                    await value.deleteRecord(
+                                                  baseUrl:
+                                                      apiUrlProvider.apiUrl!,
+                                                  transaction: thisRecord,
+                                                  index: index,
+                                                );
+                                                if (!result &&
+                                                    context.mounted) {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        content: DialogContent(
+                                                          errorHeader:
+                                                              "Delete record error",
+                                                          errror: value
+                                                                  .deleteRecordFromServerApiResponse!
+                                                                  .message ??
+                                                              "An error ocurred",
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              }
+                                            },
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 10,
+                                                vertical: 5,
+                                              ),
+                                              child: const Icon(
+                                                Icons.more_vert_rounded,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return heightSpacing(10);
+                          },
+                          itemCount: value.filteredTransaction.length,
+                        ),
                       ),
 
                       // progress

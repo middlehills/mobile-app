@@ -9,7 +9,6 @@ class RecordsApiFunctions {
 
   static Future<ApiResponse> fetchTransactions({
     required String baseUrl,
-    required String businessID,
   }) async {
     final url = Uri.parse('${baseUrl}api/transaction/get/');
     try {
