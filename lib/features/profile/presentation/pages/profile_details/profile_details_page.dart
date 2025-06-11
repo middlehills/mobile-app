@@ -8,7 +8,6 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_functions.dart';
-import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
 import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
 import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
@@ -33,7 +32,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
     super.initState();
     controllers = List.generate(3, ((index) => TextEditingController()));
     focusNodes = List.generate(3, ((index) => FocusNode()));
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final authProvider = Provider.of<ProfileProvider>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controllers[0].text = authProvider.midhillUser?.firstName ?? "";
@@ -58,9 +57,9 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
   Widget build(BuildContext context) {
     return midhillAnnotatedRegion(
       barColor: MidhillColors.primaryColor,
-      child: Consumer3<ProfileProvider, AuthProvider, ApiUrlProvider>(
+      child: Consumer2<ProfileProvider, ApiUrlProvider>(
         builder: (BuildContext context, ProfileProvider value,
-                AuthProvider value2, ApiUrlProvider value3, Widget? child) =>
+                ApiUrlProvider value3, Widget? child) =>
             Scaffold(
           appBar: midhillAppBar(context),
           body: Padding(
@@ -138,10 +137,9 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     midhillButton(
                       context,
                       isEnabled: controllers[0].text !=
-                              value2.midhillUser?.firstName ||
-                          controllers[1].text != value2.midhillUser?.lastName ||
-                          controllers[2].text !=
-                              value2.midhillUser?.phoneNumber,
+                              value.midhillUser?.firstName ||
+                          controllers[1].text != value.midhillUser?.lastName ||
+                          controllers[2].text != value.midhillUser?.phoneNumber,
                       onPressed: () {
                         bool? result = _formKey.currentState?.validate();
 

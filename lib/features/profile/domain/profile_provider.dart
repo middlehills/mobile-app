@@ -77,6 +77,7 @@ class ProfileProvider extends ChangeNotifier {
     setProfileUpdateVerifyState(false);
 
     if (verifyUpdateProfileApiResponse!.statusCode == 200) {
+      fetchUser(baseUrl: baseUrl);
       return true;
     } else {
       return false;

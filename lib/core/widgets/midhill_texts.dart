@@ -66,6 +66,7 @@ class MidhillTexts {
     return Text(
       text,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
       textScaler: TextScaler.linear(ScaleSize.textScaleFactor(context)),
       style: MidhillStyles.textStyle(
         textDecoration: textDecoration,

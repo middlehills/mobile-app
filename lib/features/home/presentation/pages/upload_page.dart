@@ -10,6 +10,7 @@ import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.
 import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/validation_functions.dart';
 import 'package:mid_hill_cash_flow/features/home/presentation/components/record_review_modal_sheet.dart';
+import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 import 'package:provider/provider.dart';
@@ -55,10 +56,11 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<AuthProvider, UploadProvider>(
+    return Consumer3<AuthProvider, ProfileProvider, UploadProvider>(
       builder: (
         BuildContext context,
         AuthProvider authProvider,
+        ProfileProvider profileProvider,
         UploadProvider value,
         Widget? child,
       ) =>
@@ -80,8 +82,9 @@ class _UploadPageState extends State<UploadPage> {
                         children: [
                           MidhillTexts.text600(
                             context,
-                            text:
-                                "${authProvider.midhillUser?.firstName} ${authProvider.midhillUser?.lastName},",
+                            text: profileProvider.midhillUser == null
+                                ? "${authProvider.midhillUser?.firstName} ${authProvider.midhillUser?.lastName},"
+                                : "${profileProvider.midhillUser?.firstName} ${profileProvider.midhillUser?.lastName},",
                           ),
                           heightSpacing(5),
                           MidhillTexts.text400(
