@@ -238,6 +238,7 @@ class AuthProvider extends ChangeNotifier {
     setResendOtpState(false);
     if (resendOtpApiResponse!.statusCode == 200) {
       userOtp = resendOtpApiResponse!.data!['otp'];
+      setTimer();
       notifyListeners();
       return true;
     } else {
