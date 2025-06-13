@@ -64,11 +64,12 @@ class MidhillTexts {
     Color color = MidhillColors.black,
     double fontSize = 24,
     TextDecoration textDecoration = TextDecoration.none,
+    TextOverflow overflow = TextOverflow.ellipsis,
   }) {
     return Text(
       text,
       textAlign: textAlign,
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow,
       textScaler: TextScaler.linear(ScaleSize.textScaleFactor(context)),
       style: MidhillStyles.textStyle(
         textDecoration: textDecoration,

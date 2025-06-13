@@ -45,6 +45,7 @@ dependencies:
   hive: ^2.0.0
   hive_flutter: ^1.1.0
   connectivity_plus: ^3.0.3
+  intercom_flutter: ^9.3.3
 
 dev_dependencies:
   hive_generator: ^1.1.0
