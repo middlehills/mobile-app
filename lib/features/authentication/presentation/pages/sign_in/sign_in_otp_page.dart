@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/back_button.dart';
-import 'package:mid_hill_cash_flow/core/widgets/dialog_content_widget.dart';
+import 'package:mid_hill_cash_flow/core/widgets/error_dialog_content_widget.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+import 'package:mid_hill_cash_flow/core/widgets/success_dialog_content.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_functions.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
 import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
@@ -44,8 +45,11 @@ class _SignInOtpPageState extends State<SignInOtpPage> {
       child: PopScope(
         onPopInvokedWithResult: (didPop, result) {
           Provider.of<AuthProvider>(context, listen: false).cancelTimer();
-          Provider.of<AuthProvider>(context, listen: false)
-              .setResendOtpState(false);
+          if (Provider.of<AuthProvider>(context, listen: false)
+              .isResendingOtp) {
+            Provider.of<AuthProvider>(context, listen: false)
+                .setResendOtpState(false);
+          }
         },
         child: Scaffold(
           appBar: midhillAppBar(context),
@@ -108,7 +112,30 @@ class _SignInOtpPageState extends State<SignInOtpPage> {
                             onTap: () async {
                               if (value2.remainingSeconds == 0 &&
                                   value2.otpExpiryTimer?.isActive != true) {
-                                value2.resendOtp(baseUrl: value.apiUrl!);
+                                bool result = await value2.resendOtp(
+                                    baseUrl: value.apiUrl!);
+                                if (context.mounted) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: result
+                                            ? const SuccessDialogContent(
+                                                successHeader: "OTP Sent!",
+                                                successMessage:
+                                                    "An OTP has been sent to your number, enter code to continue!",
+                                              )
+                                            : ErrorDialogContent(
+                                                errorHeader: "Resend OTP Error",
+                                                errror: value2
+                                                        .resendOtpApiResponse
+                                                        ?.message ??
+                                                    "OTP wasn't sent. Try again or contact support.",
+                                              ),
+                                      );
+                                    },
+                                  );
+                                }
                               }
                             },
                             child: Padding(
@@ -161,7 +188,7 @@ class _SignInOtpPageState extends State<SignInOtpPage> {
                                     showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                        content: DialogContent(
+                                        content: ErrorDialogContent(
                                           errorHeader: "Verify Sign In",
                                           errror: value2
                                                   .verifyOtpResponse?.message ??

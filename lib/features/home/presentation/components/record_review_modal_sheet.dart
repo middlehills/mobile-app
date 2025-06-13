@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mid_hill_cash_flow/core/widgets/dialog_content_widget.dart';
+import 'package:mid_hill_cash_flow/core/widgets/error_dialog_content_widget.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
@@ -256,7 +256,7 @@ class _RecordReviewModalSheetState extends State<RecordReviewModalSheet> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            content: DialogContent(
+                            content: ErrorDialogContent(
                               errorHeader:
                                   value.recordsToServerApiResponse!.message!,
                               errror: value

@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+import 'package:mid_hill_cash_flow/theme/assets.dart';
+import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 
-class DialogContent extends StatelessWidget {
-  const DialogContent({
+class SuccessDialogContent extends StatelessWidget {
+  const SuccessDialogContent({
     super.key,
-    required this.errorHeader,
-    required this.errror,
+    required this.successHeader,
+    required this.successMessage,
   });
 
-  final String errorHeader;
-  final String errror;
+  final String successHeader;
+  final String successMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +21,25 @@ class DialogContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.error_outline,
-            color: Colors.red,
-            size: 24,
+          // const Icon(
+          //   Icons.succ,
+          //   color: Colors.red,
+          //   size: 24,
+          // ),
+          Image.asset(
+            MidhillAssets.customImage(
+              iconName: "success",
+            ),
+            height: 28,
+            fit: BoxFit.fitHeight,
+            color: MidhillColors.primaryColor,
           ),
           heightSpacing(
             mediaQueryHeight(context) * 0.015,
           ),
           MidhillTexts.text600(
             context,
-            text: errorHeader,
+            text: successHeader,
             fontSize: 24,
           ),
           heightSpacing(
@@ -37,7 +47,7 @@ class DialogContent extends StatelessWidget {
           ),
           MidhillTexts.text400(
             context,
-            text: errror,
+            text: successMessage,
             fontSize: 16,
           ),
           heightSpacing(
@@ -57,7 +67,7 @@ class DialogContent extends StatelessWidget {
               alignment: Alignment.center,
               child: MidhillTexts.text600(
                 context,
-                text: "Cancel",
+                text: "Continue",
                 fontSize: 14,
               ),
             ),

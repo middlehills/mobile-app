@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mid_hill_cash_flow/core/widgets/dialog_content_widget.dart';
+import 'package:mid_hill_cash_flow/core/widgets/error_dialog_content_widget.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
@@ -36,7 +36,7 @@ class _RecordsPageState extends State<RecordsPage> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: DialogContent(
+                content: ErrorDialogContent(
                   errorHeader: "Records Fetching Error",
                   errror: recordsProvider.recordsApiResponse!.message ??
                       "An error occured",
@@ -219,7 +219,8 @@ class _RecordsPageState extends State<RecordsPage> {
                                                     context: context,
                                                     builder: (context) {
                                                       return AlertDialog(
-                                                        content: DialogContent(
+                                                        content:
+                                                            ErrorDialogContent(
                                                           errorHeader:
                                                               "Delete record error",
                                                           errror: value

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/back_button.dart';
-import 'package:mid_hill_cash_flow/core/widgets/dialog_content_widget.dart';
+import 'package:mid_hill_cash_flow/core/widgets/error_dialog_content_widget.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
@@ -110,7 +110,7 @@ class _PasswordPageState extends State<PasswordPage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                content: DialogContent(
+                                content: ErrorDialogContent(
                                   errorHeader: "Sign Up Error",
                                   errror: value2
                                           .createAccountApiResponse!.message ??

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/back_button.dart';
-import 'package:mid_hill_cash_flow/core/widgets/dialog_content_widget.dart';
+import 'package:mid_hill_cash_flow/core/widgets/error_dialog_content_widget.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
@@ -157,7 +157,7 @@ class _SecurityChangePinPageState extends State<SecurityChangePinPage> {
                                         context: context,
                                         builder: (context) {
                                           return AlertDialog(
-                                            content: DialogContent(
+                                            content: ErrorDialogContent(
                                               errorHeader: "Change PIN Error",
                                               errror: value.changePinApiResponse
                                                       ?.message ??

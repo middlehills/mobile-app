@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mid_hill_cash_flow/core/widgets/dialog_content_widget.dart';
+import 'package:mid_hill_cash_flow/core/widgets/error_dialog_content_widget.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
@@ -65,7 +65,7 @@ class DeleteAccountDialog extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            content: DialogContent(
+                            content: ErrorDialogContent(
                               errorHeader: "Delete Account Error",
                               errror: value.deleteAccountApiResponse?.message ??
                                   "Error ocurred while deleting account",
