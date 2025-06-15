@@ -37,6 +37,11 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+//     dependencies {
+//         // Intercom Android SDK
+//         implementation 'io.intercom.android:intercom-sdk:13.+'
+//     }
 }
 
 flutter {

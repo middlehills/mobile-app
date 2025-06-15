@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+// import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
 import 'package:mid_hill_cash_flow/features/home/presentation/pages/upload_page.dart';
 import 'package:mid_hill_cash_flow/features/nav_bar/nav_bar_provider.dart';
 import 'package:mid_hill_cash_flow/features/profile/presentation/pages/profile_page.dart';
@@ -24,6 +25,22 @@ class _NavBarPageState extends State<NavBarPage> {
     ProfilePage(),
   ];
   @override
+  void initState() {
+    super.initState();
+    // final navBarProvider = Provider.of<NavBarProvider>(context);
+    // final authProvider = Provider.of<AuthProvider>(context);
+
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) async {
+    //     navBarProvider.setUserId(
+    //       authProvider.midhillUser?.id ?? "",
+    //       authProvider.midhillUser?.firstName ?? "",
+    //     );
+    //   },
+    // );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<NavBarProvider>(
       builder: (BuildContext context, value, Widget? child) => PopScope(
@@ -33,8 +50,7 @@ class _NavBarPageState extends State<NavBarPage> {
             value.updateIndex(0);
           }
         },
-        child: 
-        SafeArea(
+        child: SafeArea(
           child: Scaffold(
             body: Stack(
               children: [

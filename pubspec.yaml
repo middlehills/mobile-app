@@ -44,8 +44,8 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   hive: ^2.0.0
   hive_flutter: ^1.1.0
-  connectivity_plus: ^3.0.3
-  intercom_flutter: ^9.3.3
+  # connectivity_plus: ^3.0.3
+  # intercom_flutter: ^9.2.11
 
 dev_dependencies:
   hive_generator: ^1.1.0

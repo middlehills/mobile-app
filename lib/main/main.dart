@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
+// import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:mid_hill_cash_flow/config/midhill_config.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
-import 'package:mid_hill_cash_flow/features/home/data/upload_model.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
 import 'package:mid_hill_cash_flow/features/nav_bar/nav_bar_provider.dart';
 import 'package:mid_hill_cash_flow/features/onboarding/domain/onboarding_provider.dart';
@@ -22,9 +20,12 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  await Hive.initFlutter();
-  Hive.registerAdapter(UploadModelAdapter());
-  await Hive.openBox<UploadModel>('uploadsBox');
+  // await Intercom.instance.initialize('xk5ak5wz',
+  //     iosApiKey:
+  //         'ios_sdk-82cc4eb1073418f10e062adc9155047ac5343485', // from Intercom dashboard
+  //     androidApiKey:
+  //         'android_sdk-5a31e1f5f820711c9632969f5798bd9847a4dd94' // from Intercom dashboard
+  //     );
 
   // Read the environment variable passed via --dart-define.
   const String env = String.fromEnvironment('ENV', defaultValue: 'dev');
