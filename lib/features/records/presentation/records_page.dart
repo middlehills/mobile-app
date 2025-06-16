@@ -7,8 +7,9 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/records/data/transaction_model.dart';
-import 'package:mid_hill_cash_flow/features/records/domain/records_functions.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_provider.dart';
+import 'package:mid_hill_cash_flow/features/records/presentation/income_card.dart';
+import 'package:mid_hill_cash_flow/features/records/presentation/transaction_filter_row.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_styles.dart';
@@ -75,105 +76,146 @@ class _RecordsPageState extends State<RecordsPage> {
                   fontSize: 20,
                 ),
                 heightSpacing(15),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffEDF4FD),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          MidhillTexts.text400(
-                            context,
-                            text: "Total Income",
-                            color: const Color(0xff6C7A93),
-                          ),
-                          widthSpacing(10),
-                          InkWell(
-                            onTap: () {
-                              value.setShowIncomeState(!value.showIncome);
-                            },
-                            child: Icon(
-                              value.showIncome && value.transactions.isNotEmpty
-                                  ? Icons.visibility_off_outlined
-                                  : Icons.visibility_outlined,
-                              size: 16,
-                            ),
-                          )
-                        ],
-                      ),
-                      heightSpacing(10),
-                      value.showIncome
-                          ? MidhillTexts.text700(
-                              context,
-                              text:
-                                  'N ${RecordsFunctions.formatMoney(value.totalIncome)}',
-                              fontSize: 28,
-                              color: MidhillColors.black,
-                            )
-                          : SizedBox(
-                              height: 20,
-                              child: Image.asset(
-                                MidhillAssets.customImage(
-                                  iconName: 'hidden-code',
-                                ),
-                              ),
-                            ),
-                      if (!value.showIncome) heightSpacing(8),
-                    ],
-                  ),
-                ),
+                const IncomeCard(),
 
-                heightSpacing(20),
-
-                // transaction rows
-                // const TransactionFilterRow(),
-
-                heightSpacing(8),
+                heightSpacing(28),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        value.selectDate(null);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        constraints: BoxConstraints(
-                          minWidth: mediaQuery(context).width * 0.2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: MidhillColors.dartkGradientColor,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            MidhillTexts.text400(
-                              context,
-                              text: value.selectedDate == null
-                                  ? "All"
-                                  : DateFormat('dd MMMM yyyy')
-                                      .format(value.selectedDate!),
-                              fontSize: 18,
-                              color: MidhillColors.white,
+                            InkWell(
+                              onTap: () {
+                                value.selectDate(null);
+                                value.setFilterRange(null);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                constraints: BoxConstraints(
+                                  minWidth: mediaQuery(context).width * 0.2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: value.filterRange == null
+                                      ? MidhillColors.dartkGradientColor
+                                      : null,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: value.filterRange != null
+                                      ? Border.all(
+                                          color:
+                                              MidhillColors.dartkGradientColor,
+                                        )
+                                      : null,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    MidhillTexts.text400(
+                                      context,
+                                      text: value.selectedDate == null
+                                          ? "All"
+                                          : DateFormat('dd MMMM yyyy')
+                                              .format(value.selectedDate!),
+                                      fontSize: 18,
+                                      color: value.filterRange == null
+                                          ? MidhillColors.white
+                                          : MidhillColors.dartkGradientColor,
+                                    ),
+                                    if (value.selectedDate != null)
+                                      widthSpacing(5),
+                                    if (value.selectedDate != null)
+                                      const Icon(
+                                        Icons.close,
+                                        color: MidhillColors.white,
+                                        size: 18,
+                                      ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            if (value.selectedDate != null) widthSpacing(5),
-                            if (value.selectedDate != null)
-                              const Icon(
-                                Icons.close,
-                                color: MidhillColors.white,
-                                size: 18,
+                            if (value.selectedDate == null) widthSpacing(10),
+                            if (value.selectedDate == null)
+                              InkWell(
+                                onTap: () {
+                                  value.setFilterRange(FilterRange.thisWeek);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  constraints: BoxConstraints(
+                                    minWidth: mediaQuery(context).width * 0.2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: value.filterRange !=
+                                            FilterRange.thisWeek
+                                        ? null
+                                        : MidhillColors.dartkGradientColor,
+                                    border: value.filterRange !=
+                                            FilterRange.thisWeek
+                                        ? Border.all(
+                                            color: MidhillColors
+                                                .dartkGradientColor,
+                                          )
+                                        : null,
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: MidhillTexts.text400(
+                                    context,
+                                    text: "This Week",
+                                    color: value.filterRange !=
+                                            FilterRange.thisWeek
+                                        ? MidhillColors.dartkGradientColor
+                                        : MidhillColors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            if (value.selectedDate == null) widthSpacing(10),
+                            if (value.selectedDate == null)
+                              InkWell(
+                                onTap: () {
+                                  value.setFilterRange(FilterRange.thisMonth);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  constraints: BoxConstraints(
+                                    minWidth: mediaQuery(context).width * 0.2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: value.filterRange !=
+                                            FilterRange.thisMonth
+                                        ? null
+                                        : MidhillColors.dartkGradientColor,
+                                    border: value.filterRange !=
+                                            FilterRange.thisMonth
+                                        ? Border.all(
+                                            color: MidhillColors
+                                                .dartkGradientColor,
+                                          )
+                                        : null,
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: MidhillTexts.text400(
+                                    context,
+                                    text: "This Month",
+                                    color: value.filterRange !=
+                                            FilterRange.thisMonth
+                                        ? MidhillColors.dartkGradientColor
+                                        : MidhillColors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
                           ],
                         ),
                       ),
                     ),
+
+                    // calendar icon
                     InkWell(
                       onTap: () {
                         showCupertinoModalPopup(

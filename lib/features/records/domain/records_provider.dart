@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'package:mid_hill_cash_flow/features/records/data/transaction_model.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_api_functions.dart';
+import 'package:mid_hill_cash_flow/features/records/presentation/transaction_filter_row.dart';
 
 class RecordsProvider extends ChangeNotifier {
   bool showIncome = false;
@@ -24,48 +25,50 @@ class RecordsProvider extends ChangeNotifier {
               transaction.createdAt.month == value.month &&
               transaction.createdAt.day == value.day)
           .toList();
+    } else {
+      filteredTransactions = transactions;
     }
     notifyListeners();
   }
 
-  // FilterRange filterRange = FilterRange.all;
+  FilterRange? filterRange;
 
-  // setFilterRange(FilterRange value) {
-  //   filterRange = value;
+  setFilterRange(FilterRange? value) {
+    filterRange = value;
 
-  //   // switch (filterRange) {
-  //   //   case FilterRange.all:
-  //   //     filteredTransactions = transactions;
-  //   //     break;
-  //   //   case FilterRange.today:
-  //   //     filteredTransactions = transactions.where((transaction) {
-  //   //       final now = DateTime.now();
-  //   //       return transaction.createdAt.year == now.year &&
-  //   //           transaction.createdAt.month == now.month &&
-  //   //           transaction.createdAt.day == now.day;
-  //   //     }).toList();
-  //   //   case FilterRange.thisMonth:
-  //   //     filteredTransactions = transactions.where((transaction) {
-  //   //       final now = DateTime.now();
-  //   //       return transaction.createdAt.year == now.year &&
-  //   //           transaction.createdAt.month == now.month;
-  //   //     }).toList();
-  //   //   case FilterRange.thisWeek:
-  //   //     filteredTransactions = transactions.where((transaction) {
-  //   //       final now = DateTime.now();
-  //   //       final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-  //   //       final endOfWeek = startOfWeek.add(const Duration(days: 6));
-  //   //       return transaction.createdAt
-  //   //               .isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
-  //   //           transaction.createdAt
-  //   //               .isBefore(endOfWeek.add(const Duration(days: 1)));
-  //   //     }).toList();
-  //   //   default:
-  //   //     filteredTransactions = transactions;
-  //   // }
-  //   // notifyListeners();
-
-  // }
+    switch (filterRange) {
+      case FilterRange.all:
+        filteredTransactions = transactions;
+        break;
+      case FilterRange.today:
+        filteredTransactions = transactions.where((transaction) {
+          final now = DateTime.now();
+          return transaction.createdAt.year == now.year &&
+              transaction.createdAt.month == now.month &&
+              transaction.createdAt.day == now.day;
+        }).toList();
+      case FilterRange.thisMonth:
+        filteredTransactions = transactions.where((transaction) {
+          final now = DateTime.now();
+          return transaction.createdAt.year == now.year &&
+              transaction.createdAt.month == now.month;
+        }).toList();
+      case FilterRange.thisWeek:
+        filteredTransactions = transactions.where((transaction) {
+          final now = DateTime.now();
+          final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+          final endOfWeek = startOfWeek.add(const Duration(days: 6));
+          return transaction.createdAt
+                  .isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
+              transaction.createdAt
+                  .isBefore(endOfWeek.add(const Duration(days: 1)));
+        }).toList();
+      default:
+        filteredTransactions = transactions;
+    }
+    notifyListeners();
+    print(filterRange);
+  }
 
   List<Transaction> filteredTransactions = [];
 
