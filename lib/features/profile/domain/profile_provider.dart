@@ -84,6 +84,34 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  // CHANGE PIN
+  bool isCheckingPin = false;
+
+  void setCheckPinState(bool value) {
+    isCheckingPin = value;
+    notifyListeners();
+  }
+
+  ApiResponse? checkPinApiResponse;
+
+  Future<bool> checkPin({
+    required String baseUrl,
+    required String pin,
+  }) async {
+    setCheckPinState(true);
+
+    checkPinApiResponse =
+        await ProfileApiFunctions.checkPin(baseUrl: baseUrl, pin: pin);
+
+    setCheckPinState(false);
+
+    if (checkPinApiResponse!.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   String? currentPin;
   String? newPin;
 
@@ -120,31 +148,29 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> changeUserPin({
-    required String baseUrl,
-    // required String hashedPin,
-    required String confrimationPin,
-  }) async {
-    setChangePasswordLoadingState(true);
-    if (!confirmNewPin(confrimationPin)) {
-      return false;
-    }
+  // Future<bool> changeUserPin({
+  //   required String baseUrl,
+  //   // required String hashedPin,
+  //   required String confrimationPin,
+  // }) async {
+  //   setChangePasswordLoadingState(true);
+  //   if (!confirmNewPin(confrimationPin)) {
+  //     return false;
+  //   }
 
-    changePinApiResponse = await ProfileApiFunctions.changePin(
-      baseUrl: baseUrl,
-      curPin: currentPin!,
-      hashedPin: midhillUser!.pin,
-      newPin: newPin!,
-    );
+  //   changePinApiResponse = await ProfileApiFunctions.changePin(
+  //     baseUrl: baseUrl,
 
-    setChangePasswordLoadingState(false);
+  //   );
 
-    if (changePinApiResponse!.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  //   setChangePasswordLoadingState(false);
+
+  //   if (changePinApiResponse!.statusCode == 200) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   bool isDeletingAccount = false;
 

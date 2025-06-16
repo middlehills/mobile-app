@@ -15,37 +15,13 @@ import 'package:provider/provider.dart';
 class RecordReviewModalSheet extends StatefulWidget {
   const RecordReviewModalSheet({
     super.key,
-    required this.itemName,
-    required this.quantity,
-    required this.amount,
   });
-
-  final String? itemName;
-  final String? quantity;
-  final int? amount;
 
   @override
   State<RecordReviewModalSheet> createState() => _RecordReviewModalSheetState();
 }
 
 class _RecordReviewModalSheetState extends State<RecordReviewModalSheet> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // create record
-      if (widget.itemName != null &&
-          widget.quantity != null &&
-          widget.amount != null) {
-        Provider.of<UploadProvider>(context, listen: false).createRecord(
-          name: widget.itemName!,
-          quantity: widget.quantity!,
-          amount: widget.amount!,
-        );
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -117,7 +93,7 @@ class _RecordReviewModalSheetState extends State<RecordReviewModalSheet> {
                     const Spacer(),
                     InkWell(
                       onTap: () {
-                        value.setAddingNewRecordState(true);
+                        // value.setAddingNewRecordState(true);
                         context.pop();
                       },
                       child: Container(

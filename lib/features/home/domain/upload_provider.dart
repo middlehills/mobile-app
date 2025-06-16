@@ -41,12 +41,12 @@ class UploadProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isAddingNewRecord = false;
+  // bool isAddingNewRecord = false;
 
-  setAddingNewRecordState(bool value) {
-    isAddingNewRecord = value;
-    notifyListeners();
-  }
+  // setAddingNewRecordState(bool value) {
+  //   isAddingNewRecord = value;
+  //   notifyListeners();
+  // }
 
   bool isSavingRecordsToServer = false;
 
@@ -92,8 +92,8 @@ class UploadProvider extends ChangeNotifier {
   }
 
   void reset() {
-    uploads.clear();
-    isAddingNewRecord = false;
+    // uploads.clear();
+    // isAddingNewRecord = false;
     isSavingRecordsToServer = false;
     recordsToServerApiResponse = null;
     notifyListeners();

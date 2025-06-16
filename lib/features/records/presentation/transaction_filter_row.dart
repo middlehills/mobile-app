@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_provider.dart';
-import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 import 'package:provider/provider.dart';
 
 class TransactionFilterRow extends StatelessWidget {

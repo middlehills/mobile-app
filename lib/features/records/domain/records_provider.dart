@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'package:mid_hill_cash_flow/features/records/data/transaction_model.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_api_functions.dart';
-import 'package:mid_hill_cash_flow/features/records/presentation/transaction_filter_row.dart';
 
 class RecordsProvider extends ChangeNotifier {
   bool showIncome = false;

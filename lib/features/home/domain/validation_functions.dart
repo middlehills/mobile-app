@@ -8,8 +8,8 @@ class ValidationFunctions {
       return "Name must be at least 2 characters long";
     } else if (name.length > 20) {
       return "Name must be at most 20 characters long";
-    } else if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(name)) {
-      return "Name must only contain letters and spaces";
+    } else if (!RegExp(r'^[a-zA-Z0-9\s]+$').hasMatch(name)) {
+      return "Name must only contain letters, numbers, and spaces";
     } else {
       return null;
     }
