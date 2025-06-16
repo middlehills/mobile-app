@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -8,9 +9,9 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/records/data/transaction_model.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_functions.dart';
 import 'package:mid_hill_cash_flow/features/records/domain/records_provider.dart';
-import 'package:mid_hill_cash_flow/features/records/presentation/transaction_filter_row.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
+import 'package:mid_hill_cash_flow/theme/midhill_styles.dart';
 import 'package:mid_hill_cash_flow/utils/api_url_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -130,7 +131,93 @@ class _RecordsPageState extends State<RecordsPage> {
                 heightSpacing(20),
 
                 // transaction rows
-                const TransactionFilterRow(),
+                // const TransactionFilterRow(),
+
+                heightSpacing(8),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        value.selectDate(null);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        constraints: BoxConstraints(
+                          minWidth: mediaQuery(context).width * 0.2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: MidhillColors.dartkGradientColor,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MidhillTexts.text400(
+                              context,
+                              text: value.selectedDate == null
+                                  ? "All"
+                                  : DateFormat('dd MMMM yyyy')
+                                      .format(value.selectedDate!),
+                              fontSize: 18,
+                              color: MidhillColors.white,
+                            ),
+                            if (value.selectedDate != null) widthSpacing(5),
+                            if (value.selectedDate != null)
+                              const Icon(
+                                Icons.close,
+                                color: MidhillColors.white,
+                                size: 18,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showCupertinoModalPopup(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 216,
+                              padding: const EdgeInsets.only(top: 6.0),
+                              color: CupertinoColors.systemBackground
+                                  .resolveFrom(context),
+                              child: SafeArea(
+                                top: false,
+                                child: CupertinoDatePicker(
+                                  initialDateTime:
+                                      value.selectedDate ?? DateTime.now(),
+                                  mode: CupertinoDatePickerMode.date,
+                                  onDateTimeChanged: (DateTime newDate) {
+                                    // if (newDate.isBefore(
+                                    //   DateTime.now().subtract(
+                                    //     const Duration(hours: 23, minutes: 59, seconds: 59),
+                                    //   ),
+                                    // )) {
+                                    //   // Do not set date if before today
+                                    //   return;
+                                    // }
+                                    value.selectDate(newDate);
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: SvgPicture.asset(
+                          MidhillAssets.customIcon(
+                            iconName: 'calendar',
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
 
                 heightSpacing(15),
 
@@ -145,7 +232,7 @@ class _RecordsPageState extends State<RecordsPage> {
                             baseUrl: apiUrlProvider.apiUrl!,
                           );
                         },
-                        child: value.filteredTransaction.isEmpty
+                        child: value.filteredTransactions.isEmpty
                             ? SizedBox(
                                 width: mediaQueryWidth(context),
                                 child: value.isRecordFetching
@@ -180,7 +267,7 @@ class _RecordsPageState extends State<RecordsPage> {
                             : ListView.separated(
                                 itemBuilder: (context, index) {
                                   final Transaction thisRecord =
-                                      value.filteredTransaction[index];
+                                      value.filteredTransactions[index];
                                   return Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 8),
@@ -301,7 +388,7 @@ class _RecordsPageState extends State<RecordsPage> {
                                 separatorBuilder: (context, index) {
                                   return heightSpacing(10);
                                 },
-                                itemCount: value.filteredTransaction.length,
+                                itemCount: value.filteredTransactions.length,
                               ),
                       ),
 

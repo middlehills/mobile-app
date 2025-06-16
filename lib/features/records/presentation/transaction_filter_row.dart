@@ -26,7 +26,7 @@ class TransactionFilterRow extends StatelessWidget {
 
             return InkWell(
               onTap: () {
-                value.setFilterRange(thisFilterRange);
+                // value.setFilterRange(thisFilterRange);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(
@@ -34,18 +34,18 @@ class TransactionFilterRow extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: value.filterRange == thisFilterRange
-                      ? const Color.fromRGBO(18, 18, 18, 0.04)
-                      : null,
+                  // color: value.filterRange == thisFilterRange
+                  //     ? const Color.fromRGBO(18, 18, 18, 0.04)
+                  //     : null,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 alignment: Alignment.center,
                 child: MidhillTexts.text600(
                   context,
                   text: filterRangeString,
-                  color: value.filterRange == thisFilterRange
-                      ? MidhillColors.primaryColor
-                      : const Color(0xff667185),
+                  // color: value.filterRange == thisFilterRange
+                  //     ? MidhillColors.primaryColor
+                  //     : const Color(0xff667185),
                   fontSize: 13,
                 ),
               ),

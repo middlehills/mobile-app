@@ -14,44 +14,61 @@ class RecordsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  FilterRange filterRange = FilterRange.all;
+  DateTime? selectedDate;
 
-  setFilterRange(FilterRange value) {
-    filterRange = value;
-    switch (filterRange) {
-      case FilterRange.all:
-        filteredTransaction = transactions;
-        break;
-      case FilterRange.today:
-        filteredTransaction = transactions.where((transaction) {
-          final now = DateTime.now();
-          return transaction.createdAt.year == now.year &&
-              transaction.createdAt.month == now.month &&
-              transaction.createdAt.day == now.day;
-        }).toList();
-      case FilterRange.thisMonth:
-        filteredTransaction = transactions.where((transaction) {
-          final now = DateTime.now();
-          return transaction.createdAt.year == now.year &&
-              transaction.createdAt.month == now.month;
-        }).toList();
-      case FilterRange.thisWeek:
-        filteredTransaction = transactions.where((transaction) {
-          final now = DateTime.now();
-          final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-          final endOfWeek = startOfWeek.add(const Duration(days: 6));
-          return transaction.createdAt
-                  .isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
-              transaction.createdAt
-                  .isBefore(endOfWeek.add(const Duration(days: 1)));
-        }).toList();
-      default:
-        filteredTransaction = transactions;
+  void selectDate(DateTime? value) {
+    selectedDate = value;
+    if (value != null) {
+      filteredTransactions = transactions
+          .where((transaction) =>
+              transaction.createdAt.year == value.year &&
+              transaction.createdAt.month == value.month &&
+              transaction.createdAt.day == value.day)
+          .toList();
     }
     notifyListeners();
   }
 
-  List<Transaction> filteredTransaction = [];
+  // FilterRange filterRange = FilterRange.all;
+
+  // setFilterRange(FilterRange value) {
+  //   filterRange = value;
+
+  //   // switch (filterRange) {
+  //   //   case FilterRange.all:
+  //   //     filteredTransactions = transactions;
+  //   //     break;
+  //   //   case FilterRange.today:
+  //   //     filteredTransactions = transactions.where((transaction) {
+  //   //       final now = DateTime.now();
+  //   //       return transaction.createdAt.year == now.year &&
+  //   //           transaction.createdAt.month == now.month &&
+  //   //           transaction.createdAt.day == now.day;
+  //   //     }).toList();
+  //   //   case FilterRange.thisMonth:
+  //   //     filteredTransactions = transactions.where((transaction) {
+  //   //       final now = DateTime.now();
+  //   //       return transaction.createdAt.year == now.year &&
+  //   //           transaction.createdAt.month == now.month;
+  //   //     }).toList();
+  //   //   case FilterRange.thisWeek:
+  //   //     filteredTransactions = transactions.where((transaction) {
+  //   //       final now = DateTime.now();
+  //   //       final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+  //   //       final endOfWeek = startOfWeek.add(const Duration(days: 6));
+  //   //       return transaction.createdAt
+  //   //               .isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
+  //   //           transaction.createdAt
+  //   //               .isBefore(endOfWeek.add(const Duration(days: 1)));
+  //   //     }).toList();
+  //   //   default:
+  //   //     filteredTransactions = transactions;
+  //   // }
+  //   // notifyListeners();
+
+  // }
+
+  List<Transaction> filteredTransactions = [];
 
   bool isRecordFetching = false;
 
@@ -82,8 +99,11 @@ class RecordsProvider extends ChangeNotifier {
           transactions.add(Transaction.fromJson(element));
           totalIncome += element['amount'] as int;
         }
-        setFilterRange(filterRange);
+        // setFilterRange(filterRange);
         transactions.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        if (selectedDate != null) {
+          selectDate(selectedDate!);
+        }
         notifyListeners();
         return true;
       } else {
@@ -120,7 +140,7 @@ class RecordsProvider extends ChangeNotifier {
   }) async {
     setDeletingRecordState(true);
     try {
-      filteredTransaction.removeAt(index);
+      filteredTransactions.removeAt(index);
       transactions.removeWhere((trans) => trans.id == transaction.id);
       temporaryTransaction = transaction;
       notifyListeners();
@@ -157,8 +177,9 @@ class RecordsProvider extends ChangeNotifier {
 
   void reset() {
     showIncome = false;
-    filterRange = FilterRange.all;
-    filteredTransaction = [];
+    // filterRange = FilterRange.all;
+    selectedDate = null;
+    filteredTransactions = [];
     isRecordFetching = false;
     recordsApiResponse = null;
     transactions = [];

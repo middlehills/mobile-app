@@ -198,6 +198,8 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     const oneSecond = Duration(seconds: 1);
 
+    otpExpiryTimer?.cancel();
+
     otpExpiryTimer = Timer.periodic(
       oneSecond,
       (Timer timer) {
