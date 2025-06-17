@@ -248,6 +248,123 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  bool isLoginForgotPassword = false;
+
+  setForgotPasswordCheck(bool value) {
+    isLoginForgotPassword = value;
+    notifyListeners();
+  }
+
+  bool isInitiatingForgotPassword = false;
+
+  setInitForgotPasswordState(bool value) {
+    isInitiatingForgotPassword = value;
+
+    notifyListeners();
+  }
+
+  ApiResponse? initForgotPasswordApiResponse;
+
+  Future<bool> initiateForgotPassword({
+    required String baseUrl,
+    required String phoneNumber,
+  }) async {
+    setInitForgotPasswordState(true);
+
+    initForgotPasswordApiResponse = await AuthApiFunctions.forgotPin(
+        baseUrl: baseUrl, phoneNumber: phoneNumber);
+
+    setInitForgotPasswordState(false);
+
+    if (initForgotPasswordApiResponse!.statusCode == 200) {
+      log(initForgotPasswordApiResponse?.data!['otp'] ?? "");
+
+      midhillUser = MidhillUser.fromJson(
+        initForgotPasswordApiResponse?.data!['user'],
+      );
+
+      notifyListeners();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isVerifyingFgPinOtp = false;
+
+  setIsVerifyingFgPinOtpState(bool value) {
+    isVerifyingFgPinOtp = value;
+
+    notifyListeners();
+  }
+
+  String? otpCode;
+
+  setOtp(String value) {
+    otpCode = value;
+
+    notifyListeners();
+  }
+
+  ApiResponse? verifyFgPinOtpApiResponse;
+
+  Future<bool> verifyFgPinOtp({
+    required String otp,
+    required String baseUrl,
+    required String userId,
+  }) async {
+    setIsVerifyingFgPinOtpState(true);
+
+    verifyFgPinOtpApiResponse = await AuthApiFunctions.verifyOtp(
+      baseUrl: baseUrl,
+      otp: otp,
+      userId: userId,
+    );
+
+    setOtp(otp);
+
+    setIsVerifyingFgPinOtpState(false);
+    if (verifyFgPinOtpApiResponse!.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isChangingPassword = false;
+
+  setIsChangingPasswordState(bool value) {
+    isChangingPassword = value;
+
+    notifyListeners();
+  }
+
+  ApiResponse? changePasswordApiResponse;
+
+  Future<bool> changePassword({
+    required String baseUrl,
+    required String otpCode,
+    required String newPin,
+  }) async {
+    setIsChangingPasswordState(true);
+
+    changePasswordApiResponse = await AuthApiFunctions.changePin(
+      baseUrl: baseUrl,
+      otpCode: otpCode,
+      newPin: newPin,
+    );
+
+    setIsChangingPasswordState(false);
+
+    if (changePasswordApiResponse!.statusCode == 200) {
+      log(changePasswordApiResponse?.data.toString() ?? "");
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void reset() {
     userRegData = null;
     createAccountApiResponse = null;

@@ -10,7 +10,11 @@ InkWell midhillButton(
   String text = "Continue",
 }) {
   return InkWell(
-    onTap: isEnabled ? onPressed : null,
+    onTap: isEnabled
+        ? !isLoading
+            ? onPressed
+            : null
+        : null,
     child: Container(
       width: MediaQuery.sizeOf(context).width,
       height: 50,

@@ -84,7 +84,7 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
                             MidhillTexts.text400(
                               context,
                               text:
-                                  "We sent a one-time verification code to your phone number *****65",
+                                  "We sent a one-time verification code to your phone number.",
                               fontSize: 14,
                               color: const Color(0xff6C7A93),
                             ),
@@ -175,12 +175,43 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
                             height: 50,
                             child: midhillButton(
                               context,
-                              onPressed: () {
-                                context.goNamed(
-                                    MidhillRoutesList.resetPasswordPage);
+                              onPressed: () async {
+                                bool result = await value2.verifyFgPinOtp(
+                                  otp: controllers.map((e) => e.text).join(),
+                                  baseUrl: value.apiUrl!,
+                                  userId: value2.midhillUser!.id,
+                                );
+
+                                if (context.mounted) {
+                                  if (result) {
+                                    if (value2.isLoginForgotPassword) {
+                                      context.goNamed(MidhillRoutesList
+                                          .loginResetPasswordPage);
+                                    } else {
+                                      context.goNamed(
+                                          MidhillRoutesList.resetPasswordPage);
+                                    }
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: ErrorDialogContent(
+                                            errorHeader: "Verification Error",
+                                            errror: value2
+                                                    .verifyFgPinOtpApiResponse
+                                                    ?.message ??
+                                                "Verification request failed. Please try again.",
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                }
                               },
                               isEnabled: controllers.every((controller) =>
                                   controller.value.text.isNotEmpty),
+                              isLoading: value2.isVerifyingFgPinOtp,
                             ),
                           ),
                         )

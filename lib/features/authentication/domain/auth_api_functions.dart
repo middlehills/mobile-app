@@ -326,4 +326,194 @@ class AuthApiFunctions {
       );
     }
   }
+
+  static Future<ApiResponse> forgotPin({
+    required String baseUrl,
+    required String phoneNumber,
+  }) async {
+    final url = Uri.parse('${baseUrl}api/user/forgot-pin');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "phone_number": phoneNumber,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['success'] ?? 'Forgot PIN request successful',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      } else {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['error'] ?? 'Failed to request forgot PIN',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      }
+    } on SocketException {
+      return ApiResponse(
+        message: 'No Internet connection.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on FormatException {
+      return ApiResponse(
+        message: 'Unable to parse response.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on HttpException {
+      return ApiResponse(
+        message: 'Could not find the server.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } catch (e) {
+      return ApiResponse(
+        message: 'Error occurred: $e',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    }
+  }
+
+  static Future<ApiResponse> changePin({
+    required String baseUrl,
+    required String otpCode,
+    required String newPin,
+  }) async {
+    final url = Uri.parse('${baseUrl}api/user/change-pin');
+    try {
+      final response = await http.patch(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "otp_code": otpCode,
+          "newPin": newPin,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['success'] ?? 'Pin changed successfully',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      } else {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['error'] ?? 'Failed to change pin',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      }
+    } on SocketException {
+      return ApiResponse(
+        message: 'No Internet connection.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on FormatException {
+      return ApiResponse(
+        message: 'Unable to parse response.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on HttpException {
+      return ApiResponse(
+        message: 'Could not find the server.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } catch (e) {
+      return ApiResponse(
+        message: 'Error occurred: $e',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    }
+  }
+
+  static Future<ApiResponse> verifyOtp({
+    required String baseUrl,
+    required String otp,
+    required String userId,
+  }) async {
+    final url = Uri.parse('${baseUrl}api/user/verify-otp/');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "otp": otp,
+          "user_id": userId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['success'] ?? 'OTP verified successfully',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      } else {
+        final data = jsonDecode(response.body);
+        return ApiResponse(
+          message: data['error'] ?? 'Failed to verify OTP',
+          data: data,
+          statusCode: response.statusCode,
+          responsePhrase: response.reasonPhrase ?? '',
+        );
+      }
+    } on SocketException {
+      return ApiResponse(
+        message: 'No Internet connection.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on FormatException {
+      return ApiResponse(
+        message: 'Unable to parse response.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } on HttpException {
+      return ApiResponse(
+        message: 'Could not find the server.',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    } catch (e) {
+      return ApiResponse(
+        message: 'Error occurred: $e',
+        data: null,
+        statusCode: null,
+        responsePhrase: '',
+      );
+    }
+  }
 }

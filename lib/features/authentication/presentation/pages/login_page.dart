@@ -82,62 +82,88 @@ class _LoginPageState extends State<LoginPage> {
                           : widthSpacing(10),
                     ),
                   ),
-                  heightSpacing(40),
-                  InkWell(
-                    child: SizedBox(
-                      height: 50,
-                      child: midhillButton(
-                        context,
-                        onPressed: () async {
-                          bool result = await value.login(
-                            baseUrl: value2.apiUrl!,
-                            pin: controllers.map((e) => e.text).join(),
+                  SizedBox(
+                    height: 40,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        onTap: () {
+                          value.setForgotPasswordCheck(true);
+                          context.goNamed(
+                            MidhillRoutesList.loginForgotPasswordPage,
                           );
-                          if (context.mounted) {
-                            if (result) {
-                              context.goNamed(MidhillRoutesList.navBarPage);
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: ErrorDialogContent(
-                                      errorHeader: "Login error",
-                                      errror: value.loginApiResponse?.message ??
-                                          "Failed to login",
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          }
                         },
-                        isEnabled: controllers.every(
-                            (controller) => controller.value.text.isNotEmpty),
-                        isLoading: value.isLoggingIn,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            bottom: 8,
+                            right: 8,
+                            left: 8,
+                          ),
+                          child: MidhillTexts.text400(
+                            context,
+                            text: "Forgot Password",
+                            fontSize: 16,
+                            decoration: TextDecoration.underline,
+                            color: MidhillColors.primaryColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  heightSpacing(15),
+                  midhillButton(
+                    context,
+                    onPressed: () async {
+                      bool result = await value.login(
+                        baseUrl: value2.apiUrl!,
+                        pin: controllers.map((e) => e.text).join(),
+                      );
+                      if (context.mounted) {
+                        if (result) {
+                          context.goNamed(MidhillRoutesList.navBarPage);
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: ErrorDialogContent(
+                                  errorHeader: "Login error",
+                                  errror: value.loginApiResponse?.message ??
+                                      "Failed to login",
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      }
+                    },
+                    isEnabled: controllers.every(
+                        (controller) => controller.value.text.isNotEmpty),
+                    isLoading: value.isLoggingIn,
+                  ),
+                  heightSpacing(16),
                   InkWell(
                     onTap: () {
                       context.goNamed(MidhillRoutesList.onboardingPage);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        bottom: 8,
-                        right: 8,
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: MidhillColors.primaryColor,
+                        ),
                       ),
-                      child: MidhillTexts.text400(
+                      alignment: Alignment.center,
+                      child: MidhillTexts.text600(
                         context,
                         text: "Sign into another account",
-                        fontSize: 16,
-                        decoration: TextDecoration.underline,
                         color: MidhillColors.primaryColor,
+                        fontSize: 16,
                       ),
                     ),
-                  )
+                  ),
+                  heightSpacing(15),
                 ],
               ),
             ),

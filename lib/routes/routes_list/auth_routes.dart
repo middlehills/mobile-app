@@ -73,25 +73,6 @@ List<GoRoute> authRoutes = [
         },
         routes: [
           GoRoute(
-            path: MidhillRoutesList.signInOtpPage,
-            name: MidhillRoutesList.signInOtpPage,
-            pageBuilder: (context, state) {
-              return CustomTransitionPage(
-                child: const SignInOtpPage(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-                transitionDuration: const Duration(
-                  milliseconds: 300,
-                ),
-              );
-            },
-          ),
-          GoRoute(
             path: MidhillRoutesList.forgotPasswordPage,
             name: MidhillRoutesList.forgotPasswordPage,
             pageBuilder: (context, state) {
@@ -150,6 +131,25 @@ List<GoRoute> authRoutes = [
                     ),
                   ]),
             ],
+          ),
+          GoRoute(
+            path: MidhillRoutesList.signInOtpPage,
+            name: MidhillRoutesList.signInOtpPage,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: const SignInOtpPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(
+                  milliseconds: 300,
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -217,21 +217,82 @@ List<GoRoute> authRoutes = [
   ),
   // login page
   GoRoute(
-    path: "/${MidhillRoutesList.loginPage}",
-    name: MidhillRoutesList.loginPage,
-    pageBuilder: (context, state) {
-      return CustomTransitionPage(
-        child: const LoginPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(
-          milliseconds: 300,
+      path: "/${MidhillRoutesList.loginPage}",
+      name: MidhillRoutesList.loginPage,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          child: const LoginPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(
+            milliseconds: 300,
+          ),
+        );
+      },
+      routes: [
+        GoRoute(
+          path: MidhillRoutesList.loginForgotPasswordPage,
+          name: MidhillRoutesList.loginForgotPasswordPage,
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              child: const ForgotPasswordPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              transitionDuration: const Duration(
+                milliseconds: 300,
+              ),
+            );
+          },
+          routes: [
+            GoRoute(
+                path: MidhillRoutesList.loginForgotPasswordOtpPage,
+                name: MidhillRoutesList.loginForgotPasswordOtpPage,
+                pageBuilder: (context, state) {
+                  return CustomTransitionPage(
+                    child: const ForgotPasswordOtpPage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(
+                      milliseconds: 300,
+                    ),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: MidhillRoutesList.loginResetPasswordPage,
+                    name: MidhillRoutesList.loginResetPasswordPage,
+                    pageBuilder: (context, state) {
+                      return CustomTransitionPage(
+                        child: const ResetPasswordPage(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(
+                          milliseconds: 300,
+                        ),
+                      );
+                    },
+                  ),
+                ]),
+          ],
         ),
-      );
-    },
-  )
+      ])
 ];

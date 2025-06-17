@@ -134,6 +134,7 @@ class _SignInPageState extends State<SignInPage> {
                       children: [
                         InkWell(
                           onTap: () {
+                            value2.setForgotPasswordCheck(false);
                             context
                                 .goNamed(MidhillRoutesList.forgotPasswordPage);
                           },
