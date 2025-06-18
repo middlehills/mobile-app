@@ -221,12 +221,12 @@ class ProfileApiFunctions {
   static Future<ApiResponse> changePin({
     required String baseUrl,
     required String pin,
-    required String userId,
+    required String otp,
   }) async {
     final url = Uri.parse('${baseUrl}api/user/verify-otp/');
     final uploadData = {
-      // 'otp': , // TODO implement change pin
-      "user_id": userId,
+      "otp_code": otp,
+      "newPin": pin,
     };
     try {
       final accessToken = await AuthService.getAccessToken();

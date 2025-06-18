@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'package:mid_hill_cash_flow/features/authentication/data/user_model.dart';
@@ -106,19 +108,14 @@ class ProfileProvider extends ChangeNotifier {
     setCheckPinState(false);
 
     if (checkPinApiResponse!.statusCode == 200) {
+      log(checkPinApiResponse!.data!['otp']);
       return true;
     } else {
       return false;
     }
   }
 
-  String? currentPin;
   String? newPin;
-
-  setCurrentPin(String value) {
-    currentPin = value;
-    notifyListeners();
-  }
 
   setNewPin(String value) {
     newPin = value;
@@ -143,34 +140,36 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   bool isChangingPassword = false;
+
   setChangePasswordLoadingState(bool value) {
     isChangingPassword = value;
     notifyListeners();
   }
 
-  // Future<bool> changeUserPin({
-  //   required String baseUrl,
-  //   // required String hashedPin,
-  //   required String confrimationPin,
-  // }) async {
-  //   setChangePasswordLoadingState(true);
-  //   if (!confirmNewPin(confrimationPin)) {
-  //     return false;
-  //   }
+  Future<bool> changeUserPin({
+    required String baseUrl,
+    required String otp,
+    required String confrimationPin,
+  }) async {
+    setChangePasswordLoadingState(true);
+    if (!confirmNewPin(confrimationPin)) {
+      return false;
+    }
 
-  //   changePinApiResponse = await ProfileApiFunctions.changePin(
-  //     baseUrl: baseUrl,
+    changePinApiResponse = await ProfileApiFunctions.changePin(
+      baseUrl: baseUrl,
+      otp: otp,
+      pin: confrimationPin,
+    );
 
-  //   );
+    setChangePasswordLoadingState(false);
 
-  //   setChangePasswordLoadingState(false);
-
-  //   if (changePinApiResponse!.statusCode == 200) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+    if (changePinApiResponse!.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   bool isDeletingAccount = false;
 
@@ -244,7 +243,7 @@ class ProfileProvider extends ChangeNotifier {
     updateRequestBody = null;
     isProfileUpdateVerifying = false;
     verifyUpdateProfileApiResponse = null;
-    currentPin = null;
+    // currentPin = null;
     newPin = null;
     changePinApiResponse = null;
     isChangingPassword = false;

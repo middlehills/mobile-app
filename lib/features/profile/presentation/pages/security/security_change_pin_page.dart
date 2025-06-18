@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mid_hill_cash_flow/core/widgets/back_button.dart';
+import 'package:mid_hill_cash_flow/core/widgets/error_dialog_content_widget.dart';
+import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
+import 'package:mid_hill_cash_flow/core/widgets/success_dialog_content.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
+import 'package:mid_hill_cash_flow/features/home/domain/validation_functions.dart';
 import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
@@ -26,6 +30,9 @@ class _SecurityChangePinPageState extends State<SecurityChangePinPage> {
   List<TextEditingController> controllers = [];
   List<FocusNode> focusNodes = [];
 
+  final _formKey1 = GlobalKey<FormState>();
+  final _formKey2 = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -44,273 +51,244 @@ class _SecurityChangePinPageState extends State<SecurityChangePinPage> {
           appBar: midhillAppBar(context),
           backgroundColor: MidhillColors.white,
           body: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 10,
-              ),
-              child: SingleChildScrollView(
-                child: Form(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 10,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  heightSpacing(10),
+                  mBackButton(context),
+                  heightSpacing(10),
+                  MidhillTexts.text600(
+                    context,
+                    text: "Security",
+                    fontSize: 24,
+                  ),
+                  heightSpacing(16),
+                  MidhillTexts.text400(
+                    context,
+                    text: "Change PIN",
+                    fontSize: 20,
+                    color: const Color(0xff777777),
+                  ),
+                  heightSpacing(10),
+                  Form(
+                    key: _formKey1,
+                    child: MidhillTextField(
+                      label: "Enter Current PIN",
+                      hintText: "****",
+                      isObscure: true,
+                      focusNode: focusNodes[0],
+                      controller: controllers[0],
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(r' '),
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(4),
+                      ],
+                      validator: ValidationFunctions.validatePin,
+                      textInputType: TextInputType.number,
+                    ),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      heightSpacing(10),
-                      mBackButton(context),
-                      heightSpacing(10),
-                      MidhillTexts.text600(
-                        context,
-                        text: "Security",
-                        fontSize: 24,
+                      Expanded(
+                        flex: 4,
+                        child: MidhillTexts.text400(
+                          context,
+                          text: "Click on this button to get OTP:",
+                          fontSize: 16,
+                          color: MidhillColors.dartkGradientColor,
+                        ),
                       ),
-                      heightSpacing(16),
-                      MidhillTexts.text400(
-                        context,
-                        text: "Change PIN",
-                        fontSize: 20,
-                        color: const Color(0xff777777),
-                      ),
-                      heightSpacing(10),
-                      MidhillTextField(
-                        label: "Enter Current PIN",
-                        hintText: "****",
-                        isObscure: true,
-                        focusNode: focusNodes[0],
-                        controller: controllers[0],
-                        inputFormatters: [
-                          FilteringTextInputFormatter.deny(r' '),
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(4),
-                        ],
-                        textInputType: TextInputType.number,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: MidhillTexts.text400(
-                              context,
-                              text: "Click on this button to get OTP:",
-                              fontSize: 16,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                        ),
+                        child: InkWell(
+                          onTap: () async {
+                            if (_formKey1.currentState?.validate() == true) {
+                              bool result = await value.checkPin(
+                                baseUrl: value3.apiUrl!,
+                                pin: controllers.first.text,
+                              );
+
+                              if (context.mounted) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      content: result
+                                          ? SuccessDialogContent(
+                                              successHeader: "Request Success",
+                                              successMessage: value
+                                                      .checkPinApiResponse
+                                                      ?.message ??
+                                                  "Change pin request was successful, otp has been sent.",
+                                            )
+                                          : ErrorDialogContent(
+                                              errorHeader: "OTP Request",
+                                              errror: value.checkPinApiResponse
+                                                      ?.message ??
+                                                  "Request failed. Please try again",
+                                            ),
+                                    );
+                                  },
+                                );
+                              }
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
                               color: MidhillColors.dartkGradientColor,
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 10,
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: MidhillColors.dartkGradientColor,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: const EdgeInsets.all(8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    MidhillAssets.customIcon(
-                                      iconName: 'mail',
-                                    ),
-                                    colorFilter: const ColorFilter.mode(
-                                      MidhillColors.white,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
-                                  widthSpacing(10),
-                                  MidhillTexts.text400(
-                                    context,
-                                    text: "Get OTP",
-                                    fontSize: 18,
+                            padding: const EdgeInsets.all(8),
+                            child: value.isCheckingPin
+                                ? const CircularProgressIndicator(
                                     color: MidhillColors.white,
+                                  )
+                                : Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        MidhillAssets.customIcon(
+                                          iconName: 'mail',
+                                        ),
+                                        colorFilter: const ColorFilter.mode(
+                                          MidhillColors.white,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                      widthSpacing(10),
+                                      MidhillTexts.text400(
+                                        context,
+                                        text: "Get OTP",
+                                        fontSize: 18,
+                                        color: MidhillColors.white,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
                           ),
-                        ],
+                        ),
                       ),
-                      MidhillTextField(
-                        label: "Enter OTP",
-                        hintText: "****",
-                        isObscure: true,
-                        focusNode: focusNodes[1],
-                        controller: controllers[1],
-                        inputFormatters: [
-                          FilteringTextInputFormatter.deny(r' '),
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(4),
-                        ],
-                        textInputType: TextInputType.number,
-                      ),
-                      MidhillTextField(
-                        label: "Enter New PIN",
-                        hintText: "****",
-                        isObscure: true,
-                        focusNode: focusNodes[2],
-                        controller: controllers[2],
-                        inputFormatters: [
-                          FilteringTextInputFormatter.deny(r' '),
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(4),
-                        ],
-                        textInputType: TextInputType.number,
-                      ),
-                      heightSpacing(16),
-                      MidhillTextField(
-                        label: "Confirm New PIN",
-                        hintText: "****",
-                        isObscure: true,
-                        focusNode: focusNodes[3],
-                        controller: controllers[3],
-                        inputFormatters: [
-                          FilteringTextInputFormatter.deny(r' '),
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(4),
-                        ],
-                        textInputType: TextInputType.number,
-                      ),
-                      heightSpacing(16),
                     ],
                   ),
-                ),
-              )
+                  Form(
+                    key: _formKey2,
+                    child: Column(
+                      children: [
+                        MidhillTextField(
+                          label: "Enter OTP",
+                          hintText: "****",
+                          isObscure: true,
+                          focusNode: focusNodes[1],
+                          controller: controllers[1],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(r' '),
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(4),
+                          ],
+                          onFieldSubmitted: (p0) {
+                            FocusScope.of(context).requestFocus(focusNodes[2]);
+                          },
+                          textInputAction: TextInputAction.next,
+                          validator: ValidationFunctions.validatePin,
+                          textInputType: TextInputType.number,
+                        ),
+                        MidhillTextField(
+                          label: "Enter New PIN",
+                          hintText: "****",
+                          isObscure: true,
+                          focusNode: focusNodes[2],
+                          controller: controllers[2],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(r' '),
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(4),
+                          ],
+                          onFieldSubmitted: (p0) {
+                            FocusScope.of(context).requestFocus(focusNodes[3]);
+                          },
+                          textInputAction: TextInputAction.next,
+                          validator: ValidationFunctions.validatePin,
+                          textInputType: TextInputType.number,
+                        ),
+                        heightSpacing(16),
+                        MidhillTextField(
+                          label: "Confirm New PIN",
+                          hintText: "****",
+                          isObscure: true,
+                          focusNode: focusNodes[3],
+                          controller: controllers[3],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(r' '),
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(4),
+                          ],
+                          validator: ValidationFunctions.validatePin,
+                          textInputType: TextInputType.number,
+                        ),
+                      ],
+                    ),
+                  ),
+                  heightSpacing(16),
+                  midhillButton(
+                    context,
+                    onPressed: () async {
+                      if (_formKey2.currentState?.validate() == true) {
+                        value.setNewPin(controllers[2].text);
+                        bool result = await value.changeUserPin(
+                          baseUrl: value3.apiUrl!,
+                          otp: controllers[1].text,
+                          confrimationPin: controllers[3].text,
+                        );
 
-              // PageView.builder(
-              //   itemCount: 3,
-              //   physics: const NeverScrollableScrollPhysics(),
-              //   controller: pageViewController,
-              //   itemBuilder: (context, index) => SingleChildScrollView(
-              //     child: PopScope(
-              //       canPop: index == 0,
-              //       onPopInvokedWithResult: (didpop, result) {
-              //         pageViewController.previousPage(
-              //           duration: const Duration(milliseconds: 300),
-              //           curve: Curves.easeIn,
-              //         );
-              //       },
-              //       child: Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           heightSpacing(10),
-              //           mBackButton(context),
-              //           heightSpacing(10),
-              //           Column(
-              //             crossAxisAlignment: CrossAxisAlignment.start,
-              //             children: [
-              //               MidhillTexts.text700(
-              //                 context,
-              //                 text: index == 0
-              //                     ? "Enter PIN"
-              //                     : index == 1
-              //                         ? "Change PIN"
-              //                         : "Confirm PIN",
-              //                 fontSize: 20,
-              //               ),
-              //               heightSpacing(8),
-              //               MidhillTexts.text400(
-              //                 context,
-              //                 text: index == 0
-              //                     ? "Please enter current PIN"
-              //                     : index == 1
-              //                         ? "Please enter your new PIN"
-              //                         : "Please re-enter your new PIN to confirm",
-              //                 fontSize: 14,
-              //                 color: const Color(0xff6C7A93),
-              //               ),
-              //               heightSpacing(24),
-              //             ],
-              //           ),
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.start,
-              //             children: List.generate(
-              //               7,
-              //               (index) => index % 2 == 0
-              //                   ? buildOtpField(
-              //                       context,
-              //                       index: index == 0 ? 0 : index ~/ 2,
-              //                       controllers: controllers,
-              //                       focusNodes: focusNodes,
-              //                     )
-              //                   : widthSpacing(10),
-              //             ),
-              //           ),
-              //           heightSpacing(40),
-              //           InkWell(
-              //             child: SizedBox(
-              //               height: 50,
-              //               child: midhillButton(
-              //                 context,
-              //                 onPressed: () async {
-              //                   String pin =
-              //                       controllers.map((e) => e.text).join();
-              //                   switch (index) {
-              //                     case 0:
-              //                       value.setCurrentPin(pin);
-              //                       for (var controller in controllers) {
-              //                         controller.clear();
-              //                       }
-              //                       pageViewController.nextPage(
-              //                         duration: const Duration(milliseconds: 300),
-              //                         curve: Curves.easeIn,
-              //                       );
-
-              //                       break;
-              //                     case 1:
-              //                       value.setNewPin(pin);
-              //                       for (var controller in controllers) {
-              //                         controller.clear();
-              //                       }
-              //                       pageViewController.nextPage(
-              //                         duration: const Duration(milliseconds: 300),
-              //                         curve: Curves.easeIn,
-              //                       );
-
-              //                       break;
-              //                     case 2:
-              //                       bool result = await value.changeUserPin(
-              //                         baseUrl: value3.apiUrl!,
-              //                         confrimationPin: pin,
-              //                       );
-              //                       if (context.mounted) {
-              //                         if (result) {
-              //                           for (var controller in controllers) {
-              //                             controller.clear();
-              //                           }
-              //                           context.goNamed(
-              //                               MidhillRoutesList.navBarPage);
-              //                         } else {
-              //                           showDialog(
-              //                             context: context,
-              //                             builder: (context) {
-              //                               return AlertDialog(
-              //                                 content: ErrorDialogContent(
-              //                                   errorHeader: "Change PIN Error",
-              //                                   errror: value.changePinApiResponse
-              //                                           ?.message ??
-              //                                       "Error found while changing pin",
-              //                                 ),
-              //                               );
-              //                             },
-              //                           );
-              //                         }
-              //                       }
-              //                       break;
-              //                     default:
-              //                   }
-              //                 },
-              //                 isLoading: value.isChangingPassword,
-              //                 isEnabled: controllers.every((controller) =>
-              //                     controller.value.text.isNotEmpty),
-              //               ),
-              //             ),
-              //           )
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
+                        if (context.mounted) {
+                          if (result) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: SuccessDialogContent(
+                                    successHeader: "PIN Change",
+                                    successMessage:
+                                        value.changePinApiResponse?.message ??
+                                            "PIN Change was successful",
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: ErrorDialogContent(
+                                    errorHeader: "PIN Change Error",
+                                    errror:
+                                        value.changePinApiResponse?.message ??
+                                            "PIN Change wasn't successful",
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        }
+                      }
+                    },
+                    text: 'Change PIN',
+                    isEnabled: value.checkPinApiResponse?.statusCode == 200,
+                    isLoading: value.isChangingPassword,
+                  )
+                ],
               ),
+            ),
+          ),
         ),
       ),
     );

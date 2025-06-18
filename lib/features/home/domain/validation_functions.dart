@@ -38,4 +38,16 @@ class ValidationFunctions {
       return null;
     }
   }
+
+  static String? validatePin(String? pin) {
+    if (pin == null) {
+      return "Please enter your PIN";
+    } else if (pin.isEmpty) {
+      return "PIN is empty";
+    } else if (!RegExp(r'^\d{4}$').hasMatch(pin)) {
+      return "PIN must be exactly 4 digits";
+    } else {
+      return null;
+    }
+  }
 }
