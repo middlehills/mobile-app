@@ -365,12 +365,18 @@ class ProfileApiFunctions {
     final url = Uri.parse('${baseUrl}api/user/delete-account');
     try {
       final accessToken = await AuthService.getAccessToken();
-      final response = await http.patch(url, headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      }, body: {
-        'pin': pin,
-      });
+      final response = await http.patch(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(
+          {
+            'pin': pin,
+          },
+        ),
+      );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);

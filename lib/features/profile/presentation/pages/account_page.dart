@@ -7,7 +7,11 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_functions.dart';
+import 'package:mid_hill_cash_flow/features/profile/domain/mono_config.dart';
+import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
+import 'package:mono_connect/mono_connect.dart';
+import 'package:provider/provider.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -46,81 +50,88 @@ class _AccountPageState extends State<AccountPage> {
       barColor: MidhillColors.primaryColor,
       child: Scaffold(
         appBar: midhillAppBar(context),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 10,
-          ),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  heightSpacing(10),
-                  mBackButton(context),
-                  heightSpacing(10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MidhillTexts.text600(
-                        context,
-                        text: "Account Details",
-                        fontSize: 20,
-                      ),
-                      heightSpacing(8),
-                      MidhillTexts.text400(
-                        context,
-                        text: "Update Details",
-                        fontSize: 14,
-                        color: const Color(0xff6C7A93),
-                      ),
-                    ],
-                  ),
-                  heightSpacing(32),
+        body: Consumer<ProfileProvider>(
+          builder:
+              (BuildContext context, ProfileProvider value, Widget? child) =>
+                  Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 10,
+            ),
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    heightSpacing(10),
+                    mBackButton(context),
+                    heightSpacing(10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MidhillTexts.text600(
+                          context,
+                          text: "Link Bank Account",
+                          fontSize: 20,
+                        ),
+                        // heightSpacing(8),
+                        // MidhillTexts.text400(
+                        //   context,
+                        //   text: "Update Details",
+                        //   fontSize: 14,
+                        //   color: const Color(0xff6C7A93),
+                        // ),
+                      ],
+                    ),
+                    heightSpacing(32),
 
-                  // phone number textfield
-                  MidhillTextField(
-                    label: "Account Name",
-                    isObscure: false,
-                    focusNode: focusNodes[0],
-                    controller: controllers[0],
-                    textInputType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    validator: AuthFunctions.validateFullName,
-                    onFieldSubmitted: (string) {
-                      FocusScope.of(context).requestFocus(focusNodes[1]);
-                    },
-                  ),
+                    // email textfield
+                    MidhillTextField(
+                      label: "Email Address",
+                      isObscure: false,
+                      focusNode: focusNodes[0],
+                      controller: controllers[0],
+                      textInputType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      validator: AuthFunctions.validateEmail,
+                    ),
+                    MidhillTextField(
+                      label: "Bank Verification Number(BVN)",
+                      isObscure: false,
+                      focusNode: focusNodes[1],
+                      controller: controllers[1],
+                      textInputType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(11),
+                      ],
+                      textInputAction: TextInputAction.next,
+                      validator: AuthFunctions.validateBVN,
+                    ),
 
-                  // pin textfield
-                  MidhillTextField(
-                    label: "Account Number",
-                    isObscure: true,
-                    focusNode: focusNodes[1],
-                    controller: controllers[1],
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(10),
-                    ],
-                    textInputType: TextInputType.number,
-                    // validator: (value) =>
-                    //     AuthFunctions.validatePhoneumber(value),
-                  ),
+                    heightSpacing(24),
 
-                  heightSpacing(32),
-
-                  midhillButton(
-                    context,
-                    onPressed: () {
-                      bool? result = _formKey.currentState?.validate();
-
-                      if (result == true) {
-                        // context.goNamed(MidhillRoutesList.signInOtpPage);
-                      }
-                    },
-                  )
-                ],
+                    midhillButton(
+                      context,
+                      onPressed: () {
+                        if (_formKey.currentState?.validate() == true) {
+                          MonoConnect.launch(
+                            context,
+                            config: createConfig(
+                              name:
+                                  "${value.midhillUser!.firstName} ${value.midhillUser!.lastName}",
+                              email: controllers[0].text.trim(),
+                              identity: controllers[1].text.trim(),
+                            ),
+                            showLogs: false,
+                          );
+                        }
+                      },
+                      text: 'Link Account',
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

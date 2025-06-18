@@ -28,6 +28,8 @@
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
+		<key>NSCameraUsageDescription</key>
+		<string>App needs Access to your camera to take images</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>App needs access to Photo library to save your images or videos.</string>
 		<key>UISupportedInterfaceOrientations</key>

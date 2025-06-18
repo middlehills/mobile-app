@@ -286,6 +286,8 @@ class AuthProvider extends ChangeNotifier {
 
         accessToken = initForgotPasswordApiResponse!.data!["accessToken"];
         AuthService.storeAccessStoken(accessToken!);
+
+        log(accessToken.toString());
       } catch (e) {
         return false;
       }

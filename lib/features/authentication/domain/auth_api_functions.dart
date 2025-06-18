@@ -344,6 +344,7 @@ class AuthApiFunctions {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        log(response.body);
         return ApiResponse(
           message: data['success'] ?? 'Forgot PIN request successful',
           data: data,
@@ -396,10 +397,15 @@ class AuthApiFunctions {
     required String newPin,
   }) async {
     final url = Uri.parse('${baseUrl}api/user/change-pin');
+
+    final accessToken = AuthService.getAccessToken();
     try {
       final response = await http.patch(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
         body: jsonEncode({
           "otp_code": otpCode,
           "newPin": newPin,
@@ -461,13 +467,13 @@ class AuthApiFunctions {
   }) async {
     final url = Uri.parse('${baseUrl}api/user/verify-otp/');
 
-    final accessToken = AuthService.getAccessToken();
+    // final accessToken = AuthService.getAccessToken();
     try {
       final response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
+          // 'Authorization': 'Bearer $accessToken',
         },
         body: jsonEncode({
           "otp": otp,

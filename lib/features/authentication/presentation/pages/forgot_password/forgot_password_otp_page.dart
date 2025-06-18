@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/back_button.dart';
@@ -176,8 +178,11 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
                             child: midhillButton(
                               context,
                               onPressed: () async {
+                                final String otp =
+                                    controllers.map((e) => e.text).join();
+                                log(otp);
                                 bool result = await value2.verifyFgPinOtp(
-                                  otp: controllers.map((e) => e.text).join(),
+                                  otp: otp,
                                   baseUrl: value.apiUrl!,
                                   userId: value2.midhillUser!.id,
                                 );

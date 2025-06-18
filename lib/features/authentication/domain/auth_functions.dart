@@ -49,6 +49,32 @@ class AuthFunctions {
     }
   }
 
+  static String? validateEmail(String? email) {
+    if (email == null) {
+      return "Please enter your email";
+    } else if (email.isEmpty) {
+      return "Please enter your email";
+    } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      return "Please enter a valid email address";
+    } else {
+      return null;
+    }
+  }
+
+  static String? validateBVN(String? bvn) {
+    if (bvn == null) {
+      return "Please enter your BVN";
+    } else if (bvn.isEmpty) {
+      return "Please enter your BVN";
+    } else if (bvn.length != 11) {
+      return "BVN must be exactly 11 digits";
+    } else if (!RegExp(r'^[0-9]{11}$').hasMatch(bvn)) {
+      return "BVN must only contain digits";
+    } else {
+      return null;
+    }
+  }
+
   static String secondsToDigitalTime(int seconds) {
     // Calculate minutes and remaining seconds
     int minutes = seconds ~/ 60;
