@@ -175,6 +175,7 @@ class _UploadPageState extends State<UploadPage> {
                           );
                           for (var controller in controllers) {
                             controller.clear();
+                            FocusScope.of(context).requestFocus(focusNodes[0]);
                           }
                         }
                       },

@@ -60,14 +60,15 @@ class _MidhillTextFieldState extends State<MidhillTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MidhillTexts.text400(
-          context,
-          text: widget.label,
-          color: widget.focusNode.hasFocus == true
-              ? MidhillColors.primaryColor
-              : MidhillColors.black,
-          fontSize: 14,
-        ),
+        if (widget.label.isNotEmpty)
+          MidhillTexts.text400(
+            context,
+            text: widget.label,
+            color: widget.focusNode.hasFocus == true
+                ? MidhillColors.primaryColor
+                : MidhillColors.black,
+            fontSize: 14,
+          ),
         heightSpacing(5),
         TextFormField(
           onChanged: widget.onchanged,

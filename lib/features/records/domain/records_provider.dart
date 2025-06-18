@@ -14,6 +14,23 @@ class RecordsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String searchFilter = '';
+
+  searchItem(String value) {
+    if (value.isNotEmpty) {
+      filteredTransactions = transactions
+          .where(
+            (transaction) => transaction.itemName.toLowerCase().contains(
+                  value.toLowerCase(),
+                ),
+          )
+          .toList();
+    } else {
+      filteredTransactions = transactions;
+    }
+    notifyListeners();
+  }
+
   DateTime? selectedDate;
 
   void selectDate(DateTime? value) {
@@ -39,7 +56,6 @@ class RecordsProvider extends ChangeNotifier {
     switch (filterRange) {
       case FilterRange.all:
         filteredTransactions = transactions;
-        break;
       case FilterRange.today:
         filteredTransactions = transactions.where((transaction) {
           final now = DateTime.now();
@@ -67,7 +83,6 @@ class RecordsProvider extends ChangeNotifier {
         filteredTransactions = transactions;
     }
     notifyListeners();
-    print(filterRange);
   }
 
   List<Transaction> filteredTransactions = [];
@@ -106,6 +121,7 @@ class RecordsProvider extends ChangeNotifier {
         if (selectedDate != null) {
           selectDate(selectedDate!);
         }
+        setFilterRange(filterRange);
         notifyListeners();
         return true;
       } else {
