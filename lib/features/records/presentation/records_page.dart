@@ -122,32 +122,34 @@ class _RecordsPageState extends State<RecordsPage> {
                                 width: mediaQueryWidth(context),
                                 child: value.isRecordFetching
                                     ? null
-                                    : Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            MidhillAssets.customIcon(
-                                              iconName: 'transaction',
+                                    : SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              MidhillAssets.customIcon(
+                                                iconName: 'transaction',
+                                              ),
                                             ),
-                                          ),
-                                          heightSpacing(18),
-                                          SizedBox(
-                                            width:
-                                                mediaQueryWidth(context) * 0.61,
-                                            child: MidhillTexts.text600(
-                                              context,
-                                              text: value.transactions.isEmpty
-                                                  ? "You have no records yet. Upload your first record to get started!"
-                                                  : "There is no transaction that matches this filter",
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.clip,
-                                              fontSize: 18,
-                                            ),
-                                          )
-                                        ],
+                                            heightSpacing(18),
+                                            SizedBox(
+                                              width: mediaQueryWidth(context) *
+                                                  0.61,
+                                              child: MidhillTexts.text600(
+                                                context,
+                                                text: value.transactions.isEmpty
+                                                    ? "You have no records yet. Upload your first record to get started!"
+                                                    : "There is no transaction that matches this filter",
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.clip,
+                                                fontSize: 18,
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                               )
                             : ListView.separated(

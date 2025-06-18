@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:mid_hill_cash_flow/core/data/api_response.dart';
 import 'package:mid_hill_cash_flow/features/authentication/data/user_model.dart';
+import 'package:mid_hill_cash_flow/features/authentication/domain/auth_service.dart';
 import 'package:mid_hill_cash_flow/features/profile/domain/profile_api_functions.dart';
 
 class ProfileProvider extends ChangeNotifier {
@@ -192,6 +193,7 @@ class ProfileProvider extends ChangeNotifier {
 
     setDeleteAccountLoadingState(false);
     if (deleteAccountApiResponse!.statusCode == 200) {
+      AuthService.clear();
       return true;
     } else {
       return false;
