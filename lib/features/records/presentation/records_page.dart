@@ -88,6 +88,7 @@ class _RecordsPageState extends State<RecordsPage> {
                 MidhillTextField(
                   label: "",
                   isObscure: false,
+                  hintText: "Enter item name...",
                   focusNode: focusNode,
                   controller: controller,
                   suffixAsset: MidhillAssets.customIcon(
@@ -138,8 +139,9 @@ class _RecordsPageState extends State<RecordsPage> {
                                                 mediaQueryWidth(context) * 0.61,
                                             child: MidhillTexts.text600(
                                               context,
-                                              text:
-                                                  "You have no records yet. Upload your first record to get started!",
+                                              text: value.transactions.isEmpty
+                                                  ? "You have no records yet. Upload your first record to get started!"
+                                                  : "There is no transaction that matches this filter",
                                               textAlign: TextAlign.center,
                                               overflow: TextOverflow.clip,
                                               fontSize: 18,

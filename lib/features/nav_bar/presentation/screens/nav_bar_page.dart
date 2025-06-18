@@ -52,6 +52,7 @@ class _NavBarPageState extends State<NavBarPage> {
         },
         child: SafeArea(
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Stack(
               children: [
                 Column(
@@ -59,6 +60,8 @@ class _NavBarPageState extends State<NavBarPage> {
                     Expanded(
                       child: screens[value.selectedIndex],
                     ),
+
+                    // custom bottom nav bar
                     Container(
                       height: 80,
                       width: mediaQueryWidth(context),
@@ -70,61 +73,65 @@ class _NavBarPageState extends State<NavBarPage> {
                         vertical: 12,
                       ),
                       child: Row(
-                        children: List.generate(3, (index) {
-                          return Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                value.updateIndex(index);
-                              },
-                              child: Container(
-                                height: 48,
-                                decoration: value.selectedIndex == index
-                                    ? BoxDecoration(
-                                        color: const Color(0xffE7EDF6),
-                                        borderRadius: BorderRadius.circular(24),
-                                      )
-                                    : null,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 12,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      MidhillAssets.customIcon(
-                                        iconName: index == 0
-                                            ? "home"
-                                            : index == 1
-                                                ? "record"
-                                                : "profile",
+                        children: List.generate(
+                          3,
+                          (index) {
+                            return Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  value.updateIndex(index);
+                                },
+                                child: Container(
+                                  height: 48,
+                                  decoration: value.selectedIndex == index
+                                      ? BoxDecoration(
+                                          color: const Color(0xffE7EDF6),
+                                          borderRadius:
+                                              BorderRadius.circular(24),
+                                        )
+                                      : null,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        MidhillAssets.customIcon(
+                                          iconName: index == 0
+                                              ? "home"
+                                              : index == 1
+                                                  ? "record"
+                                                  : "profile",
+                                        ),
+                                        colorFilter: ColorFilter.mode(
+                                          value.selectedIndex == index
+                                              ? MidhillColors.primaryColor
+                                              : const Color(0xff6C7A93),
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
-                                      colorFilter: ColorFilter.mode(
-                                        value.selectedIndex == index
-                                            ? MidhillColors.primaryColor
-                                            : const Color(0xff6C7A93),
-                                        BlendMode.srcIn,
-                                      ),
-                                    ),
-                                    if (value.selectedIndex == index)
-                                      widthSpacing(5),
-                                    if (value.selectedIndex == index)
-                                      MidhillTexts.text600(
-                                        context,
-                                        text: index == 0
-                                            ? "Upload"
-                                            : index == 1
-                                                ? "Records"
-                                                : "Profile",
-                                        color: MidhillColors.primaryColor,
-                                        fontSize: 14,
-                                      )
-                                  ],
+                                      if (value.selectedIndex == index)
+                                        widthSpacing(5),
+                                      if (value.selectedIndex == index)
+                                        MidhillTexts.text600(
+                                          context,
+                                          text: index == 0
+                                              ? "Upload"
+                                              : index == 1
+                                                  ? "Records"
+                                                  : "Profile",
+                                          color: MidhillColors.primaryColor,
+                                          fontSize: 14,
+                                        )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          },
+                        ),
                       ),
                     )
                   ],
