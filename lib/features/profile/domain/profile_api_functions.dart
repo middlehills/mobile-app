@@ -360,17 +360,17 @@ class ProfileApiFunctions {
 
   static Future<ApiResponse> deleteAccount({
     required String baseUrl,
+    required String pin,
   }) async {
     final url = Uri.parse('${baseUrl}api/user/delete-account');
     try {
       final accessToken = await AuthService.getAccessToken();
-      final response = await http.patch(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
-        },
-      );
+      final response = await http.patch(url, headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      }, body: {
+        'pin': pin,
+      });
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);

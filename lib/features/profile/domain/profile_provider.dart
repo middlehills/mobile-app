@@ -182,10 +182,13 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<bool> deleteAccount({
     required String baseUrl,
+    required String pin,
   }) async {
     setDeleteAccountLoadingState(true);
-    deleteAccountApiResponse =
-        await ProfileApiFunctions.deleteAccount(baseUrl: baseUrl);
+    deleteAccountApiResponse = await ProfileApiFunctions.deleteAccount(
+      baseUrl: baseUrl,
+      pin: pin,
+    );
 
     setDeleteAccountLoadingState(false);
     if (deleteAccountApiResponse!.statusCode == 200) {

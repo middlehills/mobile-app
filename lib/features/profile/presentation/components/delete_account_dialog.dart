@@ -85,9 +85,12 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
             ),
             InkWell(
               onTap: () async {
-                if (!value.isDeletingAccount) {
-                  bool result =
-                      await value.deleteAccount(baseUrl: value2.apiUrl!);
+                if (!value.isDeletingAccount &&
+                    controllers.every((e) => e.text.isNotEmpty)) {
+                  bool result = await value.deleteAccount(
+                    baseUrl: value2.apiUrl!,
+                    pin: controllers.map((cont) => cont.text).join(),
+                  );
                   if (context.mounted) {
                     if (result) {
                       Provider.of<AuthProvider>(context, listen: false).reset();
@@ -121,7 +124,9 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                 width: MediaQuery.sizeOf(context).width,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: const Color(0xffB00C0C),
+                  color: controllers.every((e) => e.text.isNotEmpty)
+                      ? const Color(0xffB00C0C)
+                      : const Color(0xffEDF0F3),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 alignment: Alignment.center,
@@ -133,7 +138,9 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                         context,
                         text: "Delete Account",
                         fontSize: 16,
-                        color: MidhillColors.white,
+                        color: controllers.every((e) => e.text.isNotEmpty)
+                            ? MidhillColors.white
+                            : MidhillColors.borderGrey,
                       ),
               ),
             ),
