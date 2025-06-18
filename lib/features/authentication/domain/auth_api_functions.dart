@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:mid_hill_cash_flow/features/authentication/data/user_reg_data.dart';
+import 'package:mid_hill_cash_flow/features/authentication/domain/auth_service.dart';
 
 class AuthApiFunctions {
   AuthApiFunctions._();
@@ -459,10 +460,15 @@ class AuthApiFunctions {
     required String userId,
   }) async {
     final url = Uri.parse('${baseUrl}api/user/verify-otp/');
+
+    final accessToken = AuthService.getAccessToken();
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
         body: jsonEncode({
           "otp": otp,
           "user_id": userId,

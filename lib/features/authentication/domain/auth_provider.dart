@@ -279,9 +279,16 @@ class AuthProvider extends ChangeNotifier {
     if (initForgotPasswordApiResponse!.statusCode == 200) {
       log(initForgotPasswordApiResponse?.data!['otp'] ?? "");
 
-      midhillUser = MidhillUser.fromJson(
-        initForgotPasswordApiResponse?.data!['user'],
-      );
+      try {
+        midhillUser = MidhillUser.fromJson(
+          initForgotPasswordApiResponse?.data!['user'],
+        );
+
+        accessToken = initForgotPasswordApiResponse!.data!["accessToken"];
+        AuthService.storeAccessStoken(accessToken!);
+      } catch (e) {
+        return false;
+      }
 
       notifyListeners();
       return true;
