@@ -155,6 +155,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                 }
                               }
                             },
+                            text: index == 0 ? "Next" : "Reset Pin",
                             isEnabled: controllers.every((controller) =>
                                 controller.value.text.isNotEmpty),
                             isLoading: value.isChangingPassword,

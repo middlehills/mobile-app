@@ -122,6 +122,7 @@ class _PasswordPageState extends State<PasswordPage> {
                         }
                       }
                     },
+                    text: "Sign Up",
                     isLoading: value2.isCreatingAccount,
                     isEnabled: controllers.every(
                       (controller) => controller.value.text.isNotEmpty,

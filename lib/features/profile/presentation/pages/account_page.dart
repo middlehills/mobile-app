@@ -138,6 +138,7 @@ class _AccountPageState extends State<AccountPage> {
                           );
                         }
                       },
+                      isLoading: value.isConnectingMono,
                       text: 'Link Account',
                     ),
                   ],

@@ -137,6 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       }
                     },
+                    text: "Login",
                     isEnabled: controllers.every(
                         (controller) => controller.value.text.isNotEmpty),
                     isLoading: value.isLoggingIn,

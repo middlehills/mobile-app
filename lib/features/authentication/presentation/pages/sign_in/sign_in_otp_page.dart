@@ -199,6 +199,7 @@ class _SignInOtpPageState extends State<SignInOtpPage> {
                                   }
                                 }
                               },
+                              text: "Verify OTP",
                               isEnabled: (controllers.every((controller) =>
                                       controller.value.text.isNotEmpty)) &&
                                   !value2.isResendingOtp,

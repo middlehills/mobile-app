@@ -144,6 +144,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           }
                         }
                       },
+                      text: "Get OTP",
                       isLoading: value.isInitiatingForgotPassword,
                     )
                   ],

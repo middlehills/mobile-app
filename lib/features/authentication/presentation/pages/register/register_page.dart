@@ -147,6 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           context.goNamed(MidhillRoutesList.passwordPage);
                         }
                       },
+                      text: "Next",
                     )
                   ],
                 ),

@@ -207,6 +207,7 @@ class _ProfileOtpPageState extends State<ProfileOtpPage> {
                                     }
                                   }
                                 },
+                                text: "Verify OTP",
                                 isLoading: value.isProfileUpdateVerifying,
                                 isEnabled: (controllers.every((controller) =>
                                         controller.value.text.isNotEmpty)) &&

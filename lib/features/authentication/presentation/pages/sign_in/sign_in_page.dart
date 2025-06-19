@@ -184,6 +184,7 @@ class _SignInPageState extends State<SignInPage> {
                           }
                         }
                       },
+                      text: "Sign In",
                       isLoading: value2.isSigningIn,
                     )
                   ],

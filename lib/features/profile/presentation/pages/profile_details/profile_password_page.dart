@@ -121,6 +121,7 @@ class _ProfilePasswordPageState extends State<ProfilePasswordPage> {
                             }
                           }
                         },
+                        text: "Update User",
                         isLoading: value.isProfileUpdating,
                         isEnabled: controllers.every(
                             (controller) => controller.value.text.isNotEmpty),

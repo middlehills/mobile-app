@@ -154,6 +154,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                           );
                         }
                       },
+                      text: "Next",
                     )
                   ],
                 ),

@@ -173,40 +173,37 @@ class _OtpPageState extends State<OtpPage> {
                         InkWell(
                           child: SizedBox(
                             height: 50,
-                            child: midhillButton(
-                              context,
-                              onPressed: () async {
-                                bool result = await value2.verifyUser(
-                                  baseUrl: value.apiUrl!,
-                                  otp: controllers.map((e) => e.text).join(),
-                                );
+                            child: midhillButton(context, onPressed: () async {
+                              bool result = await value2.verifyUser(
+                                baseUrl: value.apiUrl!,
+                                otp: controllers.map((e) => e.text).join(),
+                              );
 
-                                if (context.mounted) {
-                                  if (result) {
-                                    context
-                                        .goNamed(MidhillRoutesList.navBarPage);
-                                  } else {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content: ErrorDialogContent(
-                                            errorHeader: "Verify Error",
-                                            errror: value2.verifyOtpResponse!
-                                                    .message ??
-                                                "An error occurred while verifying your account. Please try again.",
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
+                              if (context.mounted) {
+                                if (result) {
+                                  context.goNamed(MidhillRoutesList.navBarPage);
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: ErrorDialogContent(
+                                          errorHeader: "Verify Error",
+                                          errror: value2
+                                                  .verifyOtpResponse!.message ??
+                                              "An error occurred while verifying your account. Please try again.",
+                                        ),
+                                      );
+                                    },
+                                  );
                                 }
-                              },
-                              isEnabled: (controllers.every((controller) =>
-                                      controller.value.text.isNotEmpty)) &&
-                                  !value2.isResendingOtp,
-                              isLoading: value2.isVerifying,
-                            ),
+                              }
+                            },
+                                isEnabled: (controllers.every((controller) =>
+                                        controller.value.text.isNotEmpty)) &&
+                                    !value2.isResendingOtp,
+                                isLoading: value2.isVerifying,
+                                text: "Verify OTP"),
                           ),
                         )
                       ],

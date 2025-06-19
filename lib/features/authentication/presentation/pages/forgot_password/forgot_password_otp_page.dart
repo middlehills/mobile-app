@@ -214,6 +214,7 @@ class _ForgotPasswordOtpPageState extends State<ForgotPasswordOtpPage> {
                                   }
                                 }
                               },
+                              text: "Verify OTP",
                               isEnabled: controllers.every((controller) =>
                                   controller.value.text.isNotEmpty),
                               isLoading: value2.isVerifyingFgPinOtp,
