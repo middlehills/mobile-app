@@ -242,6 +242,10 @@ class _SecurityChangePinPageState extends State<SecurityChangePinPage> {
                     onPressed: () async {
                       if (_formKey2.currentState?.validate() == true) {
                         value.setNewPin(controllers[2].text);
+                        await value2.verifyUser(
+                          baseUrl: value3.apiUrl!,
+                          otp: controllers[1].text,
+                        );
                         bool result = await value.changeUserPin(
                           baseUrl: value3.apiUrl!,
                           otp: controllers[1].text,
@@ -283,7 +287,7 @@ class _SecurityChangePinPageState extends State<SecurityChangePinPage> {
                     },
                     text: 'Change PIN',
                     isEnabled: value.checkPinApiResponse?.statusCode == 200,
-                    isLoading: value.isChangingPassword,
+                    isLoading: value.isChangingPassword || value2.isVerifying,
                   )
                 ],
               ),

@@ -83,7 +83,7 @@ class AuthProvider extends ChangeNotifier {
     verifyOtpResponse = await AuthApiFunctions.verifySignUp(
       baseUrl: baseUrl,
       id: midhillUser!.id,
-      otp: userOtp!,
+      otp: userOtp ?? otp,
     );
 
     if (verifyOtpResponse!.statusCode == 200) {
@@ -177,6 +177,7 @@ class AuthProvider extends ChangeNotifier {
       midhillUser = MidhillUser.fromJson(
         loginApiResponse!.data!['user'],
       );
+      log((loginApiResponse!.data!['user']).toString());
       accessToken = loginApiResponse!.data!["accessToken"];
       AuthService.storeAccessStoken(accessToken!);
       refreshToken = loginApiResponse!.data!["refreshToken"];

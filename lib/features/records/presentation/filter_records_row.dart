@@ -148,6 +148,7 @@ class FilterRecordsRow extends StatelessWidget {
           // calendar icon
           InkWell(
             onTap: () {
+              value.setFilterRange(null);
               showCupertinoModalPopup(
                 context: context,
                 builder: (BuildContext context) {

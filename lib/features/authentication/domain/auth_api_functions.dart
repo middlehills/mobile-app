@@ -398,7 +398,8 @@ class AuthApiFunctions {
   }) async {
     final url = Uri.parse('${baseUrl}api/user/change-pin');
 
-    final accessToken = AuthService.getAccessToken();
+    final accessToken = await AuthService.getAccessToken();
+
     try {
       final response = await http.patch(
         url,

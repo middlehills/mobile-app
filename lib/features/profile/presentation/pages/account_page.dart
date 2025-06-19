@@ -10,6 +10,7 @@ import 'package:mid_hill_cash_flow/features/authentication/domain/auth_functions
 import 'package:mid_hill_cash_flow/features/profile/domain/mono_config.dart';
 import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
+import 'package:mid_hill_cash_flow/utils/api_url_provider.dart';
 import 'package:mono_connect/mono_connect.dart';
 import 'package:provider/provider.dart';
 
@@ -72,16 +73,20 @@ class _AccountPageState extends State<AccountPage> {
                       children: [
                         MidhillTexts.text600(
                           context,
-                          text: "Link Bank Account",
+                          text: value.midhillUser?.monoId == null
+                              ? "Link Bank Account"
+                              : "Your account is already linked",
                           fontSize: 20,
                         ),
-                        // heightSpacing(8),
-                        // MidhillTexts.text400(
-                        //   context,
-                        //   text: "Update Details",
-                        //   fontSize: 14,
-                        //   color: const Color(0xff6C7A93),
-                        // ),
+                        if (value.midhillUser?.monoId != null) heightSpacing(8),
+                        if (value.midhillUser?.monoId != null)
+                          MidhillTexts.text400(
+                            context,
+                            text:
+                                "Your account is already linked. Continue if you want to replace account.",
+                            fontSize: 14,
+                            color: const Color(0xff6C7A93),
+                          ),
                       ],
                     ),
                     heightSpacing(32),
@@ -123,6 +128,11 @@ class _AccountPageState extends State<AccountPage> {
                                   "${value.midhillUser!.firstName} ${value.midhillUser!.lastName}",
                               email: controllers[0].text.trim(),
                               identity: controllers[1].text.trim(),
+                              profileValue: value,
+                              apiUrlProviderValue: Provider.of<ApiUrlProvider>(
+                                context,
+                                listen: false,
+                              ),
                             ),
                             showLogs: false,
                           );

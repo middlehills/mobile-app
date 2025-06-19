@@ -159,13 +159,41 @@ class ProfileProvider extends ChangeNotifier {
 
     changePinApiResponse = await ProfileApiFunctions.changePin(
       baseUrl: baseUrl,
-      otp: otp,
-      pin: confrimationPin,
+      otpCode: otp,
+      newPin: confrimationPin,
     );
 
     setChangePasswordLoadingState(false);
 
     if (changePinApiResponse!.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isConnectingMono = false;
+
+  setMonoConnectionState(bool value) {
+    isConnectingMono = value;
+    notifyListeners();
+  }
+
+  ApiResponse? connectMonoApiResponse;
+
+  Future<bool> connectMonoAccount({
+    required String baseUrl,
+    required String code,
+  }) async {
+    setMonoConnectionState(true);
+    connectMonoApiResponse = await ProfileApiFunctions.authMono(
+      baseUrl: baseUrl,
+      code: code,
+    );
+
+    setMonoConnectionState(false);
+    if (connectMonoApiResponse!.statusCode == 200) {
+      AuthService.clear();
       return true;
     } else {
       return false;

@@ -9,6 +9,7 @@ class MidhillUser {
   final bool verified;
   final DateTime updatedAt;
   final DateTime createdAt;
+  final String? monoId;
 
   MidhillUser({
     required this.id,
@@ -21,6 +22,7 @@ class MidhillUser {
     required this.verified,
     required this.updatedAt,
     required this.createdAt,
+    required this.monoId,
   });
 
   factory MidhillUser.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class MidhillUser {
       verified: json['verified'] as bool,
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
+      monoId: json["mono_id"] as String?,
     );
   }
 }
