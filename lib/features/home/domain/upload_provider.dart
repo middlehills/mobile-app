@@ -91,6 +91,13 @@ class UploadProvider extends ChangeNotifier {
     }
   }
 
+  bool isLaunchingSupport = false;
+
+  void setLaunchingSupportState(bool value) {
+    isLaunchingSupport = value;
+    notifyListeners();
+  }
+
   void reset() {
     // uploads.clear();
     // isAddingNewRecord = false;

@@ -45,6 +45,7 @@ dependencies:
   hive: ^2.0.0
   hive_flutter: ^1.1.0
   mono_connect: ^2.1.0
+  url_launcher: ^6.3.1
   # connectivity_plus: ^3.0.3
   # intercom_flutter: ^9.2.11
 

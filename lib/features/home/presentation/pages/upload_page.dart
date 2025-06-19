@@ -7,6 +7,7 @@ import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_text_field.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_texts.dart';
 import 'package:mid_hill_cash_flow/features/authentication/domain/auth_provider.dart';
+import 'package:mid_hill_cash_flow/features/home/domain/support_launcher.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/validation_functions.dart';
 import 'package:mid_hill_cash_flow/features/home/presentation/components/record_review_modal_sheet.dart';
@@ -98,9 +99,24 @@ class _UploadPageState extends State<UploadPage> {
                           ],
                         ),
                         const Spacer(),
-                        SvgPicture.asset(
-                          MidhillAssets.customIcon(
-                            iconName: "support",
+                        InkWell(
+                          onTap: () async {
+                            launchWhatsApp(
+                              phone: '+2347050252307',
+                              message: 'Hi Midhill Support, [Enter complaint]',
+                            );
+                          },
+                          customBorder: const CircleBorder(),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(5),
+                            child: SvgPicture.asset(
+                              MidhillAssets.customIcon(
+                                iconName: "support",
+                              ),
+                            ),
                           ),
                         ),
                         widthSpacing(16),
