@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mid_hill_cash_flow/core/widgets/mid_hill_button.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_annotated_region.dart';
 import 'package:mid_hill_cash_flow/core/widgets/midhill_app_bar.dart';
@@ -12,6 +13,7 @@ import 'package:mid_hill_cash_flow/features/home/domain/upload_provider.dart';
 import 'package:mid_hill_cash_flow/features/home/domain/validation_functions.dart';
 import 'package:mid_hill_cash_flow/features/home/presentation/components/record_review_modal_sheet.dart';
 import 'package:mid_hill_cash_flow/features/profile/domain/profile_provider.dart';
+import 'package:mid_hill_cash_flow/routes/midhill_routes_list.dart';
 import 'package:mid_hill_cash_flow/theme/assets.dart';
 import 'package:mid_hill_cash_flow/theme/midhill_colors.dart';
 import 'package:provider/provider.dart';
@@ -120,9 +122,21 @@ class _UploadPageState extends State<UploadPage> {
                           ),
                         ),
                         widthSpacing(16),
-                        SvgPicture.asset(
-                          MidhillAssets.customIcon(
-                            iconName: "bell",
+                        InkWell(
+                          onTap: () async {
+                            context.goNamed(MidhillRoutesList.notifyPage);
+                          },
+                          customBorder: const CircleBorder(),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(5),
+                            child: SvgPicture.asset(
+                              MidhillAssets.customIcon(
+                                iconName: "bell",
+                              ),
+                            ),
                           ),
                         ),
                       ],
