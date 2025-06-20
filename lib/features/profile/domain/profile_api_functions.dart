@@ -492,7 +492,7 @@ class ProfileApiFunctions {
     required String baseUrl,
     required String code,
   }) async {
-    final url = Uri.parse('${baseUrl}api/authMono');
+    final url = Uri.parse('${baseUrl}api/connect-mono');
     final uploadData = {
       "code": code,
     };
@@ -507,10 +507,14 @@ class ProfileApiFunctions {
         body: jsonEncode(uploadData),
       );
 
+      log(response.body);
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         return ApiResponse(
-          message: data['success'] ?? 'Mono authentication successful',
+          message: (data['success'] ?? 'Mono authentication successful') == true
+              ? 'Mono authentication successful'
+              : (data['success'] ?? 'Mono authentication successful'),
           data: data,
           statusCode: response.statusCode,
           responsePhrase: response.reasonPhrase ?? '',

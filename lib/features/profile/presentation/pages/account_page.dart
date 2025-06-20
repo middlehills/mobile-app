@@ -133,12 +133,13 @@ class _AccountPageState extends State<AccountPage> {
                                 context,
                                 listen: false,
                               ),
+                              context: context,
                             ),
                             showLogs: false,
                           );
                         }
                       },
-                      isLoading: value.isConnectingMono,
+                      isLoading: value.isConnectingMono || value.isFetchingUser,
                       text: 'Link Account',
                     ),
                   ],

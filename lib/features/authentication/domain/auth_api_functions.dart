@@ -478,7 +478,7 @@ class AuthApiFunctions {
         },
         body: jsonEncode({
           "otp": otp,
-          "user_id": userId,
+          "id": userId,
         }),
       );
 
