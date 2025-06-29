@@ -432,6 +432,7 @@ class ProfileApiFunctions {
     final url = Uri.parse('${baseUrl}api/user/details');
     try {
       final accessToken = await AuthService.getAccessToken();
+
       final response = await http.get(
         url,
         headers: {

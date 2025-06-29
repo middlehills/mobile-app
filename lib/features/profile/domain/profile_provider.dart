@@ -193,7 +193,6 @@ class ProfileProvider extends ChangeNotifier {
 
     setMonoConnectionState(false);
     if (connectMonoApiResponse!.statusCode == 200) {
-      AuthService.clear();
       return true;
     } else {
       return false;

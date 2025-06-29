@@ -30,6 +30,7 @@ class AuthApiFunctions {
 
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
+        log(response.body);
         return ApiResponse(
           message: data['success'] ?? 'Sign up successful',
           data: data,
