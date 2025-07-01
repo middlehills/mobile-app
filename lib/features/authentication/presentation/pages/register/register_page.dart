@@ -97,6 +97,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       inputFormatters: [
                         FilteringTextInputFormatter.deny(r' '),
                       ],
+                      onchanged: (p0) {
+                        setState(() {});
+                      },
                       validator: (value) => AuthFunctions.validateName(value),
                     ),
 
@@ -111,6 +114,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       inputFormatters: [
                         FilteringTextInputFormatter.deny(r' '),
                       ],
+                      onchanged: (p0) {
+                        setState(() {});
+                      },
                       validator: (value) => AuthFunctions.validateName(value),
                     ),
 
@@ -124,6 +130,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(10),
                       ],
+                      onchanged: (p0) {
+                        setState(() {});
+                      },
                       textInputType: TextInputType.phone,
                       prefixString: "🇳🇬 +234 |",
                       validator: (value) =>
@@ -134,6 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     midhillButton(
                       context,
+                      isEnabled: _formKey.currentState?.validate() == true,
                       onPressed: () {
                         bool? result = _formKey.currentState?.validate();
 

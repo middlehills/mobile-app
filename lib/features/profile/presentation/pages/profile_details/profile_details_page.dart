@@ -37,7 +37,8 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controllers[0].text = authProvider.midhillUser?.firstName ?? "";
       controllers[1].text = authProvider.midhillUser?.lastName ?? "";
-      controllers[2].text = authProvider.midhillUser?.phoneNumber ?? "";
+      controllers[2].text =
+          (authProvider.midhillUser?.phoneNumber ?? "").replaceFirst(r'0', '');
       setState(() {});
     });
   }
@@ -136,10 +137,13 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
 
                     midhillButton(
                       context,
-                      isEnabled: controllers[0].text !=
-                              value.midhillUser?.firstName ||
-                          controllers[1].text != value.midhillUser?.lastName ||
-                          controllers[2].text != value.midhillUser?.phoneNumber,
+                      isEnabled: (_formKey.currentState?.validate() == true) &&
+                          (controllers[0].text !=
+                                  value.midhillUser?.firstName ||
+                              controllers[1].text !=
+                                  value.midhillUser?.lastName ||
+                              controllers[2].text !=
+                                  value.midhillUser?.phoneNumber),
                       onPressed: () {
                         bool? result = _formKey.currentState?.validate();
 

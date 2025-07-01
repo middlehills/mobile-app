@@ -16,16 +16,19 @@ class AuthApiFunctions {
     required String pin,
   }) async {
     final url = Uri.parse('${baseUrl}api/user/signup');
+
+    String body = jsonEncode({
+      "first_name": userRegData.firstName,
+      "last_name": userRegData.lastName,
+      "phone_number": userRegData.phoneNumber,
+      "pin": pin,
+    });
+    log(body);
     try {
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          "first_name": userRegData.firstName,
-          "last_name": userRegData.lastName,
-          "phone_number": userRegData.phoneNumber,
-          "pin": pin,
-        }),
+        body: body,
       );
 
       if (response.statusCode == 201) {

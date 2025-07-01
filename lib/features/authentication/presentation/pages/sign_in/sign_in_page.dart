@@ -98,6 +98,9 @@ class _SignInPageState extends State<SignInPage> {
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(10),
                       ],
+                      onchanged: (p0) {
+                        setState(() {});
+                      },
                       textInputType: TextInputType.phone,
                       textInputAction: TextInputAction.next,
                       prefixString: "🇳🇬 +234 |",
@@ -118,6 +121,9 @@ class _SignInPageState extends State<SignInPage> {
                           FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(4),
                         ],
+                        onchanged: (p0) {
+                          setState(() {});
+                        },
                         textInputType: TextInputType.number,
                         validator: (value) {
                           if (value?.isEmpty != false) {
@@ -156,6 +162,7 @@ class _SignInPageState extends State<SignInPage> {
 
                     midhillButton(
                       context,
+                      isEnabled: _formKey.currentState?.validate() == true,
                       onPressed: () async {
                         if (_formKey.currentState?.validate() == true) {
                           bool result = await value2.signIn(
