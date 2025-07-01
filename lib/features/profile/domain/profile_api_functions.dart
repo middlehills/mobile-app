@@ -360,7 +360,7 @@ class ProfileApiFunctions {
 
   static Future<ApiResponse> deleteAccount({
     required String baseUrl,
-    required String pin,
+    required String otp,
   }) async {
     final url = Uri.parse('${baseUrl}api/user/delete-account');
     try {
@@ -373,7 +373,7 @@ class ProfileApiFunctions {
         },
         body: jsonEncode(
           {
-            'pin': pin,
+            'otp': otp,
           },
         ),
       );

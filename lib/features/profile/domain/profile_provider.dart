@@ -172,6 +172,8 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  // MONO
+
   bool isConnectingMono = false;
 
   setMonoConnectionState(bool value) {
@@ -199,6 +201,36 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  // DELETE
+
+  bool isCheckingPinForDelete = false;
+
+  void setCheckPinForDeleteState(bool value) {
+    isCheckingPinForDelete = value;
+    notifyListeners();
+  }
+
+  ApiResponse? checkPinForDeleteApiResponse;
+
+  Future<bool> checkPinForDelete({
+    required String baseUrl,
+    required String pin,
+  }) async {
+    setCheckPinForDeleteState(true);
+
+    checkPinForDeleteApiResponse =
+        await ProfileApiFunctions.checkPin(baseUrl: baseUrl, pin: pin);
+
+    setCheckPinForDeleteState(false);
+
+    if (checkPinForDeleteApiResponse!.statusCode == 200) {
+      log(checkPinForDeleteApiResponse!.data!['otp']);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   bool isDeletingAccount = false;
 
   setDeleteAccountLoadingState(bool value) {
@@ -210,12 +242,12 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<bool> deleteAccount({
     required String baseUrl,
-    required String pin,
+    required String otp,
   }) async {
     setDeleteAccountLoadingState(true);
     deleteAccountApiResponse = await ProfileApiFunctions.deleteAccount(
       baseUrl: baseUrl,
-      pin: pin,
+      otp: otp,
     );
 
     setDeleteAccountLoadingState(false);
