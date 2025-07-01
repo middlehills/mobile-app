@@ -243,7 +243,7 @@ class _RecordReviewModalSheetState extends State<RecordReviewModalSheet> {
                       );
                     }
                   },
-                  text: "Submit",
+                  text: "Upload",
                 ),
               ),
             )

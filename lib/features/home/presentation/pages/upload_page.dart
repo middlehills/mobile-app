@@ -193,7 +193,7 @@ class _UploadPageState extends State<UploadPage> {
 
                     midhillButton(
                       context,
-                      text: "Add Record",
+                      text: "Add Item",
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           value.createRecord(
@@ -238,7 +238,8 @@ class _UploadPageState extends State<UploadPage> {
                           alignment: Alignment.center,
                           child: MidhillTexts.text600(
                             context,
-                            text: "View Cart",
+                            text:
+                                "Submit ${value.uploads.isEmpty ? '' : value.uploads.length} Item${value.uploads.length < 2 ? '' : 's'}",
                             fontSize: 16,
                             color: MidhillColors.primaryColor,
                           ),
